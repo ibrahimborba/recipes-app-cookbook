@@ -1,8 +1,12 @@
 import React from 'react';
+import SearchBar from '../components/SearchBar';
 
 function Drinks() {
   return (
-    <div>Drinks</div>
+    <>
+      <SearchBar />
+      <div>Drinks</div>
+    </>
   );
 }
 
