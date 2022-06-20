@@ -21,6 +21,12 @@ function Login() {
             data-testid="password-input"
           />
         </label>
+        <button
+          type="submit"
+          data-testid="login-submit-btn"
+        >
+          Enter
+        </button>
       </form>
     </div>
   );
