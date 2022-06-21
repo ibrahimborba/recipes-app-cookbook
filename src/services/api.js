@@ -10,6 +10,9 @@ export const getMeal = async (search, option) => {
   case 'first-letter':
     URL = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
     break;
+  case 'category':
+    URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=';
+    break;
   default:
     URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   }
@@ -34,6 +37,9 @@ export const getDrink = async (search, option) => {
     break;
   case 'first-letter':
     URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
+    break;
+  case 'category':
+    URL = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=';
     break;
   default:
     URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';

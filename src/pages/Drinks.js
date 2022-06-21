@@ -12,7 +12,7 @@ function Drinks() {
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    dispatch(fetchDrinkResults(''));
+    dispatch(fetchDrinkResults('', ''));
   }, [dispatch]);
 
   return (
