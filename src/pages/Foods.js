@@ -1,11 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { fetchMealResults } from '../redux/actions';
 
 function Foods() {
-  const MAX_ITEMS_DISPLAY = 12;
+  const dispatch = useDispatch();
   const mealResults = useSelector((state) => state.searchResults.meals);
+
+  const MAX_ITEMS_DISPLAY = 12;
+
+  useEffect(() => {
+    dispatch(fetchMealResults(''));
+  }, [dispatch]);
 
   return (
     <>
