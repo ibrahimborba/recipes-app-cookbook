@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import CategoriesOptions from '../components/CategoriesOptions';
 import { fetchMealResults } from '../redux/actions';
 
 function Foods() {
@@ -17,6 +18,7 @@ function Foods() {
   return (
     <>
       <Header enableSearch />
+      <CategoriesOptions />
       { mealResults.length > 1
        && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
          <div
