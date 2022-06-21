@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import SearchBar from '../components/SearchBar';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function Foods() {
@@ -9,21 +9,21 @@ function Foods() {
 
   return (
     <>
-      <SearchBar />
+      <Header enableSearch />
       <div>Foods</div>
       { mealResults.length > 1
-       && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal) => (
+       && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
          <div
            key={ meal.idMeal }
-           data-testid={ `${meal.idMeal}-recipe-card` }
+           data-testid={ `${index}-recipe-card` }
          >
            <img
-             data-testid={ `${meal.idMeal}-card-img` }
+             data-testid={ `${index}-card-img` }
              src={ meal.strMealThumb }
              alt={ meal.strMeal }
              style={ { width: '200px' } }
            />
-           <p data-testid={ `${meal.idMeal}-card-name` }>{ meal.strMeal }</p>
+           <p data-testid={ `${index}-card-name` }>{ meal.strMeal }</p>
          </div>
        ))}
       <Footer />
