@@ -3,27 +3,43 @@ import PropTypes from 'prop-types';
 import RecipeDetails from './RecipeDetails';
 import RecipeTitle from './RecipeTitle';
 import Recommended from './Recommended';
-import Midia from './Midia';
 
-function Recipe({ type }) {
+function Recipe({ isFood }) {
   return (
     <section>
-      <img data-testid="recipe-photo" src="#" alt="Recipe" />
-      <section>
-        <RecipeTitle />
-        <RecipeDetails />
-        { type === 'food'
+      <RecipeTitle />
+      <RecipeDetails />
+      {
+        isFood
           && (
-            <Midia />
-          )}
-        <Recommended />
-      </section>
+            <iframe
+              width="560"
+              height="315"
+              src="#"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture"
+              allowFullScreen
+            />
+          )
+      }
+      <Recommended />
     </section>
   );
 }
 
 Recipe.propTypes = {
-  type: PropTypes.string.isRequired,
+  isFood: PropTypes.bool,
+};
+
+Recipe.defaultProps = {
+  isFood: false,
 };
 
 export default Recipe;

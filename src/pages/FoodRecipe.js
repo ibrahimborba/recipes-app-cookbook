@@ -1,8 +1,14 @@
 import React from 'react';
+import Recipe from '../components/Recipe';
+import StartButton from '../components/StartButton';
 
 function FoodRecipe() {
   return (
-    <div>FoodRecipe</div>
+    <section>
+      <img data-testid="recipe-photo" src="#" alt="Recipe" />
+      <Recipe isFood />
+      <StartButton />
+    </section>
   );
 }
 

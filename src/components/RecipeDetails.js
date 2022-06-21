@@ -13,7 +13,10 @@ function RecipeDetails() {
               ? (
                 <>
                   <li>
-                    <label htmlFor="numberOne">
+                    <label
+                      data-testid="index-ingredient-name-and-measure"
+                      htmlFor="numberOne"
+                    >
                       <input
                         id="numberOne"
                         type="checkbox"
@@ -44,7 +47,7 @@ function RecipeDetails() {
       </div>
       <div>
         <h3>Instructions</h3>
-        <div>
+        <div data-testid="instructions">
           Text Right here
         </div>
       </div>
