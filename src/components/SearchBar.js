@@ -23,9 +23,6 @@ function SearchBar() {
   };
 
   const checkSearchResult = useCallback((results) => {
-    /* if (results.length === 0) {
-      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    } */
     if (results.length === 1) {
       return pathname === '/foods'
         ? history.push(`/foods/${results[0].idMeal}`)
@@ -48,7 +45,7 @@ function SearchBar() {
         return false;
       }
     }
-  }, [fetched]);
+  }, [fetched, checkSearchResult, mealResults, drinkResults, pathname]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

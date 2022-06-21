@@ -17,9 +17,6 @@ export const getMeal = async (search, option) => {
   try {
     const apiResponse = await fetch(`${URL}${search}`);
     const apiResult = await apiResponse.json();
-    // if (!apiResult.meals) {
-    //   return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    // }
     return apiResult;
   } catch (error) {
     return error;
