@@ -10,7 +10,7 @@ function SearchBar() {
   const [fetched, setFetched] = useState(false);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const history = useHistory;
+  const history = useHistory();
   const mealResults = useSelector((state) => state.searchResults.meals);
   const drinkResults = useSelector((state) => state.searchResults.drinks);
 
@@ -23,14 +23,13 @@ function SearchBar() {
   };
 
   const checkSearchResult = useCallback((results) => {
-    if (results.length === 0) {
+    /* if (results.length === 0) {
       return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    }
-
+    } */
     if (results.length === 1) {
       return pathname === '/foods'
-        ? history.push(`/foods/${results.idMeal}`)
-        : history.push(`/drinks/${results.idDrink}`);
+        ? history.push(`/foods/${results[0].idMeal}`)
+        : history.push(`/drinks/${results[0].idDrink}`);
     }
   }, [history, pathname]);
 
@@ -53,6 +52,10 @@ function SearchBar() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (checkedOption === 'first-letter' && searchText.length > 1) {
+      return global.alert('Your search must have only 1 (one) character');
+    }
 
     switch (pathname) {
     case '/foods': {

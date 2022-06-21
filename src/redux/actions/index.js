@@ -16,6 +16,9 @@ export const mealResults = (results) => ({
 
 export const fetchMealResults = (search, option) => async (dispatch) => {
   const { meals } = await getMeal(search, option);
+  if (!meals) {
+    return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  }
   dispatch(mealResults(meals));
 };
 
@@ -26,5 +29,8 @@ export const drinkResults = (results) => ({
 
 export const fetchDrinkResults = (search, option) => async (dispatch) => {
   const { drinks } = await getDrink(search, option);
+  if (!drinks) {
+    return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  }
   dispatch(drinkResults(drinks));
 };
