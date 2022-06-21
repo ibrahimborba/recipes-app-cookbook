@@ -11,28 +11,26 @@ function Header({ enableSearch }) {
   const [title, setTitle] = useState('');
 
   const formatTitle = useCallback(() => {
-    const text = path
+    const titleFormatted = path
       .split('/')
       .slice(1)
-      .reduce((acc, value, index, array) => {
+      .reduce((phraseFormatted, string, index, array) => {
         if (index === 0 || index === array.length - 1) {
-          const string = value
+          phraseFormatted += string
             .replace('-', ' ')
             .split(' ')
-            .reduce((acct, txt) => {
-              acct += `${txt.charAt(0).toUpperCase()}${txt.substring(1).toLowerCase()} `;
+            .reduce((word, txt) => {
+              word += `${txt.charAt(0).toUpperCase()}${txt.substring(1).toLowerCase()} `;
 
-              return acct;
+              return word;
             }, '');
-
-          acc += string;
         }
 
-        return acc;
+        return phraseFormatted;
       }, '')
       .trim();
 
-    setTitle(text);
+    setTitle(titleFormatted);
   }, [path]);
 
   useEffect(() => {
