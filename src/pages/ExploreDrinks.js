@@ -38,7 +38,7 @@ function ExploreDrinks() {
           data-testid="explore-surprise"
           onClick={ handleRandomDrinks }
         >
-          Surprise me
+          Surprise me!
         </button>
       </form>
       <Footer />
