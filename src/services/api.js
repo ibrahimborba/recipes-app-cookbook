@@ -15,7 +15,6 @@ export const getMeal = async (search, option) => {
   }
 
   try {
-    console.log(`${URL}${search}`);
     const apiResponse = await fetch(`${URL}${search}`);
     const apiResult = await apiResponse.json();
     return apiResult;
@@ -44,6 +43,32 @@ export const getDrink = async (search, option) => {
     const apiResponse = await fetch(`${URL}${search}`);
     const apiResult = await apiResponse.json();
     return apiResult;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getCategories = async (pathname) => {
+  let URL = '';
+  let key = '';
+  switch (pathname) {
+  case '/foods':
+    URL = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+    key = 'meals';
+    break;
+  case '/drinks':
+    URL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
+    key = 'drinks';
+    break;
+  default:
+    break;
+  }
+
+  try {
+    const apiResponse = await fetch(URL);
+    const apiResult = await apiResponse.json();
+    const categoriesList = apiResult[key];
+    return categoriesList;
   } catch (error) {
     return error;
   }
