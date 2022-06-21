@@ -52,11 +52,10 @@ function Header({ enableSearch }) {
         enableSearch
         && (
           <button
-            data-testid="search-top-btn"
             type="button"
             onClick={ () => setIsSearchBar(!isSearchBar) }
           >
-            <img src={ searchIcon } alt="profile icon" />
+            <img data-testid="search-top-btn" src={ searchIcon } alt="profile icon" />
           </button>
         )
       }
