@@ -15,17 +15,38 @@ describe('Foods page tests', () => {
     const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
     const profileImg = screen.getByRole('img', { name: 'profile icon' });
     const searchBtn = screen.getByRole('img', { name: 'search icon' });
-    const searchInput = screen.queryByRole('textbox', { name: 'text search' });
+    const searchInputDisabled = screen.queryByLabelText('Search');
 
     expect(pageTitle).toBeInTheDocument();
     expect(profileImg).toBeInTheDocument();
     expect(searchBtn).toBeInTheDocument();
-    expect(searchInput).not.toBeInTheDocument();
+    expect(searchInputDisabled).not.toBeInTheDocument();
 
     userEvent.click(searchBtn);
 
-    const searchInputEnabled = await screen
-      .findByRole('textbox');
+    const searchInputEnabled = await screen.findByLabelText('Search');
     expect(searchInputEnabled).toBeInTheDocument();
+  });
+
+  it('checks if SearchBar is rendered as expected', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const searchBtnHeader = screen.getByRole('img', { name: 'search icon' });
+    expect(searchBtnHeader).toBeInTheDocument();
+    userEvent.click(searchBtnHeader);
+
+    const searchInput = await screen.findByLabelText('Search');
+    const searchOptionIngredient = screen.getByLabelText('Ingredient');
+    const searchOptionName = screen.getByLabelText('Name');
+    const searchOptionFirst = screen.getByLabelText('First Letter');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+    expect(searchInput).toBeInTheDocument();
+    expect(searchOptionIngredient).toBeInTheDocument();
+    expect(searchOptionName).toBeInTheDocument();
+    expect(searchOptionFirst).toBeInTheDocument();
+    expect(searchBtn).toBeInTheDocument();
   });
 });

@@ -79,7 +79,7 @@ function SearchBar() {
         dataTestId="search-input"
         type="text"
         value={ searchText }
-        name="text search"
+        label="Search"
         onChange={ handleSearchText }
       />
       <Input
