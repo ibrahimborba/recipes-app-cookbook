@@ -6,7 +6,6 @@ function ExploreFoods() {
   return (
     <>
       <Header />
-      ExploreFoods
       <Footer />
     </>
   );

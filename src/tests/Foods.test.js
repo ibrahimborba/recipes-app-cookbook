@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 
-describe('Foods page tests', () => {
+describe('1 - Foods page Header component tests', () => {
   it('checks if Header is rendered and behaves as expected', async () => {
     const { history } = renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],
@@ -27,7 +27,9 @@ describe('Foods page tests', () => {
     const searchInputEnabled = await screen.findByLabelText('Search');
     expect(searchInputEnabled).toBeInTheDocument();
   });
+});
 
+describe('2 - Foods page SearchBar component tests', () => {
   it('checks if SearchBar is rendered as expected', async () => {
     renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],

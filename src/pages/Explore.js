@@ -6,7 +6,6 @@ function Explore() {
   return (
     <>
       <Header />
-      <p>Explore</p>
       <Footer />
     </>
   );

@@ -6,7 +6,6 @@ function FoodsNationalities() {
   return (
     <>
       <Header enableSearch />
-      <p>FoodsNationalities</p>
       <Footer />
     </>
   );
