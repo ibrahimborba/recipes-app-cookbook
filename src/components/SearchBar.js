@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input';
-import { getDrink, getMeal } from '../services/api';
+import { fetchMealResults, fetchDrinkResults } from '../redux/actions';
 
 function SearchBar() {
   const [searchText, setSearchText] = useState('');
   const [checkedOption, setCheckedOption] = useState('');
+  const [fetched, setFetched] = useState(false);
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const history = useHistory;
+  const mealResults = useSelector((state) => state.searchResults.meals);
+  const drinkResults = useSelector((state) => state.searchResults.drinks);
 
   const handleSearchText = ({ target: { value } }) => {
     setSearchText(value);
@@ -16,18 +22,47 @@ function SearchBar() {
     setCheckedOption(value);
   };
 
+  const checkSearchResult = useCallback((results) => {
+    if (results.length === 0) {
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+
+    if (results.length === 1) {
+      return pathname === '/foods'
+        ? history.push(`/foods/${results.idMeal}`)
+        : history.push(`/drinks/${results.idDrink}`);
+    }
+  }, [history, pathname]);
+
+  useEffect(() => {
+    if (fetched) {
+      switch (pathname) {
+      case '/foods': {
+        checkSearchResult(mealResults);
+        break;
+      }
+      case '/drinks': {
+        checkSearchResult(drinkResults);
+        break;
+      }
+      default:
+        return false;
+      }
+    }
+  }, [fetched]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     switch (pathname) {
     case '/foods': {
-      const { meals } = await getMeal(searchText, checkedOption);
-      console.log(meals);
+      await dispatch(fetchMealResults(searchText, checkedOption));
+      setFetched(true);
       break;
     }
     case '/drinks': {
-      const { drinks } = await getDrink(searchText, checkedOption);
-      console.log(drinks);
+      await dispatch(fetchDrinkResults(searchText, checkedOption));
+      setFetched(true);
       break;
     }
     default:
