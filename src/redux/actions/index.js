@@ -1,8 +1,10 @@
-import { getDrink, getMeal } from '../../services/api';
+import { getDrink, getMeal, getRandom } from '../../services/api';
 
 export const SET_USER = 'SET_USER';
 export const MEAL_RESULTS = 'MEAL_RESULTS';
 export const DRINK_RESULTS = 'DRINK_RESULTS';
+export const RANDOM_MEAL_RESULTS = 'RANDOM_MEAL_RESULTS';
+export const RANDOM_DRINK_RESULTS = 'RANDOM_DRINK_RESULTS';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -33,4 +35,26 @@ export const fetchDrinkResults = (search, option) => async (dispatch) => {
     return global.alert('Sorry, we haven\'t found any recipes for these filters.');
   }
   dispatch(drinkResults(drinks));
+};
+
+export const randomMealResults = (results) => ({
+  type: RANDOM_MEAL_RESULTS,
+  payload: [...results],
+});
+
+export const fetchRandomMealResults = (pathname) => async (dispatch) => {
+  const { meals } = await getRandom(pathname);
+
+  dispatch(randomMealResults(meals));
+};
+
+export const randomDrinkResults = (results) => ({
+  type: RANDOM_DRINK_RESULTS,
+  payload: [...results],
+});
+
+export const fetchRandomDrinkResults = (pathname) => async (dispatch) => {
+  const { drinks } = await getRandom(pathname);
+
+  dispatch(randomDrinkResults(drinks));
 };
