@@ -55,7 +55,7 @@ function Header({ enableSearch }) {
             type="button"
             onClick={ () => setIsSearchBar(!isSearchBar) }
           >
-            <img data-testid="search-top-btn" src={ searchIcon } alt="profile icon" />
+            <img data-testid="search-top-btn" src={ searchIcon } alt="search icon" />
           </button>
         )
       }

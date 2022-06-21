@@ -8,9 +8,11 @@ function SearchBar() {
   const [searchText, setSearchText] = useState('');
   const [checkedOption, setCheckedOption] = useState('');
   const [fetched, setFetched] = useState(false);
+
   const { pathname } = useLocation();
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const mealResults = useSelector((state) => state.searchResults.meals);
   const drinkResults = useSelector((state) => state.searchResults.drinks);
 
@@ -77,6 +79,7 @@ function SearchBar() {
         dataTestId="search-input"
         type="text"
         value={ searchText }
+        name="text search"
         onChange={ handleSearchText }
       />
       <Input

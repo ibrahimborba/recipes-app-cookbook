@@ -10,7 +10,6 @@ function Drinks() {
   return (
     <>
       <Header enableSearch />
-      <p>Drinks</p>
       { drinkResults.length > 1
        && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
          <div
