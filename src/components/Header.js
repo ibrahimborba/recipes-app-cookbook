@@ -14,21 +14,25 @@ function Header({ enableSearch }) {
     const text = path
       .split('/')
       .slice(1)
-      .map((word) => {
-        const string = word
-          .replace('-', ' ')
-          .split(' ')
-          .reduce((acc, txt) => {
-            acc += `${txt.charAt(0).toUpperCase()}${txt.substring(1).toLowerCase()} `;
+      .reduce((acc, value, index, array) => {
+        if (index === 0 || index === array.length - 1) {
+          const string = value
+            .replace('-', ' ')
+            .split(' ')
+            .reduce((acct, txt) => {
+              acct += `${txt.charAt(0).toUpperCase()}${txt.substring(1).toLowerCase()} `;
 
-            return acc;
-          }, '');
+              return acct;
+            }, '');
 
-        return string;
-      });
+          acc += string;
+        }
 
-    if (text.length === 1) setTitle(`${text[0]}`);
-    else setTitle(`${text[0]}${text[text.length - 1]}`);
+        return acc;
+      }, '')
+      .trim();
+
+    setTitle(text);
   }, [path]);
 
   useEffect(() => {
