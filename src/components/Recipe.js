@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import RecipeDetails from './RecipeDetails';
 import RecipeTitle from './RecipeTitle';
 import Recommended from './Recommended';
 
 function Recipe({ isFood }) {
+  const {
+    strYoutube: video,
+  } = useSelector((state) => state.recipe.recipeReceived);
+
+  const [url, setUrl] = useState();
+
+  const formatUrl = useCallback(() => {
+    const urlFormatted = video?.replace('watch?v=', 'embed/');
+
+    setUrl(urlFormatted);
+  }, [video]);
+
+  useEffect(() => {
+    formatUrl();
+  }, [formatUrl]);
+
   return (
     <section>
       <RecipeTitle />
@@ -15,16 +32,8 @@ function Recipe({ isFood }) {
             <iframe
               width="560"
               height="315"
-              src="#"
+              src={ url }
               title="YouTube video player"
-              frameBorder="0"
-              allow="
-                accelerometer;
-                autoplay;
-                clipboard-write;
-                encrypted-media;
-                gyroscope;
-                picture-in-picture"
               allowFullScreen
             />
           )

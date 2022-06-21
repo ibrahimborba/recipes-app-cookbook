@@ -1,10 +1,16 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function RecipeTitle() {
+  const {
+    strCategory: category,
+    strDrink: title,
+  } = useSelector((state) => state.recipe.recipeReceived);
+
   return (
     <div>
       <div>
-        <h2 data-testid="recipe-title">Title</h2>
+        <h2 data-testid="recipe-title">{ title }</h2>
         <div>
           <button
             data-testid="share-btn"
@@ -18,7 +24,7 @@ function RecipeTitle() {
           />
         </div>
       </div>
-      <p data-testid="recipe-category">Category</p>
+      <p data-testid="recipe-category">{ category }</p>
     </div>
   );
 }
