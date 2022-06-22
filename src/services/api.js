@@ -127,6 +127,8 @@ export const getCategories = async (pathname) => {
 };
 
 export const getRecipe = async (id, option) => {
+  let url = '';
+
   switch (option) {
   case 'food':
     url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
