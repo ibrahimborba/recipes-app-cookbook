@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { fetchDrinksIngredientsResults } from '../redux/actions';
+import { fetchDrinksIngredientsResults, searchOptions } from '../redux/actions';
 
 function DrinksIngredients() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const history = useHistory();
+
   const MAX_INGREDIENTS_DISPLAY = 12;
   const drinksIngredientsResults = useSelector((state) => state
     .ingredientsResults.drinks);
@@ -19,13 +21,20 @@ function DrinksIngredients() {
     fetchData();
   }, [pathname, dispatch]);
 
+  const handleClick = (value) => () => {
+    dispatch(searchOptions(value, 'ingredient'));
+    history.push('/drinks');
+  };
+
   return (
     <>
       <Header />
       {drinksIngredientsResults.slice(0, MAX_INGREDIENTS_DISPLAY).map((ing, index) => (
-        <div
+        <button
           key={ ing.strIngredient1 }
           data-testid={ `${index}-ingredient-card` }
+          type="button"
+          onClick={ handleClick(ing.strIngredient1) }
         >
           <img
             src={ `https://www.thecocktaildb.com/images/ingredients/${ing.strIngredient1}-Small.png` }
@@ -33,7 +42,7 @@ function DrinksIngredients() {
             data-testid={ `${index}-card-img` }
           />
           <p data-testid={ `${index}-card-name` }>{ ing.strIngredient1 }</p>
-        </div>
+        </button>
       ))}
       <Footer />
     </>

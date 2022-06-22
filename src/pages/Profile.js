@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getUser, logout } from '../services/userLocalSt';
 
 function Profile() {
+  const [userEmail, setUserEmail] = useState({});
   const history = useHistory();
 
   const handleLogout = () => {
     logout();
     history.push('/');
   };
-  const userEmail = getUser();
+
+  useEffect(() => {
+    setUserEmail(getUser());
+  }, []);
 
   return (
     <>
