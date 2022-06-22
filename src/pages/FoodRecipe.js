@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Recipe from '../components/Recipe';
 import StartButton from '../components/StartButton';
-import { fetchRecipeThunk } from '../redux/actions';
+import { fetchRecipeThunk, getRecommendationsThunk } from '../redux/actions';
 
 function FoodRecipe() {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function FoodRecipe() {
 
   useEffect(() => {
     dispatch(fetchRecipeThunk(id, 'food'));
+    dispatch(getRecommendationsThunk('drink'));
   }, [dispatch, id]);
 
   return (
@@ -27,7 +28,7 @@ function FoodRecipe() {
             <>
               <img
                 data-testid="recipe-photo"
-                src={ recipeReceived.strMealThumb }
+                src={ recipeReceived.image }
                 alt="Recipe"
               />
               <Recipe isFood />

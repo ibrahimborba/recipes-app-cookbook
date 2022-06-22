@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Recipe from '../components/Recipe';
 import StartButton from '../components/StartButton';
-import { fetchRecipeThunk } from '../redux/actions';
+import { fetchRecipeThunk, getRecommendationsThunk } from '../redux/actions';
 
 function DrinkRecipe() {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function DrinkRecipe() {
 
   useEffect(() => {
     dispatch(fetchRecipeThunk(id, 'drink'));
+    dispatch(getRecommendationsThunk('food'));
   }, [dispatch, id]);
 
   return (

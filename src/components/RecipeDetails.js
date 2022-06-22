@@ -1,12 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const inProgress = true;
-
 function RecipeDetails() {
   const {
-    recipeReceived: { strInstructions: instructions },
-    ingredients,
+    recipeReceived: { instructions, ingredients }, inProgress,
   } = useSelector((state) => state.recipe);
 
   return (

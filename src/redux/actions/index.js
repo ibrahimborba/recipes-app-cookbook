@@ -5,8 +5,9 @@ export const MEAL_RESULTS = 'MEAL_RESULTS';
 export const DRINK_RESULTS = 'DRINK_RESULTS';
 export const GET_INGREDIENTS = 'GET_INGREDIENTS';
 export const IS_FETCHING = 'IS_FETCHING';
-export const REQUISITION_SUCCEEDED = 'REQUISITION_SUCCEEDED';
 export const REQUISITION_FAILED = 'REQUISITION_FAILED';
+export const GET_RECIPE_SUCCEEDED = 'GET_RECIPE_SUCCEEDED';
+export const GET_RECOMMENDATIONS_SUCCEEDED = 'GET_RECOMMENDATIONS_SUCCEEDED';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -45,8 +46,8 @@ const isFetching = () => ({
   type: IS_FETCHING,
 });
 
-const requisitionSucceeded = (data) => ({
-  type: REQUISITION_SUCCEEDED,
+const requisitonSucceeded = (data, type) => ({
+  type,
   payload: {
     data,
   },
@@ -73,10 +74,52 @@ const getIngredients = (recipe) => {
     if (!isNull && !isEmpty) ingredients = [...ingredients, [ingredient, measure]];
   }
 
-  return {
-    type: GET_INGREDIENTS,
-    ingredients,
-  };
+  return ingredients;
+};
+
+const formatData = (data, option) => {
+  const [recipe] = [...Object.values(data)][0];
+  const ingredients = getIngredients(recipe);
+  let recipeObj = {};
+
+  switch (option) {
+  case 'food': {
+    const {
+      idMeal, strCategory, strMeal, strInstructions, strYoutube, strMealThumb,
+    } = recipe;
+
+    recipeObj = {
+      id: idMeal,
+      category: strCategory,
+      title: strMeal,
+      instructions: strInstructions,
+      video: strYoutube,
+      image: strMealThumb,
+      ingredients,
+    };
+    break;
+  }
+  case 'drink': {
+    const {
+      idDrink, strDrink, strInstructions, strDrinkThumb, strAlcoholic,
+    } = recipe;
+
+    recipeObj = {
+      id: idDrink,
+      category: strAlcoholic,
+      title: strDrink,
+      instructions: strInstructions,
+      image: strDrinkThumb,
+      ingredients,
+    };
+    break;
+  }
+
+  default:
+    break;
+  }
+
+  return recipeObj;
 };
 
 export const fetchRecipeThunk = (id, option) => async (dispatch) => {
@@ -100,22 +143,43 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    let recipe = {};
+    const recipe = formatData(data, option);
 
-    switch (option) {
-    case 'food':
-      recipe = { ...data.meals[0] };
-      break;
+    dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
+  }
+};
 
-    case 'drink':
-      recipe = { ...data.drinks[0] };
-      break;
-    default:
-      break;
-    }
+export const getRecommendationsThunk = (option) => async (dispatch) => {
+  dispatch(isFetching());
 
-    dispatch(getIngredients(recipe));
-    dispatch(requisitionSucceeded(recipe));
+  let url = '';
+
+  switch (option) {
+  case 'food':
+    url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    break;
+
+  case 'drink':
+    url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    break;
+
+  default:
+    return false;
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const NUMBER_OF_RECOMMENDARIONS = 6;
+    const recommendations = Object
+      .values(data)[0]
+      .slice(0, NUMBER_OF_RECOMMENDARIONS)
+      .map((recipe) => formatData({ recipes: [recipe] }, option));
+
+    dispatch(requisitonSucceeded(recommendations, GET_RECOMMENDATIONS_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));
   }

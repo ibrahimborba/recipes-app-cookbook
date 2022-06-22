@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 function RecipeTitle() {
   const {
-    strCategory: category,
-    strDrink: title,
+    category,
+    title,
   } = useSelector((state) => state.recipe.recipeReceived);
 
   return (

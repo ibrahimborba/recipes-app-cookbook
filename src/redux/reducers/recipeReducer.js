@@ -1,13 +1,22 @@
 import {
-  GET_INGREDIENTS, IS_FETCHING, REQUISITION_FAILED, REQUISITION_SUCCEEDED,
+  GET_INGREDIENTS, GET_RECIPE_SUCCEEDED,
+  GET_RECOMMENDATIONS_SUCCEEDED, IS_FETCHING, REQUISITION_FAILED,
 } from '../actions';
 
 const INITIAL_VALUE = {
-  recipeReceived: {},
-  ingredients: [],
+  recipeReceived: {
+    id: '',
+    category: '',
+    title: '',
+    instructions: '',
+    video: '',
+    image: '',
+    ingredients: [],
+  },
+  recommendations: [],
   isFetching: false,
   error: null,
-  inProgress: true,
+  inProgress: false,
 };
 
 const recipe = (state = INITIAL_VALUE, action) => {
@@ -18,17 +27,24 @@ const recipe = (state = INITIAL_VALUE, action) => {
       isFetching: true,
     };
 
-  case REQUISITION_SUCCEEDED:
+  case REQUISITION_FAILED:
+    return {
+      ...state,
+      error: action.payload.error.message,
+      isFetching: false,
+    };
+
+  case GET_RECIPE_SUCCEEDED:
     return {
       ...state,
       recipeReceived: { ...action.payload.data },
       isFetching: false,
     };
 
-  case REQUISITION_FAILED:
+  case GET_RECOMMENDATIONS_SUCCEEDED:
     return {
       ...state,
-      error: { ...action.payload.error },
+      recommendations: [...action.payload.data],
       isFetching: false,
     };
 
