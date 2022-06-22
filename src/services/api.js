@@ -16,6 +16,9 @@ export const getMeal = async (search, option) => {
   case 'category':
     URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=';
     break;
+  case 'nationality':
+    URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?a=';
+    break;
   default:
     URL = MEALS_END_POINT_BY_NAME;
   }
@@ -168,4 +171,16 @@ export const getRecommendations = async (option) => {
   const data = await response.json();
 
   return data;
+};
+
+export const getNationalities = async () => {
+  const URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
+
+  try {
+    const apiResponse = await fetch(URL);
+    const apiResult = await apiResponse.json();
+    return apiResult;
+  } catch (error) {
+    return error;
+  }
 };

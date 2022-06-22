@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
+import categories from './mocks/categoriesMeal';
 
 describe('1 - Foods page Header component tests', () => {
   it('checks if Header is rendered and behaves as expected', async () => {
@@ -54,6 +55,15 @@ describe('2 - Foods page SearchBar component tests', () => {
 });
 
 describe('3 - Foods page CategoriesOptions component tests', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch')
+      .mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve(categories),
+      }));
+  });
+
+  afterEach(() => jest.restoreAllMocks());
+
   it('checks if CategoriesOptions is rendered as expected', async () => {
     renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],
@@ -61,6 +71,8 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
 
     const categoryBtnAll = screen.getByRole('button', { name: 'All' });
     expect(categoryBtnAll).toBeInTheDocument();
+
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 });
 
