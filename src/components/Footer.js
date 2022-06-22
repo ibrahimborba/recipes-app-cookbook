@@ -9,27 +9,36 @@ function Footer() {
   const history = useHistory();
   return (
     <footer data-testid="footer" className="footer-class">
-      <input
-        type="image"
-        src={ drinkIcon }
-        alt="drink-icon"
-        data-testid="drinks-bottom-btn"
+      <button
+        type="button"
         onClick={ () => history.push('/drinks') }
-      />
-      <input
-        type="image"
-        src={ exploreIcon }
-        alt="explore-icon"
-        data-testid="explore-bottom-btn"
+      >
+        <img
+          data-testid="drinks-bottom-btn"
+          src={ drinkIcon }
+          alt="drink-icon"
+        />
+      </button>
+      <button
+        type="button"
         onClick={ () => history.push('/explore') }
-      />
-      <input
-        type="image"
-        src={ mealIcon }
-        alt="meal-icon"
-        data-testid="food-bottom-btn"
+      >
+        <img
+          data-testid="explore-bottom-btn"
+          src={ exploreIcon }
+          alt="explore-icon"
+        />
+      </button>
+      <button
+        type="button"
         onClick={ () => history.push('/foods') }
-      />
+      >
+        <img
+          data-testid="food-bottom-btn"
+          src={ mealIcon }
+          alt="meal-icon"
+        />
+      </button>
     </footer>
   );
 }
