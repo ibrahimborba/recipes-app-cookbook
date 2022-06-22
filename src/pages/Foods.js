@@ -9,12 +9,14 @@ import { fetchMealResults } from '../redux/actions';
 function Foods() {
   const dispatch = useDispatch();
   const mealResults = useSelector((state) => state.searchResults.meals);
+  const searchOptions = useSelector((state) => state.searchOptions);
 
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    dispatch(fetchMealResults('', ''));
-  }, [dispatch]);
+    const { search, option } = searchOptions;
+    dispatch(fetchMealResults(search, option));
+  }, [dispatch, searchOptions]);
 
   return (
     <>

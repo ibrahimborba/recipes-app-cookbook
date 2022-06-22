@@ -17,6 +17,7 @@ import FoodsNationalities from './pages/FoodsNationalities';
 import Profile from './pages/Profile';
 import Done from './pages/Done';
 import Favorites from './pages/Favorites';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route exact path="/profile" component={ Profile } />
         <Route exact path="/done-recipes" component={ Done } />
         <Route exact path="/favorite-recipes" component={ Favorites } />
+        <Route path="*" component={ NotFound } />
       </Switch>
     </div>
   );

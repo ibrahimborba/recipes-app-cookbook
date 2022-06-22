@@ -7,6 +7,7 @@ export const RANDOM_MEAL_RESULTS = 'RANDOM_MEAL_RESULTS';
 export const RANDOM_DRINK_RESULTS = 'RANDOM_DRINK_RESULTS';
 export const MEALS_INGREDIENTS_RESULTS = 'MEALS_INGREDIENTS_RESULTS';
 export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
+export const SEARCH_OPTION = 'SEARCH_OPTION';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -82,3 +83,11 @@ export const fetchDrinksIngredientsResults = (pathname) => async (dispatch) => {
 
   dispatch(drinksIngredientsResults(drinks));
 };
+
+export const searchOptions = (search = '', option = '') => ({
+  type: SEARCH_OPTION,
+  payload: {
+    search,
+    option,
+  },
+});
