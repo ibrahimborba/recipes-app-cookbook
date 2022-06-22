@@ -1,21 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRecipesDone } from '../services/mealsLocalSt';
+import { getInProgressRecipes, getRecipesDone } from '../services/mealsLocalSt';
 import style from './StartButton.module.css';
 
 function StartButton() {
+  const { id, type } = useSelector((state) => state.recipe.currentRecipe);
+
   const [isToShow, setIsToShow] = useState(true);
-  const { id } = useSelector((state) => state.recipe.currentRecipe);
+  const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
     const recipes = getRecipesDone();
 
     if (recipes.length !== 0) {
-      const isARecipeThere = recipes.some(({ id: recipeId }) => recipeId === id);
+      const hasRecipe = recipes.some(({ id: recipeId }) => recipeId === id);
 
-      setIsToShow(!isARecipeThere);
+      setIsToShow(!hasRecipe);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (type) {
+      const { [type]: recipes } = getInProgressRecipes();
+      const hasRecipeInProgress = Object
+        .keys(recipes)
+        .some((recipeId) => recipeId === id);
+
+      if (hasRecipeInProgress) {
+        setButtonText('Continue Recipe');
+      } else {
+        setButtonText('Start Recipe');
+      }
+    }
+  }, [id, type]);
 
   return (
     <div>
@@ -28,7 +45,7 @@ function StartButton() {
               type="button"
               onClick={ () => console.log('comecou') }
             >
-              Start Recipe
+              { buttonText }
             </button>
           )
       }

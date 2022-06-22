@@ -28,8 +28,7 @@ export const mealResults = (results) => ({
 
 export const fetchMealResults = (search, option) => async (dispatch) => {
   const { meals } = await getMeal(search, option);
-  console.log(meals);
-  console.log(meals);
+
   if (!meals) {
     return global.alert('Sorry, we haven\'t found any recipes for these filters.');
   }
@@ -103,6 +102,7 @@ const formatData = (data, option) => {
       video: strYoutube,
       image: strMealThumb,
       ingredients,
+      type: 'meals',
     };
     break;
   }
@@ -118,6 +118,7 @@ const formatData = (data, option) => {
       instructions: strInstructions,
       image: strDrinkThumb,
       ingredients,
+      type: 'cocktails',
     };
     break;
   }
