@@ -1,4 +1,6 @@
-import { getDrink, getMeal } from '../../services/api';
+import {
+  getDrink, getMeal, getRandom, getIngredients, getRecipe, getRecommendations,
+} from '../../services/api';
 
 export const SET_USER = 'SET_USER';
 export const MEAL_RESULTS = 'MEAL_RESULTS';
@@ -8,6 +10,10 @@ export const IS_FETCHING = 'IS_FETCHING';
 export const REQUISITION_FAILED = 'REQUISITION_FAILED';
 export const GET_RECIPE_SUCCEEDED = 'GET_RECIPE_SUCCEEDED';
 export const GET_RECOMMENDATIONS_SUCCEEDED = 'GET_RECOMMENDATIONS_SUCCEEDED';
+export const RANDOM_MEAL_RESULTS = 'RANDOM_MEAL_RESULTS';
+export const RANDOM_DRINK_RESULTS = 'RANDOM_DRINK_RESULTS';
+export const MEALS_INGREDIENTS_RESULTS = 'MEALS_INGREDIENTS_RESULTS';
+export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -60,7 +66,7 @@ const requisitionFailed = (error) => ({
   },
 });
 
-const getIngredients = (recipe) => {
+const formatIngredients = (recipe) => {
   const NUMBER_OF_INGREDIENTS = 15;
   let ingredients = [];
 
@@ -79,7 +85,7 @@ const getIngredients = (recipe) => {
 
 const formatData = (data, option) => {
   const [recipe] = [...Object.values(data)][0];
-  const ingredients = getIngredients(recipe);
+  const ingredients = formatIngredients(recipe);
   let recipeObj = {};
 
   switch (option) {
@@ -125,24 +131,8 @@ const formatData = (data, option) => {
 export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   dispatch(isFetching());
 
-  let url = '';
-
-  switch (option) {
-  case 'food':
-    url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-    break;
-
-  case 'drink':
-    url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
-    break;
-
-  default:
-    return false;
-  }
-
   try {
-    const response = await fetch(url);
-    const data = await response.json();
+    const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
 
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
@@ -154,24 +144,8 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
 export const getRecommendationsThunk = (option) => async (dispatch) => {
   dispatch(isFetching());
 
-  let url = '';
-
-  switch (option) {
-  case 'food':
-    url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    break;
-
-  case 'drink':
-    url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    break;
-
-  default:
-    return false;
-  }
-
   try {
-    const response = await fetch(url);
-    const data = await response.json();
+    const data = await getRecommendations(option);
 
     const NUMBER_OF_RECOMMENDARIONS = 6;
     const recommendations = Object
@@ -183,4 +157,48 @@ export const getRecommendationsThunk = (option) => async (dispatch) => {
   } catch (error) {
     dispatch(requisitionFailed(error));
   }
+};
+
+export const randomMealResults = (results) => ({
+  type: RANDOM_MEAL_RESULTS,
+  payload: [...results],
+});
+
+export const fetchRandomMealResults = (pathname) => async (dispatch) => {
+  const { meals } = await getRandom(pathname);
+
+  dispatch(randomMealResults(meals));
+};
+
+export const randomDrinkResults = (results) => ({
+  type: RANDOM_DRINK_RESULTS,
+  payload: [...results],
+});
+
+export const fetchRandomDrinkResults = (pathname) => async (dispatch) => {
+  const { drinks } = await getRandom(pathname);
+
+  dispatch(randomDrinkResults(drinks));
+};
+
+export const mealsIngredientsResults = (results) => ({
+  type: MEALS_INGREDIENTS_RESULTS,
+  payload: [...results],
+});
+
+export const fetchMealsIngredientsResults = (pathname) => async (dispatch) => {
+  const { meals } = await getIngredients(pathname);
+
+  dispatch(mealsIngredientsResults(meals));
+};
+
+export const drinksIngredientsResults = (results) => ({
+  type: DRINKS_INGREDIENTS_RESULTS,
+  payload: [...results],
+});
+
+export const fetchDrinksIngredientsResults = (pathname) => async (dispatch) => {
+  const { drinks } = await getIngredients(pathname);
+
+  dispatch(drinksIngredientsResults(drinks));
 };
