@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import style from './Recommended.module.css';
 
 function Recommended() {
   const { isFetching, recommendations } = useSelector((state) => state.recipe);
 
   return (
-    <div>
+    <div
+      className={ style.recommendationsContainer }
+    >
       {
         !isFetching
           && (
@@ -13,9 +16,14 @@ function Recommended() {
               <div
                 key={ id }
                 data-testid={ `${index}-recomendation-card` }
+                className={ style.card }
               >
-                <img src={ image } alt={ title } />
-                <h4>{ title }</h4>
+                <img
+                  src={ image }
+                  alt={ title }
+                  className={ style.img }
+                />
+                <h4 data-testid={ `${index}-recomendation-title` }>{ title }</h4>
                 <p>{ category }</p>
               </div>
             ))
