@@ -52,3 +52,52 @@ describe('2 - Foods page SearchBar component tests', () => {
     expect(searchBtn).toBeInTheDocument();
   });
 });
+
+describe('3 - Foods page CategoriesOptions component tests', () => {
+  it('checks if CategoriesOptions is rendered as expected', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const categoryBtnAll = screen.getByRole('button', { name: 'All' });
+    expect(categoryBtnAll).toBeInTheDocument();
+  });
+});
+
+describe('4 - Foods page Footer component tests', () => {
+  it('checks if Footer is rendered as expected', async () => {
+    const { history } = renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const drinksBtnFooter = screen.getByTestId('drinks-bottom-btn');
+    const exploreBtnFooter = screen.getByTestId('explore-bottom-btn');
+    const mealBtnFooter = screen.getByTestId('food-bottom-btn');
+
+    expect(drinksBtnFooter).toBeInTheDocument();
+    expect(exploreBtnFooter).toBeInTheDocument();
+    expect(mealBtnFooter).toBeInTheDocument();
+
+    userEvent.click(drinksBtnFooter);
+
+    expect(history.location.pathname).toBe('/drinks');
+  });
+
+  it('checks if Buttons click changes the path as expected', async () => {
+    const { history } = renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const drinksBtnFooter = screen.getByTestId('drinks-bottom-btn');
+    userEvent.click(drinksBtnFooter);
+    expect(history.location.pathname).toBe('/drinks');
+
+    const exploreBtnFooter = screen.getByTestId('explore-bottom-btn');
+    userEvent.click(exploreBtnFooter);
+    expect(history.location.pathname).toBe('/explore');
+
+    const mealBtnFooter = screen.getByTestId('food-bottom-btn');
+    userEvent.click(mealBtnFooter);
+    expect(history.location.pathname).toBe('/foods');
+  });
+});
