@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { getInProgressRecipes, getRecipesDone } from '../services/mealsLocalSt';
 import style from './StartButton.module.css';
 
 function StartButton() {
+  const history = useHistory();
+  const { path, params: { id: pathId } } = useRouteMatch();
+
   const { id, type } = useSelector((state) => state.recipe.currentRecipe);
 
   const [isToShow, setIsToShow] = useState(true);
@@ -34,6 +38,12 @@ function StartButton() {
     }
   }, [id, type]);
 
+  const goTo = () => {
+    const pathName = path.replace(':id', `${pathId}/in-progress`);
+
+    history.push(pathName);
+  };
+
   return (
     <div>
       {
@@ -43,7 +53,7 @@ function StartButton() {
               className={ style.button }
               data-testid="start-recipe-btn"
               type="button"
-              onClick={ () => console.log('comecou') }
+              onClick={ goTo }
             >
               { buttonText }
             </button>
