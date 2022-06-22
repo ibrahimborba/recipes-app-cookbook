@@ -5,7 +5,7 @@ function RecipeTitle() {
   const {
     category,
     title,
-  } = useSelector((state) => state.recipe.recipeReceived);
+  } = useSelector((state) => state.recipe.currentRecipe);
 
   return (
     <div>

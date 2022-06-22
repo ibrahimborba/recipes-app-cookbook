@@ -6,7 +6,7 @@ import RecipeTitle from './RecipeTitle';
 import Recommended from './Recommended';
 
 function Recipe({ isFood }) {
-  const { video } = useSelector((state) => state.recipe.recipeReceived);
+  const { video } = useSelector((state) => state.recipe.currentRecipe);
 
   const [url, setUrl] = useState();
 

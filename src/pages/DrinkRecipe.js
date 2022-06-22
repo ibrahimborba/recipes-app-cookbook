@@ -10,7 +10,7 @@ function DrinkRecipe() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { isFetching, recipeReceived } = useSelector((state) => state.recipe);
+  const { isFetching, currentRecipe } = useSelector((state) => state.recipe);
 
   useEffect(() => {
     dispatch(fetchRecipeThunk(id, 'drink'));
@@ -28,7 +28,7 @@ function DrinkRecipe() {
             <>
               <img
                 data-testid="recipe-photo"
-                src={ recipeReceived.strDrinkThumb }
+                src={ currentRecipe.strDrinkThumb }
                 alt="Recipe"
               />
               <Recipe />

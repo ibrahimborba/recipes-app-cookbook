@@ -4,7 +4,7 @@ import {
 } from '../actions';
 
 const INITIAL_VALUE = {
-  recipeReceived: {
+  currentRecipe: {
     id: '',
     category: '',
     title: '',
@@ -37,7 +37,7 @@ const recipe = (state = INITIAL_VALUE, action) => {
   case GET_RECIPE_SUCCEEDED:
     return {
       ...state,
-      recipeReceived: { ...action.payload.data },
+      currentRecipe: { ...action.payload.data },
       isFetching: false,
     };
 

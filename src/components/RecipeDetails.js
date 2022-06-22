@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 function RecipeDetails() {
   const {
-    recipeReceived: { instructions, ingredients }, inProgress,
+    currentRecipe: { instructions, ingredients }, inProgress,
   } = useSelector((state) => state.recipe);
 
   return (
