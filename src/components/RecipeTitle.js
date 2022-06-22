@@ -8,7 +8,7 @@ import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLoca
 function RecipeTitle() {
   const {
     currentRecipe,
-    currentRecipe: { category, id, title },
+    currentRecipe: { categoryRecom, category, id, title },
   } = useSelector((state) => state.recipe);
 
   const [showMessage, setShowMessage] = useState(false);
@@ -80,7 +80,7 @@ function RecipeTitle() {
           </button>
         </div>
       </div>
-      <p data-testid="recipe-category">{ category }</p>
+      <p data-testid="recipe-category">{ categoryRecom }</p>
     </div>
   );
 }
