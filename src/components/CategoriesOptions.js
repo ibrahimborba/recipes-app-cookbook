@@ -19,7 +19,7 @@ function CategoriesOptions() {
       setCategories(categoriesResult);
     };
     categoriesList();
-  }, []);
+  }, [pathname]);
 
   const handleClickCategory = ({ target: { value } }) => {
     if (value !== checkedCategory) {
