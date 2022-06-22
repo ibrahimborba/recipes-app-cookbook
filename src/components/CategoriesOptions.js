@@ -53,8 +53,31 @@ function CategoriesOptions() {
     }
   };
 
+  const handleClickAll = () => {
+    switch (pathname) {
+    case '/foods':
+      dispatch(fetchMealResults('', ''));
+      setCheckedCategory('');
+      break;
+    case '/drinks':
+      dispatch(fetchDrinkResults('', ''));
+      setCheckedCategory('');
+      break;
+    default:
+      break;
+    }
+  };
+
   return (
     <section>
+      <button
+        data-testid="All-category-filter"
+        type="button"
+        onClick={ handleClickAll }
+        name="All"
+      >
+        All
+      </button>
       { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
         <button
           key={ category.strCategory }
