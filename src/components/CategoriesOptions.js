@@ -21,48 +21,23 @@ function CategoriesOptions() {
     categoriesList();
   }, [pathname]);
 
-  const handleClickCategory = ({ target: { value } }) => {
-    if (value !== checkedCategory) {
-      switch (pathname) {
-      case '/foods':
-        dispatch(fetchMealResults(value, 'category'));
-        setCheckedCategory(value);
-        break;
-      case '/drinks':
-        dispatch(fetchDrinkResults(value, 'category'));
-        setCheckedCategory(value);
-        break;
-      default:
-        break;
-      }
-    }
-
-    if (value === checkedCategory) {
-      switch (pathname) {
-      case '/foods':
-        dispatch(fetchMealResults('', ''));
-        setCheckedCategory('');
-        break;
-      case '/drinks':
-        dispatch(fetchDrinkResults('', ''));
-        setCheckedCategory('');
-        break;
-      default:
-        break;
-      }
-    }
-  };
-
-  const handleClickAll = () => {
+  const handleClickCategory = ({ target: { value, name } }) => {
     switch (pathname) {
     case '/foods':
-      dispatch(fetchMealResults('', ''));
-      setCheckedCategory('');
-      break;
+      if (value === checkedCategory || name === 'All') {
+        dispatch(fetchMealResults('', ''));
+        return setCheckedCategory('');
+      }
+      dispatch(fetchMealResults(value, 'category'));
+      return setCheckedCategory(value);
+
     case '/drinks':
-      dispatch(fetchDrinkResults('', ''));
-      setCheckedCategory('');
-      break;
+      if (value === checkedCategory || name === 'All') {
+        dispatch(fetchDrinkResults('', ''));
+        return setCheckedCategory('');
+      }
+      dispatch(fetchDrinkResults(value, 'category'));
+      return setCheckedCategory(value);
     default:
       break;
     }
@@ -73,7 +48,7 @@ function CategoriesOptions() {
       <button
         data-testid="All-category-filter"
         type="button"
-        onClick={ handleClickAll }
+        onClick={ handleClickCategory }
         name="All"
       >
         All
