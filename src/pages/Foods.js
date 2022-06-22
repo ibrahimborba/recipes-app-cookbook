@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
@@ -19,20 +20,24 @@ function Foods() {
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { mealResults.length > 1
+      { mealResults.length > 0
        && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
-         <div
+         <Link
            key={ meal.idMeal }
-           data-testid={ `${index}-recipe-card` }
+           to={ `/foods/${meal.idMeal}` }
          >
-           <img
-             data-testid={ `${index}-card-img` }
-             src={ meal.strMealThumb }
-             alt={ meal.strMeal }
-             style={ { width: '200px' } }
-           />
-           <p data-testid={ `${index}-card-name` }>{ meal.strMeal }</p>
-         </div>
+           <div
+             data-testid={ `${index}-recipe-card` }
+           >
+             <img
+               data-testid={ `${index}-card-img` }
+               src={ meal.strMealThumb }
+               alt={ meal.strMeal }
+               style={ { width: '200px' } }
+             />
+             <p data-testid={ `${index}-card-name` }>{ meal.strMeal }</p>
+           </div>
+         </Link>
        ))}
       <Footer />
     </>
