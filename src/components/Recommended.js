@@ -12,7 +12,7 @@ function Recommended() {
       {
         !isFetching
           && (
-            recommendations.map(({ category, title, image, id }, index) => (
+            recommendations.map(({ categoryRecom, title, image, id }, index) => (
               <div
                 key={ id }
                 data-testid={ `${index}-recomendation-card` }
@@ -24,7 +24,7 @@ function Recommended() {
                   className={ style.img }
                 />
                 <h4 data-testid={ `${index}-recomendation-title` }>{ title }</h4>
-                <p>{ category }</p>
+                <p>{ categoryRecom }</p>
               </div>
             ))
           )

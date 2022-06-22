@@ -88,43 +88,46 @@ const formatData = (data, option) => {
   const ingredients = formatIngredients(recipe);
   let recipeObj = {};
 
-  switch (option) {
-  case 'food': {
+  if (option === 'food') {
     const {
       idMeal, strCategory, strMeal, strInstructions, strYoutube, strMealThumb,
+      strArea, strTags, strSource,
     } = recipe;
 
     recipeObj = {
-      id: idMeal,
+      categoryRecom: strCategory,
       category: strCategory,
-      title: strMeal,
-      instructions: strInstructions,
-      video: strYoutube,
+      group: 'meals',
+      id: idMeal,
       image: strMealThumb,
       ingredients,
-      type: 'meals',
+      instructions: strInstructions,
+      nationality: strArea,
+      source: strSource,
+      tag: strTags,
+      title: strMeal,
+      type: 'food',
+      video: strYoutube,
     };
-    break;
   }
-  case 'drink': {
+
+  if (option === 'drink') {
     const {
-      idDrink, strDrink, strInstructions, strDrinkThumb, strAlcoholic,
+      idDrink, strDrink, strInstructions, strDrinkThumb, strAlcoholic, strCategory,
     } = recipe;
 
     recipeObj = {
+      alcoholic: strAlcoholic,
+      categoryRecom: strAlcoholic,
+      category: strCategory,
+      group: 'cocktails',
       id: idDrink,
-      category: strAlcoholic,
-      title: strDrink,
-      instructions: strInstructions,
       image: strDrinkThumb,
       ingredients,
-      type: 'cocktails',
+      instructions: strInstructions,
+      title: strDrink,
+      type: 'drink',
     };
-    break;
-  }
-
-  default:
-    break;
   }
 
   return recipeObj;
@@ -136,7 +139,7 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
-    console.log(data);
+
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));

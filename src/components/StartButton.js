@@ -8,7 +8,7 @@ function StartButton() {
   const history = useHistory();
   const { path, params: { id: pathId } } = useRouteMatch();
 
-  const { id, type } = useSelector((state) => state.recipe.currentRecipe);
+  const { id, group } = useSelector((state) => state.recipe.currentRecipe);
 
   const [isToShow, setIsToShow] = useState(true);
   const [buttonText, setButtonText] = useState('');
@@ -24,8 +24,8 @@ function StartButton() {
   }, [id]);
 
   useEffect(() => {
-    if (type) {
-      const { [type]: recipes } = getInProgressRecipes();
+    if (group) {
+      const { [group]: recipes } = getInProgressRecipes();
       const hasRecipeInProgress = Object
         .keys(recipes)
         .some((recipeId) => recipeId === id);
@@ -36,7 +36,7 @@ function StartButton() {
         setButtonText('Start Recipe');
       }
     }
-  }, [id, type]);
+  }, [id, group]);
 
   const goTo = () => {
     const pathName = path.replace(':id', `${pathId}/in-progress`);
