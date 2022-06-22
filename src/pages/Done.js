@@ -28,6 +28,13 @@ const doneRecipes = [
 ];
 
 function Done() {
+  const handleShareBtn = (id, type) => () => {
+    global.alert('Link copied!');
+    if (type === 'food') {
+      return navigator.clipboard.writeText(`/foods/${id}`);
+    }
+    return navigator.clipboard.writeText(`/drinks/${id}`);
+  };
   return (
     <div>
       <Header />
@@ -76,11 +83,16 @@ function Done() {
           >
             { fav.doneDate }
           </p>
-          <img
-            src={ shareIcon }
-            alt={ fav.name }
-            data-testid={ `${index}-horizontal-share-btn` }
-          />
+          <button
+            type="button"
+            onClick={ handleShareBtn(fav.id, fav.type) }
+          >
+            <img
+              src={ shareIcon }
+              alt={ fav.name }
+              data-testid={ `${index}-horizontal-share-btn` }
+            />
+          </button>
           { fav.tags.map((tag, tagIndex) => (
             <p
               key={ tagIndex }
