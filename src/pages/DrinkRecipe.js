@@ -28,7 +28,7 @@ function DrinkRecipe() {
             <>
               <img
                 data-testid="recipe-photo"
-                src={ currentRecipe.strDrinkThumb }
+                src={ currentRecipe.image }
                 alt="Recipe"
               />
               <Recipe />
