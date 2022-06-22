@@ -54,6 +54,49 @@ export const getDrink = async (search, option) => {
   }
 };
 
+export const getRandom = async (pathname) => {
+  let URL = '';
+  switch (pathname) {
+  case '/explore/foods':
+    URL = 'https://www.themealdb.com/api/json/v1/1/random.php';
+    break;
+  case '/explore/drinks':
+    URL = 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
+    break;
+  default:
+    return false;
+  }
+
+  try {
+    const apiResponse = await fetch(URL);
+    const apiResult = await apiResponse.json();
+    return apiResult;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getIngredients = async (pathname) => {
+  let URL = '';
+  switch (pathname) {
+  case '/explore/foods/ingredients':
+    URL = 'https://www.themealdb.com/api/json/v1/1/list.php?i=list';
+    break;
+  case '/explore/drinks/ingredients':
+    URL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list';
+    break;
+  default:
+    return false;
+  }
+  try {
+    const apiResponse = await fetch(URL);
+    const apiResult = await apiResponse.json();
+    return apiResult;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getCategories = async (pathname) => {
   let URL = '';
   let key = '';
