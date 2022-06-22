@@ -16,9 +16,11 @@ function RecipeDetails() {
               ? (
                 <>
                   {ingredients.map((ingredient, index) => (
-                    <li key={ `ingredient${index}` }>
+                    <li
+                      data-testid={ `${index}-ingredient-name-and-measure` }
+                      key={ `ingredient${index}` }
+                    >
                       <label
-                        data-testid={ `${index}-ingredient-name-and-measure` }
                         htmlFor={ `ingredient${index}` }
                       >
                         <input
@@ -33,9 +35,14 @@ function RecipeDetails() {
               )
               : (
                 <>
-                  <li>number odasdane</li>
-                  <li>number dasdasde</li>
-                  <li>number oadsdane</li>
+                  {ingredients.map((ingredient, index) => (
+                    <li
+                      data-testid={ `${index}-ingredient-name-and-measure` }
+                      key={ `ingredient${index}` }
+                    >
+                      { `${ingredient[0]} - ${ingredient[1]}`}
+                    </li>
+                  ))}
                 </>
               )
           }
