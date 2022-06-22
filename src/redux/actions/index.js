@@ -136,7 +136,7 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
-
+    console.log(data);
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));

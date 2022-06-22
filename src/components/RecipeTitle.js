@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeTitle() {
   const {
     category,
     title,
   } = useSelector((state) => state.recipe.currentRecipe);
+
+  const [showMessage, setShowMessage] = useState(false);
+
+  const copyClipBoard = () => {
+    const SECONDS = 1500;
+    navigator.clipboard.writeText(`${window.location.href}`);
+
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), SECONDS);
+  };
 
   return (
     <div>
@@ -15,9 +26,16 @@ function RecipeTitle() {
           <button
             data-testid="share-btn"
             type="button"
+            onClick={ copyClipBoard }
           >
-            Share
+            <img src={ shareIcon } alt="share icon" />
           </button>
+          {
+            showMessage
+              && (
+                <span>Link copied!</span>
+              )
+          }
           <input
             data-testid="favorite-btn"
             type="checkbox"
