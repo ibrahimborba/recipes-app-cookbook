@@ -6,6 +6,7 @@ import { fetchMealResults, fetchDrinkResults } from '../redux/actions';
 
 function CategoriesOptions() {
   const [categories, setCategories] = useState([]);
+  const [checkedCategory, setCheckedCategory] = useState('');
 
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -21,15 +22,34 @@ function CategoriesOptions() {
   }, []);
 
   const handleClickCategory = ({ target: { value } }) => {
-    switch (pathname) {
-    case '/foods':
-      dispatch(fetchMealResults(value, 'category'));
-      break;
-    case '/drinks':
-      dispatch(fetchDrinkResults(value, 'category'));
-      break;
-    default:
-      break;
+    if (value !== checkedCategory) {
+      switch (pathname) {
+      case '/foods':
+        dispatch(fetchMealResults(value, 'category'));
+        setCheckedCategory(value);
+        break;
+      case '/drinks':
+        dispatch(fetchDrinkResults(value, 'category'));
+        setCheckedCategory(value);
+        break;
+      default:
+        break;
+      }
+    }
+
+    if (value === checkedCategory) {
+      switch (pathname) {
+      case '/foods':
+        dispatch(fetchMealResults('', ''));
+        setCheckedCategory('');
+        break;
+      case '/drinks':
+        dispatch(fetchDrinkResults('', ''));
+        setCheckedCategory('');
+        break;
+      default:
+        break;
+      }
     }
   };
 
