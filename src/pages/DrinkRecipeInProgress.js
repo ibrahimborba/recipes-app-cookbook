@@ -20,7 +20,7 @@ function DrinkRecipeInProgress() {
     if (currentRecipe.id === '') dispatch(fetchRecipeThunk(id, 'drink'));
 
     if (group) {
-      dispatch(updateToInProgress());
+      dispatch(updateToInProgress(true));
       updateRecipeStatus(id, group);
     }
   }, [dispatch, id, currentRecipe, group]);

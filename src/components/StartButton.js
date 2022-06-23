@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { updateToInProgress } from '../redux/actions';
 import {
   getInProgressRecipes, getRecipesDone, updateRecipesDone, updateRecipeStatus,
 } from '../services/mealsLocalSt';
 import style from './StartButton.module.css';
 
 function StartButton() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const { path, params: { id: pathId } } = useRouteMatch();
 
@@ -78,6 +80,8 @@ function StartButton() {
         doneDate: getDate(),
         tags,
       });
+
+      dispatch(updateToInProgress(false));
       updateRecipeStatus(id, group, true);
     }
 

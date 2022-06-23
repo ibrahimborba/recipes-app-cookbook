@@ -65,7 +65,7 @@ const recipe = (state = INITIAL_VALUE, action) => {
   case IS_IN_PROGRESS:
     return {
       ...state,
-      inProgress: true,
+      inProgress: action.payload.status,
     };
 
   case FINISH_BUTTON_STATUS:

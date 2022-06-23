@@ -225,8 +225,11 @@ export const searchOptions = (search = '', option = '') => ({
   },
 });
 
-export const updateToInProgress = () => ({
+export const updateToInProgress = (status) => ({
   type: IS_IN_PROGRESS,
+  payload: {
+    status,
+  },
 });
 
 export const updateFinishButtonStatus = (status) => ({
