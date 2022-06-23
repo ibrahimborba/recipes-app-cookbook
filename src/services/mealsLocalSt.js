@@ -4,33 +4,8 @@ const DONE_RECIPES_TOKEN = 'doneRecipes';
 const IN_PROGRESS_RECIPE_TOKEN = 'inProgressRecipes';
 const FAVORITE_RECIPES_TOKEN = 'favoriteRecipes';
 
-const DONE_MOCK = [
-  {
-    id: '52771',
-    type: 'food',
-    nationality: 'Italian',
-    category: 'Vegetarian',
-    alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    doneDate: '23/06/2020',
-    tags: ['Pasta', 'Curry'],
-  },
-  {
-    id: '178319',
-    type: 'drink',
-    nationality: '',
-    category: 'Cocktail',
-    alcoholicOrNot: 'Alcoholic',
-    name: 'Aquamarine',
-    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    doneDate: '23/06/2020',
-    tags: [],
-  },
-];
-
 if (!localStorage.getItem(DONE_RECIPES_TOKEN)) {
-  localStorage.setItem(DONE_RECIPES_TOKEN, JSON.stringify(DONE_MOCK));
+  localStorage.setItem(DONE_RECIPES_TOKEN, JSON.stringify([]));
 }
 
 if (!localStorage.getItem(IN_PROGRESS_RECIPE_TOKEN)) {

@@ -33,6 +33,7 @@ function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [doneFiltered, setDoneFiltered] = useState([]);
   const [filter, setFilter] = useState('');
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     setDoneRecipes(getRecipesDone());
@@ -47,12 +48,13 @@ function Done() {
     return setDoneFiltered(filteredByType);
   }, [filter, doneRecipes]);
 
-  const handleShareBtn = (id, type) => () => {
-    global.alert('Link copied!');
-    if (type === 'food') {
-      return navigator.clipboard.writeText(`/foods/${id}`);
-    }
-    return navigator.clipboard.writeText(`/drinks/${id}`);
+  const copyToClipBoard = (id, type) => () => {
+    navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
+
+    const SECONDS = 1500;
+
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), SECONDS);
   };
 
   const handleFilterBtn = ({ target: { value } }) => {
@@ -90,7 +92,7 @@ function Done() {
         <div
           key={ fav.id }
         >
-          <Link to={ `/foods/${fav.id}` }>
+          <Link to={ `/${fav.type}s/${fav.id}` }>
             <img
               src={ fav.image }
               alt={ fav.strIngredient1 }
@@ -106,7 +108,7 @@ function Done() {
                 ? (`${fav.nationality} - ${fav.category}`) : (`${fav.alcoholicOrNot}`)
             }
           </p>
-          <Link to={ `/foods/${fav.id}` }>
+          <Link to={ `/${fav.type}s/${fav.id}` }>
             <p
               data-testid={ `${index}-horizontal-name` }
             >
@@ -120,7 +122,7 @@ function Done() {
           </p>
           <button
             type="button"
-            onClick={ handleShareBtn(fav.id, fav.type) }
+            onClick={ copyToClipBoard(fav.id, fav.type) }
           >
             <img
               src={ shareIcon }
@@ -128,6 +130,12 @@ function Done() {
               data-testid={ `${index}-horizontal-share-btn` }
             />
           </button>
+          {
+            showMessage
+              && (
+                <span>Link copied!</span>
+              )
+          }
           { fav.tags.map((tag, tagIndex) => (
             <p
               key={ tagIndex }
