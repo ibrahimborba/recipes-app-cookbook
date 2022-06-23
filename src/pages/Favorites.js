@@ -98,11 +98,6 @@ function Favorites() {
               { fav.name }
             </p>
           </Link>
-          <p
-            data-testid={ `${index}-horizontal-done-date` }
-          >
-            { fav.doneDate }
-          </p>
           <button
             type="button"
             onClick={ copyToClipBoard(fav.id, fav.type) }
@@ -124,19 +119,11 @@ function Favorites() {
             onClick={ favoriteRecipe(fav.id) }
           >
             <img
-              data-testid="favorite-btn"
+              data-testid={ `${index}-horizontal-favorite-btn` }
               src={ blackHeartIcon }
               alt="favorite icon"
             />
           </button>
-          { fav.tags.map((tag, tagIndex) => (
-            <p
-              key={ tagIndex }
-              data-testid={ `0-${tag}-horizontal-tag` }
-            >
-              { tag }
-            </p>
-          )) }
         </div>
       ))}
     </div>
