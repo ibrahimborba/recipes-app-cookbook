@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
+import beefMeals from './mocks/beefMeals';
+
+const SEARCH_ICON = 'search icon';
 
 describe('1 - Foods page Header component tests', () => {
   it('checks if Header is rendered and behaves as expected', async () => {
@@ -15,7 +18,7 @@ describe('1 - Foods page Header component tests', () => {
 
     const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
     const profileImg = screen.getByRole('img', { name: 'profile icon' });
-    const searchBtn = screen.getByRole('img', { name: 'search icon' });
+    const searchBtn = screen.getByRole('img', { name: SEARCH_ICON });
     const searchInputDisabled = screen.queryByLabelText('Search');
 
     expect(pageTitle).toBeInTheDocument();
@@ -36,7 +39,7 @@ describe('2 - Foods page SearchBar component tests', () => {
       initialEntries: ['/foods'],
     });
 
-    const searchBtnHeader = screen.getByRole('img', { name: 'search icon' });
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     expect(searchBtnHeader).toBeInTheDocument();
     userEvent.click(searchBtnHeader);
 
@@ -52,6 +55,24 @@ describe('2 - Foods page SearchBar component tests', () => {
     expect(searchOptionFirst).toBeInTheDocument();
     expect(searchBtn).toBeInTheDocument();
   });
+
+  it('checks if SearchBar fetch by Ingredient', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+    expect(searchBtnHeader).toBeInTheDocument();
+    userEvent.click(searchBtnHeader);
+
+    const searchInput = await screen.findByLabelText('Search');
+    const searchOptionIngredient = screen.getByLabelText('Ingredient');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+    expect(searchInput).toBeInTheDocument();
+    expect(searchOptionIngredient).toBeInTheDocument();
+    expect(searchBtn).toBeInTheDocument();
+  });
 });
 
 describe('3 - Foods page CategoriesOptions component tests', () => {
@@ -65,14 +86,39 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   afterEach(() => jest.restoreAllMocks());
 
   it('checks if CategoriesOptions is rendered as expected', async () => {
+    const CATEGORIES_BUTTONS = 6;
+
     renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],
     });
 
-    const categoryBtnAll = screen.getByRole('button', { name: 'All' });
-    expect(categoryBtnAll).toBeInTheDocument();
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    const categoriesBtns = screen.getAllByRole('button');
+    expect(categoriesBtns).toHaveLength(CATEGORIES_BUTTONS);
+  });
+
+  it('checks if Beef Category filters recipes by Beef', async () => {
+    const CARDS_LENGTH = 13;
+
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
+    expect(beefCategoryBtn).toBeInTheDocument();
+
+    jest.spyOn(global, 'fetch')
+      .mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve(beefMeals),
+      }));
+
+    userEvent.click(beefCategoryBtn);
+
+    const recipeCards = await screen.findAllByRole('heading', { level: 3 });
+    expect(recipeCards).toHaveLength(CARDS_LENGTH);
   });
 });
 
@@ -82,9 +128,9 @@ describe('4 - Foods page Footer component tests', () => {
       initialEntries: ['/foods'],
     });
 
-    const drinksBtnFooter = screen.getByTestId('drinks-bottom-btn');
-    const exploreBtnFooter = screen.getByTestId('explore-bottom-btn');
-    const mealBtnFooter = screen.getByTestId('food-bottom-btn');
+    const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
+    const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
+    const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
 
     expect(drinksBtnFooter).toBeInTheDocument();
     expect(exploreBtnFooter).toBeInTheDocument();
@@ -100,15 +146,15 @@ describe('4 - Foods page Footer component tests', () => {
       initialEntries: ['/foods'],
     });
 
-    const drinksBtnFooter = screen.getByTestId('drinks-bottom-btn');
+    const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
     userEvent.click(drinksBtnFooter);
     expect(history.location.pathname).toBe('/drinks');
 
-    const exploreBtnFooter = screen.getByTestId('explore-bottom-btn');
+    const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
     userEvent.click(exploreBtnFooter);
     expect(history.location.pathname).toBe('/explore');
 
-    const mealBtnFooter = screen.getByTestId('food-bottom-btn');
+    const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
     userEvent.click(mealBtnFooter);
     expect(history.location.pathname).toBe('/foods');
   });

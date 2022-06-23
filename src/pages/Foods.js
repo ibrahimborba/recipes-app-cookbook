@@ -37,7 +37,7 @@ function Foods() {
                alt={ meal.strMeal }
                style={ { width: '200px' } }
              />
-             <p data-testid={ `${index}-card-name` }>{ meal.strMeal }</p>
+             <h3 data-testid={ `${index}-card-name` }>{ meal.strMeal }</h3>
            </div>
          </Link>
        ))}
