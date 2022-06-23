@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
-import { getFavoriteRecipes } from '../services/mealsLocalSt';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 
 function Favorites() {
   const [favRecipes, setFavRecipes] = useState([]);
   const [favFiltered, setFavFiltered] = useState([]);
   const [filter, setFilter] = useState('');
   const [showMessage, setShowMessage] = useState(false);
+  const [removeFav, setRemoveFav] = useState(false);
 
   useEffect(() => {
     setFavRecipes(getFavoriteRecipes());
     setFavFiltered(getFavoriteRecipes());
-  }, []);
+  }, [removeFav]);
 
   useEffect(() => {
     const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
@@ -34,6 +36,12 @@ function Favorites() {
 
   const handleFilterBtn = ({ target: { value } }) => {
     setFilter(value);
+  };
+
+  const favoriteRecipe = (id) => () => {
+    console.log(id);
+    updateFavoriteRecipes({ id });
+    setRemoveFav(!removeFav);
   };
 
   return (
@@ -111,6 +119,16 @@ function Favorites() {
                 <span>Link copied!</span>
               )
           }
+          <button
+            type="button"
+            onClick={ favoriteRecipe(fav.id) }
+          >
+            <img
+              data-testid="favorite-btn"
+              src={ blackHeartIcon }
+              alt="favorite icon"
+            />
+          </button>
           { fav.tags.map((tag, tagIndex) => (
             <p
               key={ tagIndex }
