@@ -72,8 +72,8 @@ const formatIngredients = (recipe) => {
   let ingredients = [];
 
   for (let i = 1; i <= NUMBER_OF_INGREDIENTS; i += 1) {
-    const ingredient = recipe[`strIngredient${i}`].trim();
-    const measure = recipe[`strMeasure${i}`].trim();
+    const ingredient = recipe[`strIngredient${i}`];
+    const measure = recipe[`strMeasure${i}`];
 
     const isNull = !ingredient && !measure;
     const isEmpty = ingredient === '' && measure === '';
