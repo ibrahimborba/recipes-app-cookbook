@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function CoverImage() {
   const { currentRecipe } = useSelector((state) => state.recipe);

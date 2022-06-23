@@ -5,7 +5,7 @@ import CoverImage from '../components/CoverImage';
 import Recipe from '../components/Recipe';
 import StartButton from '../components/StartButton';
 import { fetchRecipeThunk, updateToInProgress } from '../redux/actions';
-import { updateInProgressRecipes } from '../services/mealsLocalSt';
+import { addRecipeInProgress } from '../services/mealsLocalSt';
 
 function DrinkRecipeInProgress() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function DrinkRecipeInProgress() {
 
     if (group) {
       dispatch(updateToInProgress());
-      updateInProgressRecipes({ [id]: [] }, group);
+      addRecipeInProgress({ [id]: [] }, group);
     }
   }, [dispatch, id, currentRecipe, group]);
 

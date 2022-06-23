@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { getInProgressRecipes, updateIngredients } from '../services/mealsLocalSt';
+import style from './RecipeDetails.module.css';
 
 function RecipeDetails() {
   const {
-    currentRecipe: { instructions, ingredients }, inProgress,
+    currentRecipe: { instructions, ingredients, group, id }, inProgress,
   } = useSelector((state) => state.recipe);
+
+  const [done, setDone] = useState([]);
+
+  useEffect(() => {
+    if (group) {
+      const { [group]: { [id]: recipe } } = getInProgressRecipes();
+
+      if (recipe) setDone([...recipe]);
+    }
+  }, [group, id]);
+
+  const finishIngredient = ({ target: { name } }) => {
+    updateIngredients(id, name, group);
+
+    const { [group]: { [id]: recipe } } = getInProgressRecipes();
+    setDone([...recipe]);
+    console.log(done);
+  };
 
   return (
     <>
@@ -15,22 +35,34 @@ function RecipeDetails() {
             inProgress
               ? (
                 <>
-                  {ingredients.map((ingredient, index) => (
-                    <li
-                      data-testid={ `${index}-ingredient-step` }
-                      key={ `ingredient${index}` }
-                    >
-                      <label
-                        htmlFor={ `ingredient${index}` }
+                  {ingredients.map((ingredient, index) => {
+                    const ingredientName = `${ingredient[0]} - ${ingredient[1]}`;
+                    const isChecked = done.some((name) => name === ingredientName);
+
+                    return (
+                      <li
+                        data-testid={ `${index}-ingredient-step` }
+                        key={ `ingredient${index}` }
                       >
-                        <input
-                          id={ `ingredient${index}` }
-                          type="checkbox"
-                        />
-                        { `${ingredient[0]} - ${ingredient[1]}`}
-                      </label>
-                    </li>
-                  ))}
+                        <label
+                          htmlFor={ `ingredient${index}` }
+                        >
+                          <input
+                            id={ `ingredient${index}` }
+                            name={ ingredientName }
+                            type="checkbox"
+                            checked={ isChecked }
+                            onChange={ finishIngredient }
+                          />
+                          <span
+                            className={ isChecked ? style.checked : '' }
+                          >
+                            { ingredientName }
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
                 </>
               )
               : (

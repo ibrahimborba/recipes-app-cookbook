@@ -56,7 +56,7 @@ export const updateFavoriteRecipes = (recipe) => {
 
 export const getFavoriteRecipes = () => readFavoriteRecipes();
 
-export const updateInProgressRecipes = (recipe, group) => {
+export const addRecipeInProgress = (recipe, group) => {
   const recipesInProgress = readInProgressRecipes();
   const [recipeId] = Object.keys(recipe);
   const hasRecipeInProgress = Object
@@ -70,9 +70,22 @@ export const updateInProgressRecipes = (recipe, group) => {
     };
 
     saveInProgressRecipes(recipes);
-  } else {
-    console.log('ja tem a receita');
   }
+};
+
+export const updateIngredients = (id, name, group) => {
+  const recipesInProgress = readInProgressRecipes();
+  const { [group]: { [id]: recipe } } = recipesInProgress;
+  const hasIngredient = recipe.some((ingredientName) => ingredientName === name);
+  let ingredientsUpdated = [];
+
+  if (!hasIngredient) ingredientsUpdated = [...recipe, name];
+  else ingredientsUpdated = recipe.filter((ingredientName) => ingredientName !== name);
+
+  saveInProgressRecipes({
+    ...recipesInProgress,
+    [group]: { ...recipesInProgress[group], [id]: [...ingredientsUpdated] },
+  });
 };
 
 export const getInProgressRecipes = () => readInProgressRecipes();
