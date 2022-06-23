@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
+import { getRecipesDone } from '../services/mealsLocalSt';
 
-const doneRecipes = [
+/* const doneRecipes = [
   {
     id: '52771',
     type: 'food',
@@ -25,9 +26,26 @@ const doneRecipes = [
     doneDate: '23/06/2020',
     tags: [],
   },
-];
+]; */
 
 function Done() {
+  const [doneRecipes, setDoneRecipes] = useState([]);
+  const [doneFiltered, setDoneFiltered] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    setDoneRecipes(getRecipesDone());
+    setDoneFiltered(getRecipesDone());
+  }, []);
+
+  useEffect(() => {
+    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
+    if (filteredByType.length === 0) {
+      return setDoneFiltered(doneRecipes);
+    }
+    return setDoneFiltered(filteredByType);
+  }, [filter, doneRecipes]);
+
   const handleShareBtn = (id, type) => () => {
     global.alert('Link copied!');
     if (type === 'food') {
@@ -35,28 +53,39 @@ function Done() {
     }
     return navigator.clipboard.writeText(`/drinks/${id}`);
   };
+
+  const handleFilterBtn = ({ target: { value } }) => {
+    setFilter(value);
+  };
+
   return (
     <div>
       <Header />
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        value=""
+        onClick={ handleFilterBtn }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-food-btn"
+        value="food"
+        onClick={ handleFilterBtn }
       >
         Food
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
+        value="drink"
+        onClick={ handleFilterBtn }
       >
         Drinks
       </button>
-      {doneRecipes.map((fav, index) => (
+      {doneFiltered.map((fav, index) => (
         <div
           key={ fav.id }
         >
@@ -64,6 +93,7 @@ function Done() {
             src={ fav.image }
             alt={ fav.strIngredient1 }
             data-testid={ `${index}-horizontal-image` }
+            style={ { width: '200px' } }
           />
           <p
             data-testid={ `${index}-horizontal-top-text` }
