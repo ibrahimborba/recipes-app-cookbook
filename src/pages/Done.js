@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import { getRecipesDone } from '../services/mealsLocalSt';
@@ -89,12 +90,14 @@ function Done() {
         <div
           key={ fav.id }
         >
-          <img
-            src={ fav.image }
-            alt={ fav.strIngredient1 }
-            data-testid={ `${index}-horizontal-image` }
-            style={ { width: '200px' } }
-          />
+          <Link to={ `/foods/${fav.id}` }>
+            <img
+              src={ fav.image }
+              alt={ fav.strIngredient1 }
+              data-testid={ `${index}-horizontal-image` }
+              style={ { width: '200px' } }
+            />
+          </Link>
           <p
             data-testid={ `${index}-horizontal-top-text` }
           >
@@ -103,11 +106,13 @@ function Done() {
                 ? (`${fav.nationality} - ${fav.category}`) : (`${fav.alcoholicOrNot}`)
             }
           </p>
-          <p
-            data-testid={ `${index}-horizontal-name` }
-          >
-            { fav.name }
-          </p>
+          <Link to={ `/foods/${fav.id}` }>
+            <p
+              data-testid={ `${index}-horizontal-name` }
+            >
+              { fav.name }
+            </p>
+          </Link>
           <p
             data-testid={ `${index}-horizontal-done-date` }
           >
