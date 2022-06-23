@@ -5,6 +5,7 @@ import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
 import beefMeals from './mocks/beefMeals';
+import meals from './mocks/meals';
 
 const SEARCH_ICON = 'search icon';
 
@@ -99,7 +100,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   });
 
   it('checks if Beef Category filters recipes by Beef', async () => {
-    const CARDS_LENGTH = 13;
+    const CARDS_LENGTH = 12;
 
     renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],
@@ -117,8 +118,33 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
 
     userEvent.click(beefCategoryBtn);
 
-    const recipeCards = await screen.findAllByRole('heading', { level: 3 });
-    expect(recipeCards).toHaveLength(CARDS_LENGTH);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
+
+    const images = await screen.findAllByRole('img');
+    const recipesCards = images.filter((img) => !img.alt.includes('icon'));
+    expect(recipesCards).toHaveLength(CARDS_LENGTH);
+
+    userEvent.click(beefCategoryBtn);
+
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  });
+
+  it('checks if Beef Category filters recipes by Beef', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    const beefCategoryBtn = await screen.findByRole('button', { name: 'All' });
+    expect(beefCategoryBtn).toBeInTheDocument();
+
+    jest.spyOn(global, 'fetch')
+      .mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve(meals),
+      }));
+
+    userEvent.click(beefCategoryBtn);
   });
 });
 
