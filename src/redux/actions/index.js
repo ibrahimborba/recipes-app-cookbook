@@ -71,13 +71,15 @@ const formatIngredients = (recipe) => {
   let ingredients = [];
 
   for (let i = 1; i <= NUMBER_OF_INGREDIENTS; i += 1) {
-    const ingredient = recipe[`strIngredient${i}`];
-    const measure = recipe[`strMeasure${i}`];
+    const ingredient = recipe[`strIngredient${i}`].trim();
+    const measure = recipe[`strMeasure${i}`].trim();
 
     const isNull = !ingredient && !measure;
     const isEmpty = ingredient === '' && measure === '';
 
-    if (!isNull && !isEmpty) ingredients = [...ingredients, [ingredient, measure]];
+    if (!isNull && !isEmpty) {
+      ingredients = [...ingredients, [ingredient, measure]];
+    }
   }
 
   return ingredients;
@@ -139,7 +141,7 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
-
+    console.log(data);
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));
