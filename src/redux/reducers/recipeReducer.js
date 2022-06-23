@@ -6,13 +6,19 @@ import {
 
 const INITIAL_VALUE = {
   currentRecipe: {
-    id: '',
     category: '',
-    title: '',
-    instructions: '',
-    video: '',
+    categoryRecom: '',
+    group: '',
+    id: '',
     image: '',
     ingredients: [],
+    instructions: '',
+    nationality: '',
+    source: '',
+    tags: '',
+    title: '',
+    type: '',
+    video: '',
   },
   finishButtonDisabled: true,
   recommendations: [],

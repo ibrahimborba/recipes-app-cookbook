@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { getInProgressRecipes, getRecipesDone } from '../services/mealsLocalSt';
+import {
+  getInProgressRecipes, getRecipesDone, updateRecipesDone, updateRecipeStatus,
+} from '../services/mealsLocalSt';
 import style from './StartButton.module.css';
 
 function StartButton() {
@@ -10,6 +12,7 @@ function StartButton() {
 
   const {
     inProgress,
+    currentRecipe,
     currentRecipe: { id, group },
     finishButtonDisabled,
   } = useSelector((state) => state.recipe);
@@ -42,8 +45,41 @@ function StartButton() {
     }
   }, [id, group]);
 
-  const goTo = () => {
-    const pathName = path.replace(':id', `${pathId}/in-progress`);
+  const getDate = () => {
+    const date = new Date();
+
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const goTo = ({ target: { name } }) => {
+    let pathName = path;
+
+    if (name === 'startBtn') {
+      pathName = path.replace(':id', `${pathId}/in-progress`);
+    } else if (name === 'finishBtn') {
+      pathName = '/done-recipes';
+
+      const {
+        alcoholic, category, image, nationality, tags, title, type,
+      } = currentRecipe;
+
+      updateRecipesDone({
+        id,
+        type,
+        nationality,
+        category,
+        alcoholicOrNot: alcoholic,
+        name: title,
+        image,
+        doneDate: getDate(),
+        tags,
+      });
+      updateRecipeStatus(id, group, true);
+    }
 
     history.push(pathName);
   };
@@ -60,6 +96,7 @@ function StartButton() {
                     <button
                       className={ style.button }
                       data-testid="start-recipe-btn"
+                      name="startBtn"
                       type="button"
                       onClick={ goTo }
                     >
@@ -73,9 +110,10 @@ function StartButton() {
             <button
               className={ style.button }
               data-testid="finish-recipe-btn"
+              name="finishBtn"
               type="button"
               disabled={ finishButtonDisabled }
-              onClick={ () => console.log('foi') }
+              onClick={ goTo }
             >
               Finish Recipe
             </button>

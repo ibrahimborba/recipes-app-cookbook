@@ -97,10 +97,11 @@ const formatData = (data, option) => {
   if (option === 'food') {
     const {
       idMeal, strCategory, strMeal, strInstructions, strYoutube, strMealThumb,
-      strArea, strTags, strSource,
+      strArea, strTags,
     } = recipe;
 
     recipeObj = {
+      alcoholic: '',
       categoryRecom: strCategory,
       category: strCategory,
       group: 'meals',
@@ -109,8 +110,7 @@ const formatData = (data, option) => {
       ingredients,
       instructions: strInstructions,
       nationality: strArea,
-      source: strSource,
-      tag: strTags,
+      tags: strTags.split(','),
       title: strMeal,
       type: 'food',
       video: strYoutube,
@@ -131,8 +131,11 @@ const formatData = (data, option) => {
       image: strDrinkThumb,
       ingredients,
       instructions: strInstructions,
+      nationality: '',
+      tag: [],
       title: strDrink,
       type: 'drink',
+      video: '',
     };
   }
 

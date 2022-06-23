@@ -23,7 +23,9 @@ if (!localStorage.getItem(FAVORITE_RECIPES_TOKEN)) {
 }
 
 const readDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES_TOKEN));
-const saveDoneRecipes = (recipes) => localStorage.setItem(DONE_RECIPES_TOKEN, recipes);
+const saveDoneRecipes = (recipes) => {
+  localStorage.setItem(DONE_RECIPES_TOKEN, JSON.stringify(recipes));
+};
 const readInProgressRecipes = () => {
   const data = localStorage.getItem(IN_PROGRESS_RECIPE_TOKEN);
 
@@ -56,20 +58,27 @@ export const updateFavoriteRecipes = (recipe) => {
 
 export const getFavoriteRecipes = () => readFavoriteRecipes();
 
-export const updateRecipeStatus = (recipeId, group) => {
+export const updateRecipeStatus = (recipeId, group, isDone = false) => {
   const recipesInProgress = readInProgressRecipes();
   const { [group]: recipes } = recipesInProgress;
-  const hasRecipeInProgress = Object
-    .keys(recipes)
-    .some((id) => id === recipeId);
 
-  if (!hasRecipeInProgress) {
-    const recipessad = {
-      ...recipesInProgress,
-      [group]: { ...recipesInProgress[group], [recipeId]: [] },
-    };
+  if (isDone) {
+    delete recipesInProgress[group][recipeId];
 
-    saveInProgressRecipes(recipessad);
+    saveInProgressRecipes(recipesInProgress);
+  } else {
+    const hasRecipeInProgress = Object
+      .keys(recipes)
+      .some((id) => id === recipeId);
+
+    if (!hasRecipeInProgress) {
+      const recipesUpdated = {
+        ...recipesInProgress,
+        [group]: { ...recipesInProgress[group], [recipeId]: [] },
+      };
+
+      saveInProgressRecipes(recipesUpdated);
+    }
   }
 };
 
