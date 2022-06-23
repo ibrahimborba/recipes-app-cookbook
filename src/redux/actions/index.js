@@ -1,5 +1,6 @@
 import {
-  getDrink, getMeal, getRandom, getIngredients, getRecipe, getRecommendations,
+  getDrink, getMeal, getRandom,
+  getIngredients, getRecipe, getRecommendations,
 } from '../../services/api';
 
 export const SET_USER = 'SET_USER';
