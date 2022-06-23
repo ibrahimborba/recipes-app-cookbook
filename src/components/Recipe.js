@@ -6,7 +6,7 @@ import RecipeTitle from './RecipeTitle';
 import Recommended from './Recommended';
 
 function Recipe({ isFood }) {
-  const { video } = useSelector((state) => state.recipe.currentRecipe);
+  const { currentRecipe: { video }, inProgress } = useSelector((state) => state.recipe);
 
   const [url, setUrl] = useState();
 
@@ -25,19 +25,26 @@ function Recipe({ isFood }) {
       <RecipeTitle />
       <RecipeDetails />
       {
-        isFood
-          && (
-            <iframe
-              data-testid="video"
-              width="560"
-              height="315"
-              src={ url }
-              title="YouTube video player"
-              allowFullScreen
-            />
-          )
+        !inProgress
+        && (
+          <>
+            {
+              isFood
+                && (
+                  <iframe
+                    data-testid="video"
+                    width="560"
+                    height="315"
+                    src={ url }
+                    title="YouTube video player"
+                    allowFullScreen
+                  />
+                )
+            }
+            <Recommended />
+          </>
+        )
       }
-      <Recommended />
     </section>
   );
 }

@@ -23,7 +23,9 @@ if (!localStorage.getItem(FAVORITE_RECIPES_TOKEN)) {
 }
 
 const readDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES_TOKEN));
-const saveDoneRecipes = (recipes) => localStorage.setItem(DONE_RECIPES_TOKEN, recipes);
+const saveDoneRecipes = (recipes) => {
+  localStorage.setItem(DONE_RECIPES_TOKEN, JSON.stringify(recipes));
+};
 const readInProgressRecipes = () => {
   const data = localStorage.getItem(IN_PROGRESS_RECIPE_TOKEN);
 
@@ -56,14 +58,43 @@ export const updateFavoriteRecipes = (recipe) => {
 
 export const getFavoriteRecipes = () => readFavoriteRecipes();
 
-export const updateInProgressRecipes = (recipe) => {
+export const updateRecipeStatus = (recipeId, group, isDone = false) => {
   const recipesInProgress = readInProgressRecipes();
-  const recipes = {
-    ...recipesInProgress,
-    recipe,
-  };
+  const { [group]: recipes } = recipesInProgress;
 
-  saveInProgressRecipes(recipes);
+  if (isDone) {
+    delete recipesInProgress[group][recipeId];
+
+    saveInProgressRecipes(recipesInProgress);
+  } else {
+    const hasRecipeInProgress = Object
+      .keys(recipes)
+      .some((id) => id === recipeId);
+
+    if (!hasRecipeInProgress) {
+      const recipesUpdated = {
+        ...recipesInProgress,
+        [group]: { ...recipesInProgress[group], [recipeId]: [] },
+      };
+
+      saveInProgressRecipes(recipesUpdated);
+    }
+  }
+};
+
+export const updateIngredients = (id, name, group) => {
+  const recipesInProgress = readInProgressRecipes();
+  const { [group]: { [id]: recipe } } = recipesInProgress;
+  const hasIngredient = recipe.some((ingredientName) => ingredientName === name);
+  let ingredientsUpdated = [];
+
+  if (!hasIngredient) ingredientsUpdated = [...recipe, name];
+  else ingredientsUpdated = recipe.filter((ingredientName) => ingredientName !== name);
+
+  saveInProgressRecipes({
+    ...recipesInProgress,
+    [group]: { ...recipesInProgress[group], [id]: [...ingredientsUpdated] },
+  });
 };
 
 export const getInProgressRecipes = () => readInProgressRecipes();

@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { getInProgressRecipes, getRecipesDone } from '../services/mealsLocalSt';
+import { updateToInProgress } from '../redux/actions';
+import {
+  getInProgressRecipes, getRecipesDone, updateRecipesDone, updateRecipeStatus,
+} from '../services/mealsLocalSt';
 import style from './StartButton.module.css';
 
 function StartButton() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const { path, params: { id: pathId } } = useRouteMatch();
 
-  const { id, group } = useSelector((state) => state.recipe.currentRecipe);
+  const {
+    inProgress,
+    currentRecipe,
+    currentRecipe: { id, group },
+    finishButtonDisabled,
+  } = useSelector((state) => state.recipe);
 
   const [isToShow, setIsToShow] = useState(true);
   const [buttonText, setButtonText] = useState('');
@@ -38,8 +47,43 @@ function StartButton() {
     }
   }, [id, group]);
 
-  const goTo = () => {
-    const pathName = path.replace(':id', `${pathId}/in-progress`);
+  const getDate = () => {
+    const date = new Date();
+
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const goTo = ({ target: { name } }) => {
+    let pathName = path;
+
+    if (name === 'startBtn') {
+      pathName = path.replace(':id', `${pathId}/in-progress`);
+    } else if (name === 'finishBtn') {
+      pathName = '/done-recipes';
+
+      const {
+        alcoholic, category, image, nationality, tags, title, type,
+      } = currentRecipe;
+
+      updateRecipesDone({
+        id,
+        type,
+        nationality,
+        category,
+        alcoholicOrNot: alcoholic,
+        name: title,
+        image,
+        doneDate: getDate(),
+        tags,
+      });
+
+      dispatch(updateToInProgress(false));
+      updateRecipeStatus(id, group, true);
+    }
 
     history.push(pathName);
   };
@@ -47,15 +91,35 @@ function StartButton() {
   return (
     <div>
       {
-        isToShow
-          && (
+        !inProgress
+          ? (
+            <div>
+              {
+                isToShow
+                  && (
+                    <button
+                      className={ style.button }
+                      data-testid="start-recipe-btn"
+                      name="startBtn"
+                      type="button"
+                      onClick={ goTo }
+                    >
+                      { buttonText }
+                    </button>
+                  )
+              }
+            </div>
+          )
+          : (
             <button
               className={ style.button }
-              data-testid="start-recipe-btn"
+              data-testid="finish-recipe-btn"
+              name="finishBtn"
               type="button"
+              disabled={ finishButtonDisabled }
               onClick={ goTo }
             >
-              { buttonText }
+              Finish Recipe
             </button>
           )
       }

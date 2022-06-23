@@ -51,6 +51,7 @@ function Login() {
         <label htmlFor="password">
           Senha:
           <input
+            autoComplete="current-password"
             name="password"
             type="password"
             data-testid="password-input"
