@@ -4,31 +4,6 @@ import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import { getRecipesDone } from '../services/mealsLocalSt';
 
-/* const doneRecipes = [
-  {
-    id: '52771',
-    type: 'food',
-    nationality: 'Italian',
-    category: 'Vegetarian',
-    alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    doneDate: '23/06/2020',
-    tags: ['Pasta', 'Curry'],
-  },
-  {
-    id: '178319',
-    type: 'drink',
-    nationality: '',
-    category: 'Cocktail',
-    alcoholicOrNot: 'Alcoholic',
-    name: 'Aquamarine',
-    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    doneDate: '23/06/2020',
-    tags: [],
-  },
-]; */
-
 function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [doneFiltered, setDoneFiltered] = useState([]);
@@ -88,14 +63,14 @@ function Done() {
       >
         Drinks
       </button>
-      {doneFiltered.map((fav, index) => (
+      {doneFiltered.map((done, index) => (
         <div
-          key={ fav.id }
+          key={ done.id }
         >
-          <Link to={ `/${fav.type}s/${fav.id}` }>
+          <Link to={ `/${done.type}s/${done.id}` }>
             <img
-              src={ fav.image }
-              alt={ fav.strIngredient1 }
+              src={ done.image }
+              alt={ done.strIngredient1 }
               data-testid={ `${index}-horizontal-image` }
               style={ { width: '200px' } }
             />
@@ -104,29 +79,29 @@ function Done() {
             data-testid={ `${index}-horizontal-top-text` }
           >
             {
-              fav.type === 'food'
-                ? (`${fav.nationality} - ${fav.category}`) : (`${fav.alcoholicOrNot}`)
+              done.type === 'food'
+                ? (`${done.nationality} - ${done.category}`) : (`${done.alcoholicOrNot}`)
             }
           </p>
-          <Link to={ `/${fav.type}s/${fav.id}` }>
+          <Link to={ `/${done.type}s/${done.id}` }>
             <p
               data-testid={ `${index}-horizontal-name` }
             >
-              { fav.name }
+              { done.name }
             </p>
           </Link>
           <p
             data-testid={ `${index}-horizontal-done-date` }
           >
-            { fav.doneDate }
+            { done.doneDate }
           </p>
           <button
             type="button"
-            onClick={ copyToClipBoard(fav.id, fav.type) }
+            onClick={ copyToClipBoard(done.id, done.type) }
           >
             <img
               src={ shareIcon }
-              alt={ fav.name }
+              alt={ done.name }
               data-testid={ `${index}-horizontal-share-btn` }
             />
           </button>
@@ -136,7 +111,7 @@ function Done() {
                 <span>Link copied!</span>
               )
           }
-          { fav.tags.map((tag, tagIndex) => (
+          { done.tags.map((tag, tagIndex) => (
             <p
               key={ tagIndex }
               data-testid={ `0-${tag}-horizontal-tag` }
