@@ -1,4 +1,5 @@
 import {
+  FINISH_BUTTON_STATUS,
   GET_INGREDIENTS, GET_RECIPE_SUCCEEDED,
   GET_RECOMMENDATIONS_SUCCEEDED, IS_FETCHING, IS_IN_PROGRESS, REQUISITION_FAILED,
 } from '../actions';
@@ -13,6 +14,7 @@ const INITIAL_VALUE = {
     image: '',
     ingredients: [],
   },
+  finishButtonDisabled: true,
   recommendations: [],
   isFetching: false,
   error: null,
@@ -58,6 +60,12 @@ const recipe = (state = INITIAL_VALUE, action) => {
     return {
       ...state,
       inProgress: true,
+    };
+
+  case FINISH_BUTTON_STATUS:
+    return {
+      ...state,
+      finishButtonDisabled: action.payload.status,
     };
 
   default:

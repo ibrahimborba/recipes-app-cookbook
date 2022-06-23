@@ -11,6 +11,7 @@ function StartButton() {
   const {
     inProgress,
     currentRecipe: { id, group },
+    finishButtonDisabled,
   } = useSelector((state) => state.recipe);
 
   const [isToShow, setIsToShow] = useState(true);
@@ -73,7 +74,8 @@ function StartButton() {
               className={ style.button }
               data-testid="finish-recipe-btn"
               type="button"
-              // onClick={ goTo }
+              disabled={ finishButtonDisabled }
+              onClick={ () => console.log('foi') }
             >
               Finish Recipe
             </button>

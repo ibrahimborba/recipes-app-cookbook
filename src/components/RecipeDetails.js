@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFinishButtonStatus } from '../redux/actions';
 import { getInProgressRecipes, updateIngredients } from '../services/mealsLocalSt';
 import style from './RecipeDetails.module.css';
 
 function RecipeDetails() {
+  const dispatch = useDispatch();
   const {
     currentRecipe: { instructions, ingredients, group, id }, inProgress,
   } = useSelector((state) => state.recipe);
@@ -18,11 +20,14 @@ function RecipeDetails() {
     }
   }, [group, id]);
 
-  const finishIngredient = ({ target: { name } }) => {
+  const updateIngredientStatus = ({ target: { name } }) => {
     updateIngredients(id, name, group);
 
     const { [group]: { [id]: recipe } } = getInProgressRecipes();
     setDone([...recipe]);
+
+    const allIngredientsChecked = recipe.length === ingredients.length;
+    dispatch(updateFinishButtonStatus(!allIngredientsChecked));
   };
 
   return (
@@ -51,7 +56,7 @@ function RecipeDetails() {
                             name={ ingredientName }
                             type="checkbox"
                             checked={ isChecked }
-                            onChange={ finishIngredient }
+                            onChange={ updateIngredientStatus }
                           />
                           <span
                             className={ isChecked ? style.checked : '' }

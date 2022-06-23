@@ -17,6 +17,7 @@ export const MEALS_INGREDIENTS_RESULTS = 'MEALS_INGREDIENTS_RESULTS';
 export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 export const SEARCH_OPTION = 'SEARCH_OPTION';
 export const IS_IN_PROGRESS = 'IS_IN_PROGRESS';
+export const FINISH_BUTTON_STATUS = 'FINISH_BUTTON_STATUS';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -223,4 +224,11 @@ export const searchOptions = (search = '', option = '') => ({
 
 export const updateToInProgress = () => ({
   type: IS_IN_PROGRESS,
+});
+
+export const updateFinishButtonStatus = (status) => ({
+  type: FINISH_BUTTON_STATUS,
+  payload: {
+    status,
+  },
 });
