@@ -1,3 +1,6 @@
+const MEALS_END_POINT_BY_NAME = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+const DRINKS_END_POINT_BY_NAME = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+
 export const getMeal = async (search, option) => {
   let URL = '';
   switch (option) {
@@ -5,7 +8,7 @@ export const getMeal = async (search, option) => {
     URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=';
     break;
   case 'name':
-    URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    URL = MEALS_END_POINT_BY_NAME;
     break;
   case 'first-letter':
     URL = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
@@ -17,7 +20,7 @@ export const getMeal = async (search, option) => {
     URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?a=';
     break;
   default:
-    URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    URL = MEALS_END_POINT_BY_NAME;
   }
 
   try {
@@ -36,7 +39,7 @@ export const getDrink = async (search, option) => {
     URL = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
     break;
   case 'name':
-    URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    URL = DRINKS_END_POINT_BY_NAME;
     break;
   case 'first-letter':
     URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
@@ -45,7 +48,7 @@ export const getDrink = async (search, option) => {
     URL = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=';
     break;
   default:
-    URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    URL = DRINKS_END_POINT_BY_NAME;
   }
 
   try {
@@ -124,6 +127,50 @@ export const getCategories = async (pathname) => {
   } catch (error) {
     return error;
   }
+};
+
+export const getRecipe = async (id, option) => {
+  let url = '';
+
+  switch (option) {
+  case 'food':
+    url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    break;
+
+  case 'drink':
+    url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+    break;
+
+  default:
+    return false;
+  }
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
+};
+
+export const getRecommendations = async (option) => {
+  let url = '';
+
+  switch (option) {
+  case 'food':
+    url = MEALS_END_POINT_BY_NAME;
+    break;
+
+  case 'drink':
+    url = DRINKS_END_POINT_BY_NAME;
+    break;
+
+  default:
+    return false;
+  }
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
 };
 
 export const getNationalities = async () => {
