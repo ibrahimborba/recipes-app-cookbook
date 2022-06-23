@@ -25,9 +25,10 @@ function RecipeTitle() {
   }, [id]);
 
   const copyToClipBoard = () => {
-    navigator.clipboard.writeText(`${window.location.href}`);
+    const url = window.location.href.replace('/in-progress', '');
+    navigator.clipboard.writeText(url);
 
-    const SECONDS = 1500;
+    const SECONDS = 2000;
 
     setShowMessage(true);
     setTimeout(() => setShowMessage(false), SECONDS);
