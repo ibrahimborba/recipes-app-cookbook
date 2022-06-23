@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import recipe from './recipeReducer';
 import searchResults from './searchResultReducer';
 import randomResults from './randomReducer';
 import ingredientsResults from './ingredientsReducer';
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   randomResults,
   ingredientsResults,
   searchOptions,
+  recipe,
 });
 
 export default rootReducer;
