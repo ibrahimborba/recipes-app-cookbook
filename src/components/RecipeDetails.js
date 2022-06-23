@@ -23,7 +23,6 @@ function RecipeDetails() {
 
     const { [group]: { [id]: recipe } } = getInProgressRecipes();
     setDone([...recipe]);
-    console.log(done);
   };
 
   return (
