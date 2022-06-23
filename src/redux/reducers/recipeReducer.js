@@ -1,6 +1,6 @@
 import {
   GET_INGREDIENTS, GET_RECIPE_SUCCEEDED,
-  GET_RECOMMENDATIONS_SUCCEEDED, IS_FETCHING, REQUISITION_FAILED,
+  GET_RECOMMENDATIONS_SUCCEEDED, IS_FETCHING, IS_IN_PROGRESS, REQUISITION_FAILED,
 } from '../actions';
 
 const INITIAL_VALUE = {
@@ -52,6 +52,12 @@ const recipe = (state = INITIAL_VALUE, action) => {
     return {
       ...state,
       ingredients: [...action.ingredients],
+    };
+
+  case IS_IN_PROGRESS:
+    return {
+      ...state,
+      inProgress: true,
     };
 
   default:

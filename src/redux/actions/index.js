@@ -16,6 +16,7 @@ export const RANDOM_DRINK_RESULTS = 'RANDOM_DRINK_RESULTS';
 export const MEALS_INGREDIENTS_RESULTS = 'MEALS_INGREDIENTS_RESULTS';
 export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 export const SEARCH_OPTION = 'SEARCH_OPTION';
+export const IS_IN_PROGRESS = 'IS_IN_PROGRESS';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -76,7 +77,8 @@ const formatIngredients = (recipe) => {
     const measure = recipe[`strMeasure${i}`];
 
     const isNull = !ingredient && !measure;
-    const isEmpty = ingredient === '' && measure === '';
+    const isEmpty = (ingredient === '' && measure === '')
+      || (ingredient === ' ' || measure === ' ');
 
     if (!isNull && !isEmpty) {
       ingredients = [...ingredients, [ingredient, measure]];
@@ -142,7 +144,7 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
-    console.log(data);
+
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));
@@ -217,4 +219,8 @@ export const searchOptions = (search = '', option = '') => ({
     search,
     option,
   },
+});
+
+export const updateToInProgress = () => ({
+  type: IS_IN_PROGRESS,
 });

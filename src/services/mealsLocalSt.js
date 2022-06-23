@@ -56,14 +56,23 @@ export const updateFavoriteRecipes = (recipe) => {
 
 export const getFavoriteRecipes = () => readFavoriteRecipes();
 
-export const updateInProgressRecipes = (recipe) => {
+export const updateInProgressRecipes = (recipe, group) => {
   const recipesInProgress = readInProgressRecipes();
-  const recipes = {
-    ...recipesInProgress,
-    recipe,
-  };
+  const [recipeId] = Object.keys(recipe);
+  const hasRecipeInProgress = Object
+    .keys(recipesInProgress)
+    .some((id) => id === recipeId);
 
-  saveInProgressRecipes(recipes);
+  if (!hasRecipeInProgress) {
+    const recipes = {
+      ...recipesInProgress,
+      [group]: { ...recipesInProgress[group], ...recipe },
+    };
+
+    saveInProgressRecipes(recipes);
+  } else {
+    console.log('ja tem a receita');
+  }
 };
 
 export const getInProgressRecipes = () => readInProgressRecipes();

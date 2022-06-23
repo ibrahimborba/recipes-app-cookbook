@@ -8,7 +8,10 @@ function StartButton() {
   const history = useHistory();
   const { path, params: { id: pathId } } = useRouteMatch();
 
-  const { id, group } = useSelector((state) => state.recipe.currentRecipe);
+  const {
+    inProgress,
+    currentRecipe: { id, group },
+  } = useSelector((state) => state.recipe);
 
   const [isToShow, setIsToShow] = useState(true);
   const [buttonText, setButtonText] = useState('');
@@ -47,15 +50,32 @@ function StartButton() {
   return (
     <div>
       {
-        isToShow
-          && (
+        !inProgress
+          ? (
+            <div>
+              {
+                isToShow
+                  && (
+                    <button
+                      className={ style.button }
+                      data-testid="start-recipe-btn"
+                      type="button"
+                      onClick={ goTo }
+                    >
+                      { buttonText }
+                    </button>
+                  )
+              }
+            </div>
+          )
+          : (
             <button
               className={ style.button }
-              data-testid="start-recipe-btn"
+              data-testid="finish-recipe-btn"
               type="button"
-              onClick={ goTo }
+              // onClick={ goTo }
             >
-              { buttonText }
+              Finish Recipe
             </button>
           )
       }

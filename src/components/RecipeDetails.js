@@ -17,7 +17,7 @@ function RecipeDetails() {
                 <>
                   {ingredients.map((ingredient, index) => (
                     <li
-                      data-testid={ `${index}-ingredient-name-and-measure` }
+                      data-testid={ `${index}-ingredient-step` }
                       key={ `ingredient${index}` }
                     >
                       <label
