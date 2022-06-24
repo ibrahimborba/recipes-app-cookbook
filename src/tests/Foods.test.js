@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
-import fetch from './mocks/fetch';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
@@ -126,7 +125,6 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
 
   it('checks if CategoriesOptions is rendered as expected', async () => {
     const CATEGORIES_BUTTONS = 6;
-
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
@@ -135,46 +133,32 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     expect(categoriesBtns).toHaveLength(CATEGORIES_BUTTONS);
   });
 
-  it('checks if Beef Category filters recipes by Beef', async () => {
-    const CARDS_LENGTH = 12;
-
+  it(`checks if Category filters recipes on click, if clicked twice it resets the filter
+  and Categories filters overlap each other when clicked`,
+  async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
     const breakfastCategoryBtn = screen.getByRole('button', { name: 'Breakfast' });
-    expect(beefCategoryBtn).toBeInTheDocument();
-    expect(breakfastCategoryBtn).toBeInTheDocument();
-
-    jest.spyOn(global, 'fetch').mockImplementation(fetch());
 
     userEvent.click(beefCategoryBtn);
-
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
 
-    const images = await screen.findAllByRole('img');
-    const recipesCards = images.filter((img) => !img.alt.includes('icon'));
-    expect(recipesCards).toHaveLength(CARDS_LENGTH);
-
     userEvent.click(beefCategoryBtn);
-
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
 
     userEvent.click(breakfastCategoryBtn);
-
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
   });
 
   it('checks if All Category filters recipes by Beef', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    const allCategoryBtn = await screen.findByRole('button', { name: 'All' });
+    expect(allCategoryBtn).toBeInTheDocument();
 
-    const beefCategoryBtn = await screen.findByRole('button', { name: 'All' });
-    expect(beefCategoryBtn).toBeInTheDocument();
-
-    jest.spyOn(global, 'fetch').mockImplementation(fetch());
-
-    userEvent.click(beefCategoryBtn);
+    userEvent.click(allCategoryBtn);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
   });
 });
 
