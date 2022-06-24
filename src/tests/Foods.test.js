@@ -93,26 +93,27 @@ describe('2 - Foods page, SearchBar component tests', () => {
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=pizza');
   });
 
-  it('checks if SearchBar First Letter button fetch by first letter searched',
-    async () => {
-      jest.spyOn(window, 'alert').mockImplementation(() => {});
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-      const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-      userEvent.click(searchBtnHeader);
+  it(`checks if SearchBar First Letter button fetch by first letter searched
+  and throws alert if there is more than one letter being searched`,
+  async () => {
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+    userEvent.click(searchBtnHeader);
 
-      const searchInput = await screen.findByLabelText('Search');
-      const firstLetterBtn = screen.getByLabelText('First Letter');
-      const searchBtn = screen.getByRole('button', { name: 'Search' });
+    const searchInput = await screen.findByLabelText('Search');
+    const firstLetterBtn = screen.getByLabelText('First Letter');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-      userEvent.click(firstLetterBtn);
-      userEvent.type(searchInput, 'aaa');
-      userEvent.click(searchBtn);
-      expect(window.alert).toBeCalledWith('Your search must have only 1 (one) character');
+    userEvent.click(firstLetterBtn);
+    userEvent.type(searchInput, 'aaa');
+    userEvent.click(searchBtn);
+    expect(window.alert).toBeCalledWith('Your search must have only 1 (one) character');
 
-      userEvent.type(searchInput, 'a');
-      userEvent.click(searchBtn);
-      expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
-    });
+    userEvent.type(searchInput, 'a');
+    userEvent.click(searchBtn);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+  });
 
   it('checks if path changes to recipe details if there is only one result', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
