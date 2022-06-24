@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import CoverImage from '../components/CoverImage';
 import Loading from '../components/Loading';
 import Recipe from '../components/Recipe';
 import StartButton from '../components/StartButton';
@@ -10,7 +11,7 @@ function FoodRecipe() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { isFetching, currentRecipe } = useSelector((state) => state.recipe);
+  const { isFetching } = useSelector((state) => state.recipe);
 
   useEffect(() => {
     dispatch(fetchRecipeThunk(id, 'food'));
@@ -26,11 +27,7 @@ function FoodRecipe() {
           )
           : (
             <>
-              <img
-                data-testid="recipe-photo"
-                src={ currentRecipe.image }
-                alt="Recipe"
-              />
+              <CoverImage />
               <Recipe isFood />
               <StartButton />
             </>

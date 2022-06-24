@@ -3,4 +3,13 @@
   bottom: 0;
   color: rgb(0, 44, 0);
   position: fixed;
+  z-index: 2;
+}
+
+.button:disabled {
+  background-color: rgb(178, 209, 178);
+  bottom: 0;
+  color: rgb(4, 107, 4);
+  position: fixed;
+  z-index: 2;
 }

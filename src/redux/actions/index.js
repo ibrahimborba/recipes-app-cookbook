@@ -16,6 +16,8 @@ export const RANDOM_DRINK_RESULTS = 'RANDOM_DRINK_RESULTS';
 export const MEALS_INGREDIENTS_RESULTS = 'MEALS_INGREDIENTS_RESULTS';
 export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 export const SEARCH_OPTION = 'SEARCH_OPTION';
+export const IS_IN_PROGRESS = 'IS_IN_PROGRESS';
+export const FINISH_BUTTON_STATUS = 'FINISH_BUTTON_STATUS';
 
 export const saveUser = (email) => ({
   type: SET_USER,
@@ -76,7 +78,8 @@ const formatIngredients = (recipe) => {
     const measure = recipe[`strMeasure${i}`];
 
     const isNull = !ingredient && !measure;
-    const isEmpty = ingredient === '' && measure === '';
+    const isEmpty = (ingredient === '' && measure === '')
+      || (ingredient === ' ' || measure === ' ');
 
     if (!isNull && !isEmpty) {
       ingredients = [...ingredients, [ingredient, measure]];
@@ -94,10 +97,11 @@ const formatData = (data, option) => {
   if (option === 'food') {
     const {
       idMeal, strCategory, strMeal, strInstructions, strYoutube, strMealThumb,
-      strArea, strTags, strSource,
+      strArea, strTags,
     } = recipe;
 
     recipeObj = {
+      alcoholic: '',
       categoryRecom: strCategory,
       category: strCategory,
       group: 'meals',
@@ -106,8 +110,7 @@ const formatData = (data, option) => {
       ingredients,
       instructions: strInstructions,
       nationality: strArea,
-      source: strSource,
-      tag: strTags,
+      tags: strTags ? strTags.split(',') : [],
       title: strMeal,
       type: 'food',
       video: strYoutube,
@@ -128,8 +131,11 @@ const formatData = (data, option) => {
       image: strDrinkThumb,
       ingredients,
       instructions: strInstructions,
+      nationality: '',
+      tags: [],
       title: strDrink,
       type: 'drink',
+      video: '',
     };
   }
 
@@ -142,7 +148,7 @@ export const fetchRecipeThunk = (id, option) => async (dispatch) => {
   try {
     const data = await getRecipe(id, option);
     const recipe = formatData(data, option);
-    console.log(data);
+
     dispatch(requisitonSucceeded(recipe, GET_RECIPE_SUCCEEDED));
   } catch (error) {
     dispatch(requisitionFailed(error));
@@ -216,5 +222,19 @@ export const searchOptions = (search = '', option = '') => ({
   payload: {
     search,
     option,
+  },
+});
+
+export const updateToInProgress = (status) => ({
+  type: IS_IN_PROGRESS,
+  payload: {
+    status,
+  },
+});
+
+export const updateFinishButtonStatus = (status) => ({
+  type: FINISH_BUTTON_STATUS,
+  payload: {
+    status,
   },
 });
