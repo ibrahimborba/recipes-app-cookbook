@@ -60,6 +60,7 @@ function Login() {
           />
         </label>
         <button
+          name="submit"
           type="submit"
           data-testid="login-submit-btn"
           disabled={ isDisabled }
