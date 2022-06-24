@@ -8,7 +8,6 @@ const VALID_EMAIL = 'test@test.test';
 const INVALID_EMAIL = 'testtest.test';
 const VALID_PASSWORD = '1234567';
 const INVALID_PASSWORD = '12345';
-const btnTestId = 'login-submit-btn';
 
 describe('1 - Login page inputs tests', () => {
   it('checks if Login page elements are rendered as expected', () => {
