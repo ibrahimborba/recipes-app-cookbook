@@ -11,36 +11,31 @@ import filteredByCategory from './mocks/beefMeals';
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
 
-describe('1 - Foods page Header component tests', () => {
-  it('checks if Header is rendered and behaves as expected', async () => {
-    const { history } = renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
+describe('1 - Foods page, Header component tests', () => {
+  it('checks if Header is rendered and shows SearchBar when search icon is clicked',
+    async () => {
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+
+      const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
+      const profileImg = screen.getByRole('img', { name: 'profile icon' });
+      const searchBtn = screen.getByRole('img', { name: SEARCH_ICON });
+      const searchInputDisabled = screen.queryByLabelText('Search');
+
+      expect(pageTitle).toBeInTheDocument();
+      expect(profileImg).toBeInTheDocument();
+      expect(searchBtn).toBeInTheDocument();
+      expect(searchInputDisabled).not.toBeInTheDocument();
+
+      userEvent.click(searchBtn);
+
+      const searchInputEnabled = await screen.findByLabelText('Search');
+      expect(searchInputEnabled).toBeInTheDocument();
     });
-
-    expect(history.location.pathname).toBe(PATH);
-
-    const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
-    const profileImg = screen.getByRole('img', { name: 'profile icon' });
-    const searchBtn = screen.getByRole('img', { name: SEARCH_ICON });
-    const searchInputDisabled = screen.queryByLabelText('Search');
-
-    expect(pageTitle).toBeInTheDocument();
-    expect(profileImg).toBeInTheDocument();
-    expect(searchBtn).toBeInTheDocument();
-    expect(searchInputDisabled).not.toBeInTheDocument();
-
-    userEvent.click(searchBtn);
-
-    const searchInputEnabled = await screen.findByLabelText('Search');
-    expect(searchInputEnabled).toBeInTheDocument();
-  });
 });
 
-describe('2 - Foods page SearchBar component tests', () => {
+describe('2 - Foods page, SearchBar component tests', () => {
   it('checks if SearchBar is rendered as expected', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     expect(searchBtnHeader).toBeInTheDocument();
@@ -60,9 +55,7 @@ describe('2 - Foods page SearchBar component tests', () => {
   });
 
   it('checks if SearchBar fetch by Ingredient', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
@@ -77,9 +70,7 @@ describe('2 - Foods page SearchBar component tests', () => {
   });
 
   it('checks if SearchBar fetch by Name', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
@@ -94,9 +85,7 @@ describe('2 - Foods page SearchBar component tests', () => {
   });
 
   it('checks if SearchBar fetch by First Letter', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
@@ -111,9 +100,7 @@ describe('2 - Foods page SearchBar component tests', () => {
   });
 
   it('checks if path changes to recipe details if there is only one result', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
 
@@ -147,9 +134,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   it('checks if CategoriesOptions is rendered as expected', async () => {
     const CATEGORIES_BUTTONS = 6;
 
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
 
@@ -160,9 +145,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   it('checks if Beef Category filters recipes by Beef', async () => {
     const CARDS_LENGTH = 12;
 
-    renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
     const breakfastCategoryBtn = screen.getByRole('button', { name: 'Breakfast' });
@@ -192,9 +175,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   });
 
   it('checks if All Category filters recipes by Beef', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
 
@@ -210,40 +191,33 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   });
 });
 
-describe('4 - Foods page Footer component tests', () => {
-  it('checks if Footer is rendered as expected', async () => {
-    const { history } = renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+describe('4 - Foods page, Footer component tests', () => {
+  it('checks if Footer is rendered with drink, explore and meal icons',
+    async () => {
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+
+      const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
+      const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
+      const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
+      expect(drinksBtnFooter).toBeInTheDocument();
+      expect(exploreBtnFooter).toBeInTheDocument();
+      expect(mealBtnFooter).toBeInTheDocument();
     });
 
-    const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
-    const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
-    const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
+  it('checks if when Drink, Explore and Food icons are clicked, the path changes',
+    async () => {
+      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
-    expect(drinksBtnFooter).toBeInTheDocument();
-    expect(exploreBtnFooter).toBeInTheDocument();
-    expect(mealBtnFooter).toBeInTheDocument();
+      const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
+      userEvent.click(drinksBtnFooter);
+      expect(history.location.pathname).toBe('/drinks');
 
-    userEvent.click(drinksBtnFooter);
+      const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
+      userEvent.click(exploreBtnFooter);
+      expect(history.location.pathname).toBe('/explore');
 
-    expect(history.location.pathname).toBe('/drinks');
-  });
-
-  it('checks if Buttons click changes the path as expected', async () => {
-    const { history } = renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
+      userEvent.click(mealBtnFooter);
+      expect(history.location.pathname).toBe('/foods');
     });
-
-    const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
-    userEvent.click(drinksBtnFooter);
-    expect(history.location.pathname).toBe('/drinks');
-
-    const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
-    userEvent.click(exploreBtnFooter);
-    expect(history.location.pathname).toBe('/explore');
-
-    const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
-    userEvent.click(mealBtnFooter);
-    expect(history.location.pathname).toBe('/foods');
-  });
 });

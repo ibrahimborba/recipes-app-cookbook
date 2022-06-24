@@ -13,9 +13,7 @@ const PATH = '/explore/foods/nationalities';
 describe('1 - Foods Nationalities page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
     async () => {
-      renderWithRouterRedux(<App />, {
-        initialEntries: [PATH],
-      });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
       const pageTitle = screen.getByRole('heading',
         { name: 'Explore Nationalities', level: 1 });
@@ -49,9 +47,7 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
     async () => {
       const NATIONALITIES_OPTIONS = 28;
 
-      renderWithRouterRedux(<App />, {
-        initialEntries: [PATH],
-      });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
       const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
       const categoriesBtns = screen.getAllByRole('option');
@@ -63,9 +59,7 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
     async () => {
       const CARDS_LENGTH = 12;
 
-      renderWithRouterRedux(<App />, {
-        initialEntries: [PATH],
-      });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
       const americanOptionBtn = await screen
         .findByRole('option', { name: 'American' });
@@ -86,9 +80,7 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
     });
 
   it('checks if All Nationalities resets filter', async () => {
-    renderWithRouterRedux(<App />, {
-      initialEntries: [PATH],
-    });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
 
@@ -107,25 +99,19 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
 describe('3 - Foods Nationalities page, Footer component tests', () => {
   it('checks if Footer is rendered with drink, explore and meal icons',
     async () => {
-      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
       const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
       const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
       const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
-
       expect(drinksBtnFooter).toBeInTheDocument();
       expect(exploreBtnFooter).toBeInTheDocument();
       expect(mealBtnFooter).toBeInTheDocument();
-
-      userEvent.click(drinksBtnFooter);
-      expect(history.location.pathname).toBe('/drinks');
     });
 
   it('checks if when Drink, Explore and Food icons are clicked, the path changes',
     async () => {
-      const { history } = renderWithRouterRedux(<App />, {
-        initialEntries: [PATH],
-      });
+      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
       const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
       userEvent.click(drinksBtnFooter);
