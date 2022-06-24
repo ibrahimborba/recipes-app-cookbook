@@ -8,6 +8,15 @@ import categories from './mocks/categoriesMeal';
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
 
+beforeEach(() => {
+  jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      json: () => Promise.resolve(categories),
+    }));
+});
+
+afterEach(() => jest.restoreAllMocks());
+
 describe('1 - Foods page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
     async () => {
@@ -51,78 +60,68 @@ describe('2 - Foods page, SearchBar component tests', () => {
     expect(searchBtn).toBeInTheDocument();
   });
 
-  it('checks if SearchBar fetch by Ingredient', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+  it('checks if SearchBar Ingredient button fetch by ingredient searched',
+    async () => {
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+      userEvent.click(searchBtnHeader);
 
+      const searchInput = await screen.findByLabelText('Search');
+      const ingredientBtn = screen.getByLabelText('Ingredient');
+      const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+      userEvent.click(ingredientBtn);
+      userEvent.type(searchInput, 'garlic');
+      userEvent.click(searchBtn);
+
+      expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=garlic');
+    });
+
+  it('checks if SearchBar Name button fetch by name searched', async () => {
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
 
     const searchInput = await screen.findByLabelText('Search');
-    const searchOptionIngredient = screen.getByLabelText('Ingredient');
+    const nameBtn = screen.getByLabelText('Name');
     const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-    userEvent.click(searchOptionIngredient);
-    userEvent.type(searchInput, 'garlic');
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 'pizza');
     userEvent.click(searchBtn);
+
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=pizza');
   });
 
-  it('checks if SearchBar fetch by Name', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+  it('checks if SearchBar First Letter button fetch by first letter searched',
+    async () => {
+      jest.spyOn(window, 'alert').mockImplementation(() => {});
+      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+      userEvent.click(searchBtnHeader);
 
-    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-    userEvent.click(searchBtnHeader);
+      const searchInput = await screen.findByLabelText('Search');
+      const firstLetterBtn = screen.getByLabelText('First Letter');
+      const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-    const searchInput = await screen.findByLabelText('Search');
-    const searchOptionName = screen.getByLabelText('Name');
-    const searchBtn = screen.getByRole('button', { name: 'Search' });
+      userEvent.click(firstLetterBtn);
+      userEvent.type(searchInput, 'aaa');
+      userEvent.click(searchBtn);
+      expect(window.alert).toBeCalledWith('Your search must have only 1 (one) character');
 
-    userEvent.click(searchOptionName);
-    userEvent.type(searchInput, 'garlic');
-    userEvent.click(searchBtn);
-  });
-
-  it('checks if SearchBar fetch by First Letter', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
-    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-    userEvent.click(searchBtnHeader);
-
-    const searchInput = await screen.findByLabelText('Search');
-    const searchOptionFirstLetter = screen.getByLabelText('First Letter');
-    const searchBtn = screen.getByRole('button', { name: 'Search' });
-
-    userEvent.click(searchOptionFirstLetter);
-    userEvent.type(searchInput, 'a');
-    userEvent.click(searchBtn);
-  });
+      userEvent.type(searchInput, 'a');
+      userEvent.click(searchBtn);
+      expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+    });
 
   it('checks if path changes to recipe details if there is only one result', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-
     userEvent.click(searchBtnHeader);
-
-    const searchInput = await screen.findByLabelText('Search');
-    const searchOptionName = screen.getByLabelText('Name');
-    const searchBtn = screen.getByRole('button', { name: 'Search' });
-
-    userEvent.click(searchOptionName);
-    userEvent.type(searchInput, 'Corba');
-    userEvent.click(searchBtn);
   });
 });
 
 describe('3 - Foods page CategoriesOptions component tests', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(categories),
-      }));
-  });
-
-  afterEach(() => jest.restoreAllMocks());
-
   it('checks if CategoriesOptions is rendered as expected', async () => {
     const CATEGORIES_BUTTONS = 6;
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
@@ -133,8 +132,9 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     expect(categoriesBtns).toHaveLength(CATEGORIES_BUTTONS);
   });
 
-  it(`checks if Category filters recipes on click, if clicked twice it resets the filter
-  and Categories filters overlap each other when clicked`,
+  it(`checks if Category fetch by category name filter on click,
+  if clicked twice it fetch by generic search
+  and Categories filters overlap each other fetch when clicked`,
   async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
@@ -151,7 +151,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
   });
 
-  it('checks if All Category filters recipes by Beef', async () => {
+  it('checks if All Category filter fetch by generic search', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const allCategoryBtn = await screen.findByRole('button', { name: 'All' });
