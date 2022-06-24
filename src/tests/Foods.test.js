@@ -3,9 +3,10 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
+import meals from './mocks/meals';
+import corba from './mocks/oneMeal';
 import categories from './mocks/categoriesMeal';
 import beefMeals from './mocks/beefMeals';
-import meals from './mocks/meals';
 
 const SEARCH_ICON = 'search icon';
 
@@ -63,16 +64,72 @@ describe('2 - Foods page SearchBar component tests', () => {
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-    expect(searchBtnHeader).toBeInTheDocument();
     userEvent.click(searchBtnHeader);
 
     const searchInput = await screen.findByLabelText('Search');
     const searchOptionIngredient = screen.getByLabelText('Ingredient');
     const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-    expect(searchInput).toBeInTheDocument();
-    expect(searchOptionIngredient).toBeInTheDocument();
-    expect(searchBtn).toBeInTheDocument();
+    userEvent.click(searchOptionIngredient);
+    userEvent.type(searchInput, 'garlic');
+    userEvent.click(searchBtn);
+  });
+
+  it('checks if SearchBar fetch by Name', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+    userEvent.click(searchBtnHeader);
+
+    const searchInput = await screen.findByLabelText('Search');
+    const searchOptionName = screen.getByLabelText('Name');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+    userEvent.click(searchOptionName);
+    userEvent.type(searchInput, 'garlic');
+    userEvent.click(searchBtn);
+  });
+
+  it('checks if SearchBar fetch by First Letter', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+    userEvent.click(searchBtnHeader);
+
+    const searchInput = await screen.findByLabelText('Search');
+    const searchOptionFirstLetter = screen.getByLabelText('First Letter');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+    userEvent.click(searchOptionFirstLetter);
+    userEvent.type(searchInput, 'a');
+    userEvent.click(searchBtn);
+  });
+
+  it('checks if path changes to recipe details if there is only one result', async () => {
+    renderWithRouterRedux(<App />, {
+      initialEntries: ['/foods'],
+    });
+
+    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
+
+    userEvent.click(searchBtnHeader);
+
+    const searchInput = await screen.findByLabelText('Search');
+    const searchOptionName = screen.getByLabelText('Name');
+    const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+    jest.spyOn(global, 'fetch')
+      .mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve(corba),
+      }));
+
+    userEvent.click(searchOptionName);
+    userEvent.type(searchInput, 'Corba');
+    userEvent.click(searchBtn);
   });
 });
 
@@ -106,10 +163,10 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
       initialEntries: ['/foods'],
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
-
     const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
+    const breakfastCategoryBtn = screen.getByRole('button', { name: 'Breakfast' });
     expect(beefCategoryBtn).toBeInTheDocument();
+    expect(breakfastCategoryBtn).toBeInTheDocument();
 
     jest.spyOn(global, 'fetch')
       .mockImplementation(() => Promise.resolve({
@@ -127,9 +184,13 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     userEvent.click(beefCategoryBtn);
 
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+
+    userEvent.click(breakfastCategoryBtn);
+
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
   });
 
-  it('checks if Beef Category filters recipes by Beef', async () => {
+  it('checks if All Category filters recipes by Beef', async () => {
     renderWithRouterRedux(<App />, {
       initialEntries: ['/foods'],
     });
