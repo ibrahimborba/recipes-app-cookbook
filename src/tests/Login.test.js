@@ -16,9 +16,7 @@ describe('1 - Login page inputs tests', () => {
     const loginTitles = screen.getByText(/Login/i);
     const emailInput = screen.getByLabelText(/Email:/i);
     const passwordInput = screen.getByLabelText(/Senha:/i);
-
-    // const submitBtn = screen.getByRole('button', { name: /submit/i });
-    const submitBtn = screen.getByTestId(btnTestId);
+    const submitBtn = screen.getByText(/Enter/i);
 
     expect(history.location.pathname).toBe('/');
     expect(loginTitles).toBeInTheDocument();
@@ -33,8 +31,7 @@ describe('1 - Login page inputs tests', () => {
 
       const emailInput = screen.getByLabelText(/Email:/i);
       const passwordInput = screen.getByLabelText(/Senha:/i);
-      // const submitBtn = screen.getByRole('button', { name: /submitBtn/i });
-      const submitBtn = screen.getByTestId(btnTestId);
+      const submitBtn = screen.getByText(/Enter/i);
 
       expect(submitBtn).toBeInTheDocument();
       expect(submitBtn).toBeDisabled();
@@ -50,8 +47,7 @@ describe('1 - Login page inputs tests', () => {
 
       const emailInput = screen.getByLabelText(/Email:/i);
       const passwordInput = screen.getByLabelText(/Senha:/i);
-      // const submitBtn = screen.getByRole('button', { name: /submitBtn/i });
-      const submitBtn = screen.getByTestId(btnTestId);
+      const submitBtn = screen.getByText(/Enter/i);
 
       expect(submitBtn).toBeInTheDocument();
       expect(submitBtn).toBeDisabled();
@@ -67,8 +63,7 @@ describe('1 - Login page inputs tests', () => {
 
       const emailInput = screen.getByLabelText(/Email:/i);
       const passwordInput = screen.getByLabelText(/Senha:/i);
-      // const submitBtn = screen.getByRole('button', { name: /submitBtn/i });
-      const submitBtn = screen.getByTestId(btnTestId);
+      const submitBtn = screen.getByText(/Enter/i);
 
       expect(submitBtn).toBeInTheDocument();
       expect(submitBtn).toBeDisabled();
