@@ -6,17 +6,18 @@ import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import meals from './mocks/meals';
 import corba from './mocks/oneMeal';
 import categories from './mocks/categoriesMeal';
-import beefMeals from './mocks/beefMeals';
+import filteredByCategory from './mocks/beefMeals';
 
 const SEARCH_ICON = 'search icon';
+const PATH = '/foods';
 
 describe('1 - Foods page Header component tests', () => {
   it('checks if Header is rendered and behaves as expected', async () => {
     const { history } = renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
-    expect(history.location.pathname).toBe('/foods');
+    expect(history.location.pathname).toBe(PATH);
 
     const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
     const profileImg = screen.getByRole('img', { name: 'profile icon' });
@@ -38,7 +39,7 @@ describe('1 - Foods page Header component tests', () => {
 describe('2 - Foods page SearchBar component tests', () => {
   it('checks if SearchBar is rendered as expected', async () => {
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
@@ -60,7 +61,7 @@ describe('2 - Foods page SearchBar component tests', () => {
 
   it('checks if SearchBar fetch by Ingredient', async () => {
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
@@ -77,7 +78,7 @@ describe('2 - Foods page SearchBar component tests', () => {
 
   it('checks if SearchBar fetch by Name', async () => {
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
@@ -94,7 +95,7 @@ describe('2 - Foods page SearchBar component tests', () => {
 
   it('checks if SearchBar fetch by First Letter', async () => {
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
@@ -111,7 +112,7 @@ describe('2 - Foods page SearchBar component tests', () => {
 
   it('checks if path changes to recipe details if there is only one result', async () => {
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
@@ -147,7 +148,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     const CATEGORIES_BUTTONS = 6;
 
     renderWithRouterRedux(<App />, {
-      initialEntries: ['/foods'],
+      initialEntries: [PATH],
     });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
@@ -170,7 +171,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
 
     jest.spyOn(global, 'fetch')
       .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(beefMeals),
+        json: () => Promise.resolve(filteredByCategory),
       }));
 
     userEvent.click(beefCategoryBtn);
