@@ -3,10 +3,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import meals from './mocks/meals';
-import corba from './mocks/oneMeal';
 import categories from './mocks/categoriesMeal';
-import filteredByCategory from './mocks/beefMeals';
+import fetch from './mocks/fetch';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
@@ -110,11 +108,6 @@ describe('2 - Foods page, SearchBar component tests', () => {
     const searchOptionName = screen.getByLabelText('Name');
     const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(corba),
-      }));
-
     userEvent.click(searchOptionName);
     userEvent.type(searchInput, 'Corba');
     userEvent.click(searchBtn);
@@ -152,10 +145,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     expect(beefCategoryBtn).toBeInTheDocument();
     expect(breakfastCategoryBtn).toBeInTheDocument();
 
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(filteredByCategory),
-      }));
+    jest.spyOn(global, 'fetch').mockImplementation(fetch());
 
     userEvent.click(beefCategoryBtn);
 
@@ -182,10 +172,7 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
     const beefCategoryBtn = await screen.findByRole('button', { name: 'All' });
     expect(beefCategoryBtn).toBeInTheDocument();
 
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(meals),
-      }));
+    jest.spyOn(global, 'fetch').mockImplementation(fetch());
 
     userEvent.click(beefCategoryBtn);
   });
