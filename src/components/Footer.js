@@ -11,6 +11,7 @@ function Footer() {
     <footer data-testid="footer" className="footer-class">
       <button
         type="button"
+        name="drink-icon"
         onClick={ () => history.push('/drinks') }
       >
         <img
@@ -21,6 +22,7 @@ function Footer() {
       </button>
       <button
         type="button"
+        name="explore-icon"
         onClick={ () => history.push('/explore') }
       >
         <img
@@ -31,6 +33,7 @@ function Footer() {
       </button>
       <button
         type="button"
+        name="meal-icon"
         onClick={ () => history.push('/foods') }
       >
         <img

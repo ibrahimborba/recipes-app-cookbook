@@ -23,14 +23,6 @@ function CategoriesOptions() {
 
   const handleClickCategory = ({ target: { value, name } }) => {
     switch (pathname) {
-    case '/foods':
-      if (value === checkedCategory || name === 'All') {
-        dispatch(fetchMealResults('', ''));
-        return setCheckedCategory('');
-      }
-      dispatch(fetchMealResults(value, 'category'));
-      return setCheckedCategory(value);
-
     case '/drinks':
       if (value === checkedCategory || name === 'All') {
         dispatch(fetchDrinkResults('', ''));
@@ -39,7 +31,12 @@ function CategoriesOptions() {
       dispatch(fetchDrinkResults(value, 'category'));
       return setCheckedCategory(value);
     default:
-      break;
+      if (value === checkedCategory || name === 'All') {
+        dispatch(fetchMealResults('', ''));
+        return setCheckedCategory('');
+      }
+      dispatch(fetchMealResults(value, 'category'));
+      return setCheckedCategory(value);
     }
   };
 

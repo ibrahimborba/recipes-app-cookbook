@@ -3,12 +3,12 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import categories from './mocks/categoriesMeal';
-import initialState from './mocks/foodsInitialState';
+import categories from './mocks/categoriesDrink';
+import initialState from './mocks/drinksInitialState';
 
 const SEARCH_ICON = 'search icon';
-const PATH = '/foods';
-const { searchResults: { meals } } = initialState;
+const PATH = '/drinks';
+const { searchResults: { drinks } } = initialState;
 const setMock = () => beforeEach(() => {
   jest.spyOn(global, 'fetch')
     .mockImplementation(() => Promise.resolve({
@@ -16,12 +16,12 @@ const setMock = () => beforeEach(() => {
     }));
 });
 
-describe('1 - Foods page, Header component tests', () => {
+describe('1 - Drinks page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
     async () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
-      const pageTitle = screen.getByRole('heading', { name: 'Foods', level: 1 });
+      const pageTitle = screen.getByRole('heading', { name: 'Drinks', level: 1 });
       const profileImg = screen.getByRole('img', { name: 'profile icon' });
       const searchBtn = screen.getByRole('img', { name: SEARCH_ICON });
       const searchInputDisabled = screen.queryByLabelText('Search');
@@ -38,7 +38,7 @@ describe('1 - Foods page, Header component tests', () => {
     });
 });
 
-describe('2 - Foods page, SearchBar component tests', () => {
+describe('2 - Drinks page, SearchBar component tests', () => {
   setMock();
 
   afterEach(() => jest.restoreAllMocks());
@@ -73,10 +73,10 @@ describe('2 - Foods page, SearchBar component tests', () => {
       const searchBtn = screen.getByRole('button', { name: 'Search' });
 
       userEvent.click(ingredientBtn);
-      userEvent.type(searchInput, 'garlic');
+      userEvent.type(searchInput, 'lemon');
       userEvent.click(searchBtn);
 
-      expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=garlic');
+      expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=lemon');
     });
 
   it('checks if SearchBar Name button fetch by name searched', async () => {
@@ -89,10 +89,10 @@ describe('2 - Foods page, SearchBar component tests', () => {
     const searchBtn = screen.getByRole('button', { name: 'Search' });
 
     userEvent.click(nameBtn);
-    userEvent.type(searchInput, 'pizza');
+    userEvent.type(searchInput, 'cocktail');
     userEvent.click(searchBtn);
 
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=pizza');
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=cocktail');
   });
 
   it(`checks if SearchBar First Letter button fetch by first letter searched
@@ -114,11 +114,11 @@ describe('2 - Foods page, SearchBar component tests', () => {
 
     userEvent.type(searchInput, 'a');
     userEvent.click(searchBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a');
   });
 });
 
-describe('3 - Foods page, CategoriesOptions component tests', () => {
+describe('3 - Drinks page, CategoriesOptions component tests', () => {
   setMock();
 
   afterEach(() => jest.restoreAllMocks());
@@ -138,17 +138,17 @@ describe('3 - Foods page, CategoriesOptions component tests', () => {
   async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
-    const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
-    const breakfastCategoryBtn = screen.getByRole('button', { name: 'Breakfast' });
+    const cocktailCategoryBtn = await screen.findByRole('button', { name: 'Cocktail' });
+    const shakeCategoryBtn = screen.getByRole('button', { name: 'Shake' });
 
-    userEvent.click(beefCategoryBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
+    userEvent.click(cocktailCategoryBtn);
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail');
 
-    userEvent.click(beefCategoryBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    userEvent.click(cocktailCategoryBtn);
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
 
-    userEvent.click(breakfastCategoryBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
+    userEvent.click(shakeCategoryBtn);
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Shake');
   });
 
   it('checks if All Categories filter fetch by generic search', async () => {
@@ -158,11 +158,11 @@ describe('3 - Foods page, CategoriesOptions component tests', () => {
     expect(allCategoryBtn).toBeInTheDocument();
 
     userEvent.click(allCategoryBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
   });
 });
 
-describe('4 - Foods page, RecipeCard component test', () => {
+describe('4 - Drinks page, RecipeCard component test', () => {
   it('checks if RecipeCards are rendered as expected', async () => {
     const CARDS_LENGTH = 12;
     renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
@@ -171,20 +171,20 @@ describe('4 - Foods page, RecipeCard component test', () => {
     const recipesCardsImg = images.filter((img) => !img.alt.includes('icon'));
     expect(recipesCardsImg).toHaveLength(CARDS_LENGTH);
     recipesCardsImg.forEach((cardImg, index) => {
-      expect(cardImg.alt).toBe(meals[index].strMeal);
-      expect(cardImg.src).toBe(meals[index].strMealThumb);
+      expect(cardImg.alt).toBe(drinks[index].strDrink);
+      expect(cardImg.src).toBe(drinks[index].strDrinkThumb);
     });
 
     const cardTitles = screen.getAllByRole('heading');
     cardTitles.shift();
     expect(cardTitles).toHaveLength(CARDS_LENGTH);
     cardTitles.forEach((cardTitle, index) => {
-      expect(cardTitle).toHaveTextContent(meals[index].strMeal);
+      expect(cardTitle).toHaveTextContent(drinks[index].strDrink);
     });
   });
 });
 
-describe('5 - Foods page, Footer component tests', () => {
+describe('5 - Drinks page, Footer component tests', () => {
   it('checks if Footer is rendered with drink, explore and meal icons',
     async () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
