@@ -40,6 +40,7 @@ function Done() {
     <div>
       <Header />
       <button
+        name="allBtn"
         type="button"
         data-testid="filter-by-all-btn"
         value=""
