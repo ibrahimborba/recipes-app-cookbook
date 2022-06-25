@@ -4,9 +4,12 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
+import initialState from './mocks/foodsInitialState';
+import oneResult from './mocks/oneMeal';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
+const { searchResults: { meals } } = initialState;
 
 beforeEach(() => {
   jest.spyOn(global, 'fetch')
@@ -114,15 +117,9 @@ describe('2 - Foods page, SearchBar component tests', () => {
     userEvent.click(searchBtn);
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
   });
-
-  it('checks if path changes to recipe details if there is only one result', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-    const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
-    userEvent.click(searchBtnHeader);
-  });
 });
 
-describe('3 - Foods page CategoriesOptions component tests', () => {
+describe('3 - Foods page, CategoriesOptions component tests', () => {
   it('checks if CategoriesOptions is rendered as expected', async () => {
     const CATEGORIES_BUTTONS = 6;
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
@@ -163,7 +160,25 @@ describe('3 - Foods page CategoriesOptions component tests', () => {
   });
 });
 
-describe('4 - Foods page, Footer component tests', () => {
+describe('4 - Foods page, RecipeCard component test', () => {
+  it('checks if RecipeCards are rendered as expected', async () => {
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
+    const CARDS_LENGTH = 12;
+
+    const images = await screen.findAllByRole('img');
+    const recipesCardsImg = images.filter((img) => !img.alt.includes('icon'));
+    expect(recipesCardsImg).toHaveLength(CARDS_LENGTH);
+    recipesCardsImg.forEach((cardImg, index) => {
+      expect(cardImg.alt).toBe(meals[index].strMeal);
+      expect(cardImg.src).toBe(meals[index].strMealThumb);
+    });
+
+    const cardTitles = screen.getAllByRole('heading');
+    expect(cardTitles).toHaveLength(CARDS_LENGTH + 1);
+  });
+});
+
+describe('5 - Foods page, Footer component tests', () => {
   it('checks if Footer is rendered with drink, explore and meal icons',
     async () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
