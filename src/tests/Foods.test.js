@@ -151,7 +151,7 @@ describe('3 - Foods page, CategoriesOptions component tests', () => {
     expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Breakfast');
   });
 
-  it('checks if All Category filter fetch by generic search', async () => {
+  it('checks if All Categories filter fetch by generic search', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
     const allCategoryBtn = await screen.findByRole('button', { name: 'All' });
@@ -164,8 +164,8 @@ describe('3 - Foods page, CategoriesOptions component tests', () => {
 
 describe('4 - Foods page, RecipeCard component test', () => {
   it('checks if RecipeCards are rendered as expected', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
     const CARDS_LENGTH = 12;
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
 
     const images = await screen.findAllByRole('img');
     const recipesCardsImg = images.filter((img) => !img.alt.includes('icon'));

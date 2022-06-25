@@ -3,14 +3,14 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import meals from './mocks/meals';
 import nationalities from './mocks/nationalitiesMeal';
-import filtered from './mocks/americanMeals';
+import initialState from './mocks/foodsInitialState';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/explore/foods/nationalities';
+const { searchResults: { meals } } = initialState;
 
-describe('1 - Foods Nationalities page, Header component tests', () => {
+describe('1 - FoodsNationalities page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
     async () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
@@ -33,7 +33,7 @@ describe('1 - Foods Nationalities page, Header component tests', () => {
     });
 });
 
-describe('2 - Foods Nationalities page, Nationalities component tests', () => {
+describe('2 - FoodsNationalities page, Nationalities component tests', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch')
       .mockImplementation(() => Promise.resolve({
@@ -46,8 +46,9 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
   it('checks if Nationalities options are rendered as expected',
     async () => {
       const NATIONALITIES_OPTIONS = 28;
-
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+
+      expect(global.fetch).toHaveBeenCalledTimes(2);
 
       const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
       const categoriesBtns = screen.getAllByRole('option');
@@ -55,48 +56,55 @@ describe('2 - Foods Nationalities page, Nationalities component tests', () => {
       expect(categoriesBtns).toHaveLength(NATIONALITIES_OPTIONS);
     });
 
-  it('checks if when American option is clicked recipes by American nationality',
-    async () => {
-      const CARDS_LENGTH = 12;
-
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
-      const americanOptionBtn = await screen
-        .findByRole('option', { name: 'American' });
-      expect(americanOptionBtn).toBeInTheDocument();
-
-      jest.spyOn(global, 'fetch')
-        .mockImplementation(() => Promise.resolve({
-          json: () => Promise.resolve(filtered),
-        }));
-
-      userEvent.click(americanOptionBtn);
-
-      expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
-
-      const images = await screen.findAllByRole('img');
-      const recipesCards = images.filter((img) => !img.alt.includes('icon'));
-      expect(recipesCards).toHaveLength(CARDS_LENGTH);
-    });
-
-  it('checks if All Nationalities resets filter', async () => {
+  it(`checks if Nationalities fetch by nationality filter on click
+  and Nationalities options overlap each other fetch when clicked`,
+  async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
+    const britishOptionBtn = screen.getByRole('option', { name: 'British' });
 
-    const beefCategoryBtn = await screen.findByRole('option', { name: 'All' });
-    expect(beefCategoryBtn).toBeInTheDocument();
+    userEvent.click(americanOptionBtn);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
 
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(meals),
-      }));
+    userEvent.click(britishOptionBtn);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=British');
+  });
 
-    userEvent.click(beefCategoryBtn);
+  it('checks if All Nationalities filter fetch by generic search', async () => {
+    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+
+    const allCategoryBtn = await screen.findByRole('option', { name: 'All' });
+    expect(allCategoryBtn).toBeInTheDocument();
+
+    userEvent.click(allCategoryBtn);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
   });
 });
 
-describe('3 - Foods Nationalities page, Footer component tests', () => {
+describe('3 - FoodsNationalities page, RecipeCard component test', () => {
+  it('checks if RecipeCards are rendered as expected', async () => {
+    const CARDS_LENGTH = 12;
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
+
+    const images = await screen.findAllByRole('img');
+    const recipesCardsImg = images.filter((img) => !img.alt.includes('icon'));
+    expect(recipesCardsImg).toHaveLength(CARDS_LENGTH);
+    recipesCardsImg.forEach((cardImg, index) => {
+      expect(cardImg.alt).toBe(meals[index].strMeal);
+      expect(cardImg.src).toBe(meals[index].strMealThumb);
+    });
+
+    const cardTitles = screen.getAllByRole('heading');
+    cardTitles.shift();
+    expect(cardTitles).toHaveLength(CARDS_LENGTH);
+    cardTitles.forEach((cardTitle, index) => {
+      expect(cardTitle).toHaveTextContent(meals[index].strMeal);
+    });
+  });
+});
+
+describe('4 - FoodsNationalities page, Footer component tests', () => {
   it('checks if Footer is rendered with drink, explore and meal icons',
     async () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
