@@ -160,7 +160,7 @@ export const getRecommendationsThunk = (option) => async (dispatch) => {
 
   try {
     const data = await getRecommendations(option);
-
+    console.log(data);
     const NUMBER_OF_RECOMMENDARIONS = 6;
     const recommendations = Object
       .values(data)[0]

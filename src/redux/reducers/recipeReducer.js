@@ -6,6 +6,7 @@ import {
 
 const INITIAL_VALUE = {
   currentRecipe: {
+    alcoholic: '',
     category: '',
     categoryRecom: '',
     group: '',
@@ -14,7 +15,6 @@ const INITIAL_VALUE = {
     ingredients: [],
     instructions: '',
     nationality: '',
-    source: '',
     tags: '',
     title: '',
     type: '',
