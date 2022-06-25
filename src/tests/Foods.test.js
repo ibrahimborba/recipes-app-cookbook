@@ -176,7 +176,11 @@ describe('4 - Foods page, RecipeCard component test', () => {
     });
 
     const cardTitles = screen.getAllByRole('heading');
-    expect(cardTitles).toHaveLength(CARDS_LENGTH + 1);
+    cardTitles.shift();
+    expect(cardTitles).toHaveLength(CARDS_LENGTH);
+    cardTitles.forEach((cardTitle, index) => {
+      expect(cardTitle).toHaveTextContent(meals[index].strMeal);
+    });
   });
 });
 
