@@ -5,20 +5,16 @@ import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
 import initialState from './mocks/foodsInitialState';
-import oneResult from './mocks/oneMeal';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
 const { searchResults: { meals } } = initialState;
-
-beforeEach(() => {
+const setMock = () => beforeEach(() => {
   jest.spyOn(global, 'fetch')
     .mockImplementation(() => Promise.resolve({
       json: () => Promise.resolve(categories),
     }));
 });
-
-afterEach(() => jest.restoreAllMocks());
 
 describe('1 - Foods page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
@@ -43,6 +39,9 @@ describe('1 - Foods page, Header component tests', () => {
 });
 
 describe('2 - Foods page, SearchBar component tests', () => {
+  setMock();
+
+  afterEach(() => jest.restoreAllMocks());
   it('checks if SearchBar is rendered as expected', async () => {
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
 
@@ -120,6 +119,9 @@ describe('2 - Foods page, SearchBar component tests', () => {
 });
 
 describe('3 - Foods page, CategoriesOptions component tests', () => {
+  setMock();
+
+  afterEach(() => jest.restoreAllMocks());
   it('checks if CategoriesOptions is rendered as expected', async () => {
     const CATEGORIES_BUTTONS = 6;
     renderWithRouterRedux(<App />, { initialEntries: [PATH] });
