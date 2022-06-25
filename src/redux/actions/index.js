@@ -82,7 +82,9 @@ const formatIngredients = (recipe) => {
       || (ingredient === ' ' || measure === ' ');
 
     if (!isNull && !isEmpty) {
-      ingredients = [...ingredients, [ingredient, measure]];
+      const ingredientStr = ingredient ? ingredient.trim() : ingredient;
+      const measureStr = measure ? measure.trim() : measure;
+      ingredients = [...ingredients, [ingredientStr, measureStr]];
     }
   }
 
@@ -160,7 +162,7 @@ export const getRecommendationsThunk = (option) => async (dispatch) => {
 
   try {
     const data = await getRecommendations(option);
-    console.log(data);
+
     const NUMBER_OF_RECOMMENDARIONS = 6;
     const recommendations = Object
       .values(data)[0]

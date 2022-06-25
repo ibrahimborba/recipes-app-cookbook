@@ -1,4 +1,4 @@
-export const INGREDIENTS = [
+export const MEAL_INGREDIENTS = [
   ['digestive biscuits', '175g/6oz'],
   ['butter', '75g/3oz'],
   ['Bramley apples', '200g/7oz'],
@@ -10,11 +10,11 @@ export const INGREDIENTS = [
   ['flaked almonds', '50g/1¾oz'],
 ];
 
-export const INSTRUCTIONS = 'quam pellentesque nec nam aliquam sem et tortor';
+export const MEAL_INSTRUCTIONS = 'quam pellentesque nec nam aliquam sem et tortor';
 
 export const VIDEO_URL_EMBED = 'https://www.youtube.com/embed/rp8Slv4INLk';
 
-export const RECOMMENDATIONS = [
+export const DRINK_RECOMMENDATIONS = [
   {
     alcoholic: 'Optional alcohol',
     categoryRecom: 'Optional alcohol',
@@ -23,18 +23,9 @@ export const RECOMMENDATIONS = [
     id: '15997',
     image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
     ingredients: [
-      [
-        'Galliano',
-        '2 1/2 shots ',
-      ],
-      [
-        'Ginger ale',
-        null,
-      ],
-      [
-        'Ice',
-        null,
-      ],
+      ['Galliano', '2 1/2 shots'],
+      ['Ginger ale', null],
+      ['Ice', null],
     ],
     instructions: 'sed risus pretium quam vulputate dignissim',
     nationality: '',
@@ -51,22 +42,10 @@ export const RECOMMENDATIONS = [
     id: '17222',
     image: 'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
     ingredients: [
-      [
-        'Gin',
-        '1 3/4 shot ',
-      ],
-      [
-        'Grand Marnier',
-        '1 Shot ',
-      ],
-      [
-        'Lemon Juice',
-        '1/4 Shot',
-      ],
-      [
-        'Grenadine',
-        '1/8 Shot',
-      ],
+      ['Gin', '1 3/4 shot'],
+      ['Grand Marnier', '1 Shot'],
+      ['Lemon Juice', '1/4 Shot'],
+      ['Grenadine', '1/8 Shot'],
     ],
     instructions: 'sed risus pretium vulputate dignissim',
     nationality: '',
@@ -83,18 +62,9 @@ export const RECOMMENDATIONS = [
     id: '13501',
     image: 'https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg',
     ingredients: [
-      [
-        'Amaretto',
-        '1/3 ',
-      ],
-      [
-        'Baileys irish cream',
-        '1/3 ',
-      ],
-      [
-        'Cognac',
-        '1/3 ',
-      ],
+      ['Amaretto', '1/3'],
+      ['Baileys irish cream', '1/3'],
+      ['Cognac', '1/3'],
     ],
     instructions: 'sed pretium quam vulputate dignissim',
     nationality: '',
@@ -111,14 +81,8 @@ export const RECOMMENDATIONS = [
     id: '17203',
     image: 'https://www.thecocktaildb.com/images/media/drink/apneom1504370294.jpg',
     ingredients: [
-      [
-        'Creme de Cassis',
-        '1 part ',
-      ],
-      [
-        'Champagne',
-        '5 parts ',
-      ],
+      ['Creme de Cassis', '1 part'],
+      ['Champagne', '5 parts'],
     ],
     instructions: 'sed risus pretium quam vulputate.',
     nationality: '',
@@ -135,18 +99,9 @@ export const RECOMMENDATIONS = [
     id: '14229',
     image: 'https://www.thecocktaildb.com/images/media/drink/xxsxqy1472668106.jpg',
     ingredients: [
-      [
-        'Kahlua',
-        '1/3 part ',
-      ],
-      [
-        'Baileys irish cream',
-        '1/3 part ',
-      ],
-      [
-        'Frangelico',
-        '1/3 part ',
-      ],
+      ['Kahlua', '1/3 part'],
+      ['Baileys irish cream', '1/3 part'],
+      ['Frangelico', '1/3 part'],
     ],
     instructions: 'sed risus quam vulputate dignissim',
     nationality: '',
@@ -163,14 +118,8 @@ export const RECOMMENDATIONS = [
     id: '15288',
     image: 'https://www.thecocktaildb.com/images/media/drink/rtpxqw1468877562.jpg',
     ingredients: [
-      [
-        '151 proof rum',
-        '1/2 shot Bacardi ',
-      ],
-      [
-        'Wild Turkey',
-        '1/2 shot ',
-      ],
+      ['151 proof rum', '1/2 shot Bacardi'],
+      ['Wild Turkey', '1/2 shot'],
     ],
     instructions: 'Add both ingredients to shot glass, shoot, and get drunk quick',
     nationality: '',
@@ -181,7 +130,7 @@ export const RECOMMENDATIONS = [
   },
 ];
 
-export const INITIAL_STATE = {
+export const INITIAL_STATE_FOOD = {
   recipe: {
     currentRecipe: {
       alcoholic: '',
@@ -190,8 +139,8 @@ export const INITIAL_STATE = {
       group: 'meals',
       id: '52768',
       image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
-      ingredients: INGREDIENTS,
-      instructions: INSTRUCTIONS,
+      ingredients: MEAL_INGREDIENTS,
+      instructions: MEAL_INSTRUCTIONS,
       nationality: 'British',
       tags: ['Tart', 'Baking', 'Fruity'],
       title: 'Apple Frangipan Tart',
@@ -199,7 +148,7 @@ export const INITIAL_STATE = {
       video: 'https://www.youtube.com/watch?v=rp8Slv4INLk',
     },
     finishButtonDisabled: true,
-    recommendations: RECOMMENDATIONS,
+    recommendations: DRINK_RECOMMENDATIONS,
     isFetching: false,
     error: null,
     inProgress: false,

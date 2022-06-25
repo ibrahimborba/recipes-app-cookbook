@@ -40,7 +40,8 @@ function RecipeDetails() {
               ? (
                 <>
                   {ingredients.map((ingredient, index) => {
-                    const ingredientName = `${ingredient[0]} - ${ingredient[1]}`;
+                    const ingredientName = ingredient[1] !== null
+                      ? `${ingredient[0]} - ${ingredient[1]}` : `${ingredient[0]}`;
                     const isChecked = done.some((name) => name === ingredientName);
 
                     return (
@@ -71,14 +72,19 @@ function RecipeDetails() {
               )
               : (
                 <>
-                  {ingredients.map((ingredient, index) => (
-                    <li
-                      data-testid={ `${index}-ingredient-name-and-measure` }
-                      key={ `ingredient${index}` }
-                    >
-                      { `${ingredient[0]} - ${ingredient[1]}`}
-                    </li>
-                  ))}
+                  {ingredients.map((ingredient, index) => {
+                    const ingredientName = ingredient[1] !== null
+                      ? `${ingredient[0]} - ${ingredient[1]}` : `${ingredient[0]}`;
+
+                    return (
+                      <li
+                        data-testid={ `${index}-ingredient-name-and-measure` }
+                        key={ `ingredient${index}` }
+                      >
+                        { ingredientName }
+                      </li>
+                    );
+                  })}
                 </>
               )
           }
