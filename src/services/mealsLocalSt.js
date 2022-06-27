@@ -85,6 +85,7 @@ export const updateRecipeStatus = (recipeId, group, isDone = false) => {
 export const updateIngredients = (id, name, group) => {
   const recipesInProgress = readInProgressRecipes();
   const { [group]: { [id]: recipe } } = recipesInProgress;
+  console.log(recipe);
   const hasIngredient = recipe.some((ingredientName) => ingredientName === name);
   let ingredientsUpdated = [];
 
