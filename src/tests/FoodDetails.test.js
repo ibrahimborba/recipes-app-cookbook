@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import App from '../App';
 import {
   MEAL_INGREDIENTS, INITIAL_STATE_FOOD, MEAL_INSTRUCTIONS,
   DRINK_RECOMMENDATIONS, VIDEO_URL_EMBED,
@@ -10,6 +9,13 @@ import {
 import * as localStr from '../services/mealsLocalSt';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import FoodRecipe from '../pages/FoodRecipe';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({ id: '52768' }),
+  useRouteMatch: () => ({ path: '/foods/:id', params: { id: '52768' } }),
+}));
 
 const FOOD_DETAILS_URL = '/foods/52768';
 
@@ -33,7 +39,7 @@ describe('Test food detail page renderization', () => {
     const fetch = jest.spyOn(global, 'fetch');
 
     renderWithRouterRedux(
-      <App />,
+      <FoodRecipe />,
       {
         initialEntries: [FOOD_DETAILS_URL],
       },
@@ -49,19 +55,14 @@ describe('Test food detail page renderization', () => {
       global.fetch = jest.fn();
 
       renderWithRouterRedux(
-        <App />,
+        <FoodRecipe />,
         {
           initialState,
           initialEntries: [FOOD_DETAILS_URL],
         },
       );
 
-      await waitForElementToBeRemoved(
-        () => screen.getByText(/Loading/i),
-        { timeout: 3000 },
-      );
-
-      const coverImg = screen.getByRole('img', { name: 'Recipe' });
+      const coverImg = await screen.findByRole('img', { name: 'Recipe' });
       const recipeTitle = screen
         .getByRole('heading', { level: 2, name: 'Apple Frangipan Tart' });
       const shareBtn = screen.getByRole('img', { name: 'share icon' });
@@ -103,9 +104,7 @@ describe('Test food detail page renderization', () => {
 describe('Check if share button funcionality of food details page', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
-  afterEach(() => {
-    localStorage.clear();
-  });
+  afterEach(() => localStorage.clear());
 
   it('Test when click in share button the url is copied to clipboard',
     async () => {
@@ -118,19 +117,14 @@ describe('Check if share button funcionality of food details page', () => {
       const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
 
       renderWithRouterRedux(
-        <App />,
+        <FoodRecipe />,
         {
           initialState: INITIAL_STATE_FOOD,
           initialEntries: [FOOD_DETAILS_URL],
         },
       );
 
-      await waitForElementToBeRemoved(
-        () => screen.getByText(/Loading/i),
-        { timeout: 3000 },
-      );
-
-      userEvent.click(screen.getByRole('img', { name: 'share icon' }));
+      userEvent.click(await screen.findByRole('img', { name: 'share icon' }));
       expect(copy).toBeCalled();
       expect(screen.getByText(/Link copied!/i)).toBeInTheDocument();
 
@@ -144,28 +138,21 @@ describe('Check if share button funcionality of food details page', () => {
 describe('Check if favorite button funcionality of food details page', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
-  afterEach(() => {
-    localStorage.clear();
-  });
+  afterEach(() => localStorage.clear());
 
   it('Test if click in favorite button the recipe is saved on local storage',
     async () => {
       const saveFavoriteRecipe = jest.spyOn(localStr, 'updateFavoriteRecipes');
 
       renderWithRouterRedux(
-        <App />,
+        <FoodRecipe />,
         {
           initialState: INITIAL_STATE_FOOD,
           initialEntries: [FOOD_DETAILS_URL],
         },
       );
 
-      await waitForElementToBeRemoved(
-        () => screen.getByText(/Loading/i),
-        { timeout: 3000 },
-      );
-
-      const favoriteBtn = screen.getByRole('img', { name: /favorite icon/i });
+      const favoriteBtn = await screen.findByRole('img', { name: /favorite icon/i });
       expect(favoriteBtn.src).toBe(`http://localhost/${whiteHeartIcon}`);
 
       userEvent.click(favoriteBtn);
@@ -187,18 +174,77 @@ describe('Check if favorite button funcionality of food details page', () => {
       }]));
 
       renderWithRouterRedux(
-        <App />,
+        <FoodRecipe />,
         {
           initialState: INITIAL_STATE_FOOD,
           initialEntries: [FOOD_DETAILS_URL],
         },
       );
 
-      await waitForElementToBeRemoved(
-        () => screen.getByText(/Loading/i),
-        { timeout: 3000 },
-      );
-
-      expect(screen.getByRole('img', { name: /favorite icon/i }).src).toBe(`http://localhost/${blackHeartIcon}`);
+      const favoriteBtn = await screen.findByRole('img', { name: /favorite icon/i });
+      expect(favoriteBtn.src).toBe(`http://localhost/${blackHeartIcon}`);
     });
 });
+
+describe('Test start button funcionality of drink details page',
+  () => {
+    beforeEach(() => setAllLocalStorageKeys());
+
+    afterEach(() => localStorage.clear());
+
+    it('Test if click in start button go to in progress page',
+      async () => {
+        const { history } = renderWithRouterRedux(
+          <FoodRecipe />,
+          {
+            initialState: INITIAL_STATE_FOOD,
+            initialEntries: [FOOD_DETAILS_URL],
+          },
+        );
+
+        userEvent.click(await screen.findByRole('button', { name: /Start Recipe/i }));
+
+        expect(history.location.pathname).toBe('/foods/52768/in-progress');
+      });
+
+    it('Test if the recipe is already in progress if the button text changes',
+      async () => {
+        localStorage.setItem(
+          'inProgressRecipes',
+          JSON.stringify({ cocktails: {}, meals: { 52768: [] } }),
+        );
+
+        renderWithRouterRedux(
+          <FoodRecipe />,
+          {
+            initialState: INITIAL_STATE_FOOD,
+            initialEntries: [FOOD_DETAILS_URL],
+          },
+        );
+
+        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
+        expect(startBtn).toBeInTheDocument();
+      });
+
+    it('Test if the recipe is in progress the button redirect to in progress page',
+      async () => {
+        localStorage.setItem(
+          'inProgressRecipes',
+          JSON.stringify({ cocktails: {}, meals: { 52768: [] } }),
+        );
+
+        const { history } = renderWithRouterRedux(
+          <FoodRecipe />,
+          {
+            initialState: INITIAL_STATE_FOOD,
+            initialEntries: [FOOD_DETAILS_URL],
+          },
+        );
+
+        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
+
+        userEvent.click(startBtn);
+
+        expect(history.location.pathname).toBe('/foods/52768/in-progress');
+      });
+  });
