@@ -35,16 +35,12 @@ function SearchBar() {
   useEffect(() => {
     if (fetched) {
       switch (pathname) {
-      case '/foods': {
-        checkSearchResult(mealResults);
-        break;
-      }
       case '/drinks': {
-        checkSearchResult(drinkResults);
-        break;
+        return checkSearchResult(drinkResults);
       }
-      default:
-        return false;
+      default: {
+        return checkSearchResult(mealResults);
+      }
       }
     }
   }, [fetched, checkSearchResult, mealResults, drinkResults, pathname]);
@@ -57,18 +53,14 @@ function SearchBar() {
     }
 
     switch (pathname) {
-    case '/foods': {
-      await dispatch(fetchMealResults(searchText, checkedOption));
-      setFetched(true);
-      break;
-    }
     case '/drinks': {
       await dispatch(fetchDrinkResults(searchText, checkedOption));
-      setFetched(true);
-      break;
+      return setFetched(true);
     }
-    default:
-      return false;
+    default: {
+      await dispatch(fetchMealResults(searchText, checkedOption));
+      return setFetched(true);
+    }
     }
   };
 
