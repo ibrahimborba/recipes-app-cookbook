@@ -30,7 +30,7 @@ describe('1 - Foods Ingredients page, testing components render', () => {
       expect(profileImg).toBeInTheDocument();
     });
 
-  it('checks if by Ingredients buttons are rendered',
+  it('checks if Ingredients buttons are rendered',
     () => {
       const INGREDIENTS_BUTTONS = 12;
       renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
@@ -69,7 +69,7 @@ describe('2 - Foods Ingredients page, testing buttons redirect to expected paths
       expect(history.location.pathname).toBe('/profile');
     });
 
-  it('checks if Ingredient button redirects to "/foods" on click',
+  it('checks if a Ingredient button redirects to "/foods" on click',
     async () => {
       const { history } = renderWithRouterRedux(<App />, {
         initialEntries: [PATH], initialState });
