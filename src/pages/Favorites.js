@@ -9,8 +9,8 @@ function Favorites() {
   const [favRecipes, setFavRecipes] = useState([]);
   const [favFiltered, setFavFiltered] = useState([]);
   const [filter, setFilter] = useState('');
-  const [showMessage, setShowMessage] = useState(false);
   const [removeFav, setRemoveFav] = useState(false);
+  const [clickedBtn, setClickedBtn] = useState('');
 
   useEffect(() => {
     setFavRecipes(getFavoriteRecipes());
@@ -30,8 +30,9 @@ function Favorites() {
 
     const SECONDS = 1500;
 
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), SECONDS);
+    setClickedBtn(id);
+
+    setTimeout(() => setClickedBtn(''), SECONDS);
   };
 
   const handleFilterBtn = ({ target: { value } }) => {
@@ -39,7 +40,6 @@ function Favorites() {
   };
 
   const favoriteRecipe = (id) => () => {
-    console.log(id);
     updateFavoriteRecipes({ id });
     setRemoveFav(!removeFav);
   };
@@ -78,7 +78,7 @@ function Favorites() {
           <Link to={ `/${fav.type}s/${fav.id}` }>
             <img
               src={ fav.image }
-              alt={ fav.strIngredient1 }
+              alt={ fav.id }
               data-testid={ `${index}-horizontal-image` }
               style={ { width: '200px' } }
             />
@@ -109,7 +109,7 @@ function Favorites() {
             />
           </button>
           {
-            showMessage
+            clickedBtn === fav.id
               && (
                 <span>Link copied!</span>
               )
