@@ -6,6 +6,7 @@ import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import Favorites from '../pages/Favorites';
 
 const PATH = '/favorite-recipes';
+const horizontalTestId = '0-horizontal-top-text';
 
 const setFavLocalStorageKey = () => {
   localStorage.setItem(
@@ -64,7 +65,7 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
     userEvent.click(allBtn);
 
     const foodImg = screen.getByRole('img', { name: '52771' });
-    const foodInfos = screen.getByTestId('0-horizontal-top-text');
+    const foodInfos = screen.getByTestId(horizontalTestId);
 
     const drinkImg = screen.getByRole('img', { name: 'Aquamarine' });
     const drinkInfos = screen.getByTestId('1-horizontal-top-text');
@@ -90,7 +91,7 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
     );
 
     const drinkImg = screen.getByRole('img', { name: 'Aquamarine' });
-    const drinkInfos = screen.getByTestId('0-horizontal-top-text');
+    const drinkInfos = screen.getByTestId(horizontalTestId);
 
     expect(drinkImg).toBeInTheDocument();
     expect(drinkInfos).toHaveTextContent(/Alcoholic/i);
@@ -126,7 +127,7 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
     renderWithRouterRedux(<Favorites />, { initialEntries: [PATH] });
 
     const foodImg = screen.getByRole('img', { name: '52771' });
-    const foodInfos = screen.getByTestId('0-horizontal-top-text');
+    const foodInfos = screen.getByTestId(horizontalTestId);
 
     const drinkImg = screen.getByRole('img', { name: 'Aquamarine' });
     const drinkInfos = screen.getByTestId('1-horizontal-top-text');
