@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 
 function RecipeTitle() {
   const {
@@ -26,7 +26,7 @@ function RecipeTitle() {
 
   const copyToClipBoard = () => {
     const url = window.location.href.replace('/in-progress', '');
-    navigator.clipboard.writeText(url);
+    window.navigator.clipboard.writeText(url);
 
     const SECONDS = 2000;
 
