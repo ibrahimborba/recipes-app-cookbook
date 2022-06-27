@@ -6,7 +6,7 @@ import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 
 const PATH = '/explore';
 
-describe('1 - Explore page, testing Components render', () => {
+describe('1 - Explore page, testing components render', () => {
   it('checks if Header is rendered with Profile image and page Title',
     () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
