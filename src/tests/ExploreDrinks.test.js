@@ -72,7 +72,7 @@ describe('2 - Explore Foods page, testing buttons redirect to expected paths', (
       expect(global.fetch).toBeCalledWith('https://www.thecocktaildb.com/api/json/v1/1/random.php');
     });
 
-  it('checks if when Drink, Explore and Food icons redirect to expected paths on click',
+  it('checks if Footer Drink, Explore and Food icons redirect to expected paths on click',
     () => {
       jest.spyOn(global, 'fetch')
         .mockImplementation(() => Promise.resolve({
