@@ -8,7 +8,7 @@ import categories from './mocks/categoriesMeal';
 
 const PATH = '/explore/foods';
 
-describe('1 - Explore Foods page, testing components render', () => {
+describe('1 - ExploreFoods page, testing components render', () => {
   it('checks if Header is rendered with Profile image and page Title',
     () => {
       renderWithRouterRedux(<App />, { initialEntries: [PATH] });
@@ -41,7 +41,7 @@ describe('1 - Explore Foods page, testing components render', () => {
     });
 });
 
-describe('2 - Explore Foods page, testing buttons redirect to expected paths', () => {
+describe('2 - ExploreFoods page, testing buttons redirect to expected paths', () => {
   afterEach(() => jest.restoreAllMocks());
 
   it('checks if Header Profile image redirects to "/profile" on click',

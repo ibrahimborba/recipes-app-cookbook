@@ -16,7 +16,7 @@ const setMock = () => beforeEach(() => {
     }));
 });
 
-describe('1 - Foods Ingredients page, testing components render', () => {
+describe('1 - FoodsIngredients page, testing components render', () => {
   setMock();
   afterEach(() => jest.restoreAllMocks());
 
@@ -57,7 +57,7 @@ describe('1 - Foods Ingredients page, testing components render', () => {
     });
 });
 
-describe('2 - Foods Ingredients page, testing buttons redirect to expected paths', () => {
+describe('2 - FoodsIngredients page, testing buttons redirect to expected paths', () => {
   setMock();
   afterEach(() => jest.restoreAllMocks());
 

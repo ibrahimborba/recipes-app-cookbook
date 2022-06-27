@@ -1,10 +1,11 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import ingredients from './mocks/ingredientsDrink';
 import initialState from './mocks/ingredientsInitialState';
+import categories from './mocks/categoriesDrink';
 
 const PATH = '/explore/drinks/ingredients';
 const { ingredientsResults: { drinks } } = initialState;
@@ -15,7 +16,7 @@ const setMock = () => beforeEach(() => {
     }));
 });
 
-describe('1 - Drinks Ingredients page, testing components render', () => {
+describe('1 - DrinksIngredients page, testing components render', () => {
   setMock();
   afterEach(() => jest.restoreAllMocks());
 
@@ -53,5 +54,52 @@ describe('1 - Drinks Ingredients page, testing components render', () => {
       expect(drinksBtnFooter).toBeInTheDocument();
       expect(exploreBtnFooter).toBeInTheDocument();
       expect(mealBtnFooter).toBeInTheDocument();
+    });
+});
+
+describe('2 - DrinksIngredients page, testing buttons redirect to expected paths', () => {
+  setMock();
+  afterEach(() => jest.restoreAllMocks());
+
+  it('checks if Header Profile image redirects to "/profile" on click',
+    async () => {
+      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      const profileImg = screen.getByRole('img', { name: 'profile icon' });
+      userEvent.click(profileImg);
+      expect(history.location.pathname).toBe('/profile');
+    });
+
+  it('checks if a Ingredient button redirects to "/foods" on click',
+    async () => {
+      const { history } = renderWithRouterRedux(<App />, {
+        initialEntries: [PATH], initialState });
+
+      const chickenBtn = await screen.findByRole('img', { name: 'Gin' });
+      userEvent.click(chickenBtn);
+
+      expect(history.location.pathname).toBe('/drinks');
+    });
+
+  it('checks if Footer Drink, Explore and Food icons redirect to expected paths on click',
+    () => {
+      jest.restoreAllMocks();
+
+      jest.spyOn(global, 'fetch')
+        .mockImplementation(() => Promise.resolve({
+          json: () => Promise.resolve(categories),
+        }));
+      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+
+      const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
+      userEvent.click(drinksBtnFooter);
+      expect(history.location.pathname).toBe('/drinks');
+
+      const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
+      userEvent.click(exploreBtnFooter);
+      expect(history.location.pathname).toBe('/explore');
+
+      const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
+      userEvent.click(mealBtnFooter);
+      expect(history.location.pathname).toBe('/foods');
     });
 });
