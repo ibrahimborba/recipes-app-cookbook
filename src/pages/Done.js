@@ -8,7 +8,7 @@ function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [doneFiltered, setDoneFiltered] = useState([]);
   const [filter, setFilter] = useState('');
-  const [showMessage, setShowMessage] = useState(false);
+  const [clickedBtn, setClickedBtn] = useState('');
 
   useEffect(() => {
     setDoneRecipes(getRecipesDone());
@@ -28,8 +28,9 @@ function Done() {
 
     const SECONDS = 1500;
 
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), SECONDS);
+    setClickedBtn(id);
+
+    setTimeout(() => setClickedBtn(''), SECONDS);
   };
 
   const handleFilterBtn = ({ target: { value } }) => {
@@ -71,7 +72,7 @@ function Done() {
           <Link to={ `/${done.type}s/${done.id}` }>
             <img
               src={ done.image }
-              alt={ done.strIngredient1 }
+              alt={ done.id }
               data-testid={ `${index}-horizontal-image` }
               style={ { width: '200px' } }
             />
@@ -107,7 +108,7 @@ function Done() {
             />
           </button>
           {
-            showMessage
+            clickedBtn === done.id
               && (
                 <span>Link copied!</span>
               )
