@@ -40,7 +40,6 @@ function Favorites() {
   };
 
   const favoriteRecipe = (id) => () => {
-    console.log(id);
     updateFavoriteRecipes({ id });
     setRemoveFav(!removeFav);
   };

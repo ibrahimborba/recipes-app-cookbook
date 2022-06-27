@@ -3,10 +3,11 @@ import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
+import Favorites from '../pages/Favorites';
 
 const PATH = '/favorite-recipes';
 
-const setDoneLocalStorageKey = () => {
+const setFavLocalStorageKey = () => {
   localStorage.setItem(
     'favoriteRecipes',
     JSON.stringify([
@@ -52,7 +53,7 @@ describe('1 - Favorites page inputs tests', () => {
 });
 
 describe('2 - Favorites page foods and drinks card renderization', () => {
-  beforeEach(() => setDoneLocalStorageKey());
+  beforeEach(() => setFavLocalStorageKey());
   afterEach(() => localStorage.clear());
 
   it('checks if done foods and drinks cards are rendered as expected', () => {
@@ -117,6 +118,32 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
 
     await waitForElementToBeRemoved(
       () => screen.getByText(/Link copied!/i),
+      { timeout: 1500 },
+    );
+  });
+
+  it('checks if remove favorite button works as expected', async () => {
+    renderWithRouterRedux(<Favorites />, { initialEntries: [PATH] });
+
+    const foodImg = screen.getByRole('img', { name: '52771' });
+    const foodInfos = screen.getByTestId('0-horizontal-top-text');
+
+    const drinkImg = screen.getByRole('img', { name: 'Aquamarine' });
+    const drinkInfos = screen.getByTestId('1-horizontal-top-text');
+
+    expect(foodImg).toBeInTheDocument();
+    expect(foodImg).toBeInTheDocument();
+    expect(foodInfos).toHaveTextContent(/Italian - Vegetarian/i);
+
+    expect(drinkImg).toBeInTheDocument();
+    expect(drinkInfos).toHaveTextContent(/Alcoholic/i);
+
+    const removefavoriteBtn = screen.getAllByRole('img', { name: 'favorite icon' });
+    console.log(removefavoriteBtn);
+    userEvent.click(removefavoriteBtn[1]);
+
+    await waitForElementToBeRemoved(
+      () => screen.getByText(/Aquamarine/i),
       { timeout: 1500 },
     );
   });
