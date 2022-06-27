@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 
-// const SEARCH_ICON = 'search icon';
 const PATH = '/explore';
 
 describe('1 - Explore page, testing Components render', () => {
