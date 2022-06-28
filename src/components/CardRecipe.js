@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
+import StyledCardRecipe from '../styled/StyledCardRecipe';
 
 function CardRecipe({ recipeID, recipeImg, recipeTitle, index }) {
   const { pathname } = useLocation();
 
   return (
     <Link to={ `${pathname}/${recipeID}` }>
-      <div data-testid={ `${index}-recipe-card` }>
+      <StyledCardRecipe data-testid={ `${index}-recipe-card` } recipeImg>
         <img
           data-testid={ `${index}-card-img` }
           src={ recipeImg }
@@ -15,7 +16,7 @@ function CardRecipe({ recipeID, recipeImg, recipeTitle, index }) {
           style={ { width: '200px' } }
         />
         <h3 data-testid={ `${index}-card-name` }>{ recipeTitle }</h3>
-      </div>
+      </StyledCardRecipe>
     </Link>
   );
 }

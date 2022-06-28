@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
 import CardRecipe from '../components/CardRecipe';
 import { fetchMealResults } from '../redux/actions';
+import StyledCardGrid from '../styled/StyledCardGrid';
 
 function Foods() {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ function Foods() {
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { mealResults.length > 0
+      <StyledCardGrid>
+        { mealResults.length > 0
        && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
          <CardRecipe
            key={ meal.idMeal }
@@ -32,6 +34,7 @@ function Foods() {
            index={ index }
          />
        ))}
+      </StyledCardGrid>
       <Footer />
     </>
   );
