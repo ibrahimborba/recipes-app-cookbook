@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
+import CardRecipe from '../components/CardRecipe';
 import { fetchDrinkResults } from '../redux/actions';
 
 function Drinks() {
@@ -24,22 +24,13 @@ function Drinks() {
       <CategoriesOptions />
       { drinkResults.length > 0
        && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
-         <Link
+         <CardRecipe
            key={ drink.idDrink }
-           to={ `/drinks/${drink.idDrink}` }
-         >
-           <div
-             data-testid={ `${index}-recipe-card` }
-           >
-             <img
-               data-testid={ `${index}-card-img` }
-               src={ drink.strDrinkThumb }
-               alt={ drink.strDrink }
-               style={ { width: '200px' } }
-             />
-             <h3 data-testid={ `${index}-card-name` }>{ drink.strDrink }</h3>
-           </div>
-         </Link>
+           recipeID={ drink.idDrink }
+           recipeImg={ drink.strDrinkThumb }
+           recipeTitle={ drink.strDrink }
+           index={ index }
+         />
        ))}
       <Footer />
     </>

@@ -1,39 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import shareIcon from '../images/shareIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
+import CardDoneFav from '../components/CardDoneFav';
 import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 
 function Favorites() {
   const [favRecipes, setFavRecipes] = useState([]);
-  const [favFiltered, setFavFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('all');
   const [removeFav, setRemoveFav] = useState(false);
-  const [clickedBtn, setClickedBtn] = useState('');
 
   useEffect(() => {
     setFavRecipes(getFavoriteRecipes());
-    setFavFiltered(getFavoriteRecipes());
   }, [removeFav]);
 
   useEffect(() => {
-    const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
-    if (filteredByType.length === 0) {
-      return setFavFiltered(favRecipes);
+    if (filter === 'all') {
+      return setFavRecipes(getFavoriteRecipes());
     }
-    return setFavFiltered(filteredByType);
-  }, [filter, favRecipes]);
-
-  const copyToClipBoard = (id, type) => () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
-
-    const SECONDS = 1500;
-
-    setClickedBtn(id);
-
-    setTimeout(() => setClickedBtn(''), SECONDS);
-  };
+    const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
+    return setFavRecipes(filteredByType);
+  }, [filter]);
 
   const handleFilterBtn = ({ target: { value } }) => {
     setFilter(value);
@@ -50,7 +35,7 @@ function Favorites() {
       <button
         type="button"
         data-testid="filter-by-all-btn"
-        value=""
+        value="all"
         onClick={ handleFilterBtn }
       >
         All
@@ -71,60 +56,19 @@ function Favorites() {
       >
         Drinks
       </button>
-      {favFiltered.map((fav, index) => (
-        <div
+      {favRecipes.map((fav, index) => (
+        <CardDoneFav
           key={ fav.id }
-        >
-          <Link to={ `/${fav.type}s/${fav.id}` }>
-            <img
-              src={ fav.image }
-              alt={ fav.id }
-              data-testid={ `${index}-horizontal-image` }
-              style={ { width: '200px' } }
-            />
-          </Link>
-          <p
-            data-testid={ `${index}-horizontal-top-text` }
-          >
-            {
-              fav.type === 'food'
-                ? (`${fav.nationality} - ${fav.category}`) : (`${fav.alcoholicOrNot}`)
-            }
-          </p>
-          <Link to={ `/${fav.type}s/${fav.id}` }>
-            <p
-              data-testid={ `${index}-horizontal-name` }
-            >
-              { fav.name }
-            </p>
-          </Link>
-          <button
-            type="button"
-            onClick={ copyToClipBoard(fav.id, fav.type) }
-          >
-            <img
-              src={ shareIcon }
-              alt={ fav.name }
-              data-testid={ `${index}-horizontal-share-btn` }
-            />
-          </button>
-          {
-            clickedBtn === fav.id
-              && (
-                <span>Link copied!</span>
-              )
-          }
-          <button
-            type="button"
-            onClick={ favoriteRecipe(fav.id) }
-          >
-            <img
-              data-testid={ `${index}-horizontal-favorite-btn` }
-              src={ blackHeartIcon }
-              alt="favorite icon"
-            />
-          </button>
-        </div>
+          recipeID={ fav.id }
+          recipeImg={ fav.image }
+          recipeTitle={ fav.name }
+          recipeType={ fav.type }
+          recipeNationality={ fav.nationality }
+          recipeCategory={ fav.category }
+          recipeAlcohol={ fav.alcoholicOrNot }
+          index={ index }
+          favoriteRecipe={ favoriteRecipe }
+        />
       ))}
     </div>
   );

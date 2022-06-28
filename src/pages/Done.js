@@ -1,37 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import shareIcon from '../images/shareIcon.svg';
+import CardDoneFav from '../components/CardDoneFav';
 import { getRecipesDone } from '../services/mealsLocalSt';
 
 function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
-  const [doneFiltered, setDoneFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [clickedBtn, setClickedBtn] = useState('');
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     setDoneRecipes(getRecipesDone());
-    setDoneFiltered(getRecipesDone());
   }, []);
 
   useEffect(() => {
-    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
-    if (filteredByType.length === 0) {
-      return setDoneFiltered(doneRecipes);
+    if (filter === 'all') {
+      return setDoneRecipes(getRecipesDone());
     }
-    return setDoneFiltered(filteredByType);
-  }, [filter, doneRecipes]);
-
-  const copyToClipBoard = (id, type) => () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
-
-    const SECONDS = 1500;
-
-    setClickedBtn(id);
-
-    setTimeout(() => setClickedBtn(''), SECONDS);
-  };
+    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
+    return setDoneRecipes(filteredByType);
+  }, [filter]);
 
   const handleFilterBtn = ({ target: { value } }) => {
     setFilter(value);
@@ -44,7 +30,7 @@ function Done() {
         name="allBtn"
         type="button"
         data-testid="filter-by-all-btn"
-        value=""
+        value="all"
         onClick={ handleFilterBtn }
       >
         All
@@ -65,63 +51,20 @@ function Done() {
       >
         Drinks
       </button>
-      {doneFiltered.map((done, index) => (
-        <div
+      {doneRecipes.map((done, index) => (
+        <CardDoneFav
           key={ done.id }
-        >
-          <Link to={ `/${done.type}s/${done.id}` }>
-            <img
-              src={ done.image }
-              alt={ done.id }
-              data-testid={ `${index}-horizontal-image` }
-              style={ { width: '200px' } }
-            />
-          </Link>
-          <p
-            data-testid={ `${index}-horizontal-top-text` }
-          >
-            {
-              done.type === 'food'
-                ? (`${done.nationality} - ${done.category}`) : (`${done.alcoholicOrNot}`)
-            }
-          </p>
-          <Link to={ `/${done.type}s/${done.id}` }>
-            <p
-              data-testid={ `${index}-horizontal-name` }
-            >
-              { done.name }
-            </p>
-          </Link>
-          <p
-            data-testid={ `${index}-horizontal-done-date` }
-          >
-            { done.doneDate }
-          </p>
-          <button
-            type="button"
-            onClick={ copyToClipBoard(done.id, done.type) }
-          >
-            <img
-              src={ shareIcon }
-              alt={ done.name }
-              data-testid={ `${index}-horizontal-share-btn` }
-            />
-          </button>
-          {
-            clickedBtn === done.id
-              && (
-                <span>Link copied!</span>
-              )
-          }
-          { done.tags.map((tag, tagIndex) => (
-            <p
-              key={ tagIndex }
-              data-testid={ `0-${tag}-horizontal-tag` }
-            >
-              { tag }
-            </p>
-          )) }
-        </div>
+          recipeID={ done.id }
+          recipeImg={ done.image }
+          recipeTitle={ done.name }
+          recipeType={ done.type }
+          recipeNationality={ done.nationality }
+          recipeCategory={ done.category }
+          recipeAlcohol={ done.alcoholicOrNot }
+          recipeDate={ done.doneDate }
+          recipeTags={ done.tags }
+          index={ index }
+        />
       ))}
     </div>
   );
