@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function CardDoneFav(props) {
   const [clickedBtn, setClickedBtn] = useState(false);
+  const { pathname } = useLocation();
 
   const {
     recipeID,
@@ -16,7 +18,8 @@ function CardDoneFav(props) {
     recipeAlcohol,
     recipeDate,
     recipeTags,
-    index } = props;
+    index,
+    favoriteRecipe } = props;
 
   const copyToClipBoard = (id, type) => () => {
     navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
@@ -70,6 +73,21 @@ function CardDoneFav(props) {
           data-testid={ `${index}-horizontal-share-btn` }
         />
       </button>
+      {
+        pathname === '/favorite-recipes'
+        && (
+          <button
+            type="button"
+            onClick={ favoriteRecipe(recipeID) }
+          >
+            <img
+              data-testid={ `${index}-horizontal-favorite-btn` }
+              src={ blackHeartIcon }
+              alt="favorite icon"
+            />
+          </button>
+        )
+      }
     </div>
   );
 }
@@ -85,7 +103,7 @@ CardDoneFav.propTypes = {
   recipeAlcohol: PropTypes.string,
   recipeDate: PropTypes.string,
   recipeTags: PropTypes.arrayOf(PropTypes.string),
-
+  favoriteRecipe: PropTypes.func,
 };
 
 CardDoneFav.defaultProps = {
@@ -94,6 +112,7 @@ CardDoneFav.defaultProps = {
   recipeAlcohol: '',
   recipeDate: '',
   recipeTags: [],
+  favoriteRecipe: '',
 };
 
 export default CardDoneFav;

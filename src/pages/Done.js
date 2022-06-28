@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import CardDoneFav from '../components/CardDoneFav';
 import Header from '../components/Header';
+import CardDoneFav from '../components/CardDoneFav';
 import { getRecipesDone } from '../services/mealsLocalSt';
 
 function Done() {
