@@ -82,7 +82,9 @@ const formatIngredients = (recipe) => {
       || (ingredient === ' ' || measure === ' ');
 
     if (!isNull && !isEmpty) {
-      ingredients = [...ingredients, [ingredient, measure]];
+      const ingredientStr = ingredient ? ingredient.trim() : ingredient;
+      const measureStr = measure ? measure.trim() : measure;
+      ingredients = [...ingredients, [ingredientStr, measureStr]];
     }
   }
 
