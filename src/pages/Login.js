@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { updateUser } from '../services/userLocalSt';
 import saveTokenMeals from '../services/mealsLocalSt';
 
+/* Pre merge branch */
+
 function Login() {
   const history = useHistory();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -19,9 +21,10 @@ function Login() {
 
   const handleSubmitBtn = (event) => {
     event.preventDefault();
-    console.log(user.email, user.password);
+
     updateUser(user.email);
     saveTokenMeals();
+
     history.push('/foods');
   };
 
@@ -48,6 +51,7 @@ function Login() {
         <label htmlFor="password">
           Senha:
           <input
+            autoComplete="current-password"
             name="password"
             type="password"
             data-testid="password-input"
@@ -56,6 +60,7 @@ function Login() {
           />
         </label>
         <button
+          name="submit"
           type="submit"
           data-testid="login-submit-btn"
           disabled={ isDisabled }

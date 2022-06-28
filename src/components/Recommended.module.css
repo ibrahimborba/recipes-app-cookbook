@@ -1,0 +1,16 @@
+.recommendationsContainer {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+.card {
+  box-sizing: border-box;
+  flex: none;
+  margin: 0 5%;
+  width: 40%;
+}
+
+.img {
+  width: 100%;
+}

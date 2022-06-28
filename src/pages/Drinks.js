@@ -1,29 +1,36 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import CategoriesOptions from '../components/CategoriesOptions';
+import CardRecipe from '../components/CardRecipe';
+import { fetchDrinkResults } from '../redux/actions';
 
 function Drinks() {
-  const MAX_ITEMS_DISPLAY = 12;
+  const dispatch = useDispatch();
   const drinkResults = useSelector((state) => state.searchResults.drinks);
+  const searchOptions = useSelector((state) => state.searchOptions);
+
+  const MAX_ITEMS_DISPLAY = 12;
+
+  useEffect(() => {
+    const { search, option } = searchOptions;
+    dispatch(fetchDrinkResults(search, option));
+  }, [dispatch, searchOptions]);
 
   return (
     <>
       <Header enableSearch />
-      { drinkResults.length > 1
+      <CategoriesOptions />
+      { drinkResults.length > 0
        && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
-         <div
+         <CardRecipe
            key={ drink.idDrink }
-           data-testid={ `${index}-recipe-card` }
-         >
-           <img
-             data-testid={ `${index}-card-img` }
-             src={ drink.strDrinkThumb }
-             alt={ drink.strDrink }
-             style={ { width: '200px' } }
-           />
-           <p data-testid={ `${index}-card-name` }>{ drink.strDrink }</p>
-         </div>
+           recipeID={ drink.idDrink }
+           recipeImg={ drink.strDrinkThumb }
+           recipeTitle={ drink.strDrink }
+           index={ index }
+         />
        ))}
       <Footer />
     </>
