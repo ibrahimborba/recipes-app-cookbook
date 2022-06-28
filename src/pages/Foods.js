@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
-import { fetchMealResults } from '../redux/actions';
 import RecipeCard from '../components/RecipeCard';
+import { fetchMealResults } from '../redux/actions';
 
 function Foods() {
   const dispatch = useDispatch();
