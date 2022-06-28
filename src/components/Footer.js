@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import exploreIcon from '../images/exploreIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
-import '../Footer.css';
+import StyledFooter from '../styled/StyledFooter';
 
 function Footer() {
   const history = useHistory();
   return (
-    <footer data-testid="footer" className="footer-class">
+    <StyledFooter data-testid="footer">
       <button
         type="button"
         name="drink-icon"
@@ -42,7 +42,7 @@ function Footer() {
           alt="meal-icon"
         />
       </button>
-    </footer>
+    </StyledFooter>
   );
 }
 

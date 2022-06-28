@@ -1,0 +1,41 @@
+import styled from 'styled-components';
+
+const StyledFooter = styled.footer`
+  background-color: ${(props) => props.theme.dark};
+  color: ${(props) => props.theme.mainColor};
+  width: 100%;
+  height: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  bottom: 0;
+  position: fixed;
+
+  button {
+    height: 55px;
+    background-color: ${(props) => props.theme.mainColor};
+    color: ${(props) => props.theme.secondaryColor};
+    border: 2px solid ${(props) => props.theme.secondaryColor};
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+
+    img {
+      background-color: ${(props) => props.theme.mainColor};
+      color: ${(props) => props.theme.accent};
+    }
+  }
+
+  button:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.secondaryColor};
+    color: ${(props) => props.theme.mainColor};
+  }
+`;
+
+export default StyledFooter;
