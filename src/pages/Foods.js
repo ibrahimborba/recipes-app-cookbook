@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
-import RecipeCard from '../components/RecipeCard';
+import CardRecipe from '../components/CardRecipe';
 import { fetchMealResults } from '../redux/actions';
 
 function Foods() {
@@ -24,7 +24,7 @@ function Foods() {
       <CategoriesOptions />
       { mealResults.length > 0
        && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
-         <RecipeCard
+         <CardRecipe
            key={ meal.idMeal }
            recipeID={ meal.idMeal }
            recipeImg={ meal.strMealThumb }

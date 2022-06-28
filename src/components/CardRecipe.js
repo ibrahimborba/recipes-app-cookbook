@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 
-function RecipeCard({ recipeID, recipeImg, recipeTitle, index }) {
+function CardRecipe({ recipeID, recipeImg, recipeTitle, index }) {
   const { pathname } = useLocation();
 
   return (
@@ -20,11 +20,11 @@ function RecipeCard({ recipeID, recipeImg, recipeTitle, index }) {
   );
 }
 
-RecipeCard.propTypes = {
+CardRecipe.propTypes = {
   recipeID: PropTypes.string.isRequired,
   recipeImg: PropTypes.string.isRequired,
   recipeTitle: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };
 
-export default RecipeCard;
+export default CardRecipe;
