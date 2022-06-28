@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import Login from './pages/Login';
 import Foods from './pages/Foods';
 import Drinks from './pages/Drinks';
@@ -18,10 +19,20 @@ import Profile from './pages/Profile';
 import Done from './pages/Done';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
+import GlobalStyle from './styled/GloblaStyle';
+
+const pallete = {
+  mainColor: '#fafafa',
+  secondaryColor: '#212121',
+  dark: '#050908',
+  accent: '#ffc400',
+  attention: '#c62828',
+};
 
 function App() {
   return (
-    <div>
+    <ThemeProvider theme={ pallete }>
+      <GlobalStyle />
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/foods" component={ Foods } />
@@ -45,7 +56,7 @@ function App() {
         <Route exact path="/favorite-recipes" component={ Favorites } />
         <Route path="*" component={ NotFound } />
       </Switch>
-    </div>
+    </ThemeProvider>
   );
 }
 

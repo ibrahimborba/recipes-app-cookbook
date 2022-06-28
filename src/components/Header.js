@@ -4,6 +4,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import StyledHeader from '../styled/StyledHeader';
 
 function Header({ enableSearch }) {
   const history = useHistory();
@@ -40,7 +41,7 @@ function Header({ enableSearch }) {
   }, [formatTitle]);
 
   return (
-    <header>
+    <StyledHeader>
       <button
         type="button"
         onClick={ () => history.push('/profile') }
@@ -62,7 +63,7 @@ function Header({ enableSearch }) {
       {
         isSearchBar && <SearchBar />
       }
-    </header>
+    </StyledHeader>
   );
 }
 
