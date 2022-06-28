@@ -5,22 +5,20 @@ import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLoca
 
 function Favorites() {
   const [favRecipes, setFavRecipes] = useState([]);
-  const [favFiltered, setFavFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('all');
   const [removeFav, setRemoveFav] = useState(false);
 
   useEffect(() => {
     setFavRecipes(getFavoriteRecipes());
-    setFavFiltered(getFavoriteRecipes());
   }, [removeFav]);
 
   useEffect(() => {
-    const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
-    if (filteredByType.length === 0) {
-      return setFavFiltered(favRecipes);
+    if (filter === 'all') {
+      return setFavRecipes(getFavoriteRecipes());
     }
-    return setFavFiltered(filteredByType);
-  }, [filter, favRecipes]);
+    const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
+    return setFavRecipes(filteredByType);
+  }, [filter]);
 
   const handleFilterBtn = ({ target: { value } }) => {
     setFilter(value);
@@ -37,7 +35,7 @@ function Favorites() {
       <button
         type="button"
         data-testid="filter-by-all-btn"
-        value=""
+        value="all"
         onClick={ handleFilterBtn }
       >
         All
@@ -58,7 +56,7 @@ function Favorites() {
       >
         Drinks
       </button>
-      {favFiltered.map((fav, index) => (
+      {favRecipes.map((fav, index) => (
         <CardDoneFav
           key={ fav.id }
           recipeID={ fav.id }

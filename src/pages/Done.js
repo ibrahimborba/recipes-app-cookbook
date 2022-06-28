@@ -5,21 +5,19 @@ import { getRecipesDone } from '../services/mealsLocalSt';
 
 function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
-  const [doneFiltered, setDoneFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     setDoneRecipes(getRecipesDone());
-    setDoneFiltered(getRecipesDone());
   }, []);
 
   useEffect(() => {
-    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
-    if (filteredByType.length === 0) {
-      return setDoneFiltered(doneRecipes);
+    if (filter === 'all') {
+      return setDoneRecipes(getRecipesDone());
     }
-    return setDoneFiltered(filteredByType);
-  }, [filter, doneRecipes]);
+    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
+    return setDoneRecipes(filteredByType);
+  }, [filter]);
 
   const handleFilterBtn = ({ target: { value } }) => {
     setFilter(value);
@@ -32,7 +30,7 @@ function Done() {
         name="allBtn"
         type="button"
         data-testid="filter-by-all-btn"
-        value=""
+        value="all"
         onClick={ handleFilterBtn }
       >
         All
@@ -53,7 +51,7 @@ function Done() {
       >
         Drinks
       </button>
-      {doneFiltered.map((done, index) => (
+      {doneRecipes.map((done, index) => (
         <CardDoneFav
           key={ done.id }
           recipeID={ done.id }
