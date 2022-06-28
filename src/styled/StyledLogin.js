@@ -5,7 +5,7 @@ export const StyledLogin = styled.div`
   display: flex;
   align-items:center;
   flex-direction:column;
-  background-image: url("https://images.unsplash.com/photo-1529543544282-ea669407fca3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80");
+  background-image: url("./wine_background.jpg");
   background-size: cover;
   background-position: right;
 
