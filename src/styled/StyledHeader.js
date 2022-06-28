@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
-  background-color: ${(props) => props.theme.dark};
-  color: ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.mainColor};
+  color: ${(props) => props.theme.secondaryColor};
   width: 100%;
   height: 60px;
   margin: 0 auto;

@@ -6,7 +6,6 @@ const StyledCardGrid = styled.div`
   grid-template-columns: repeat(auto-fit, 150px);
   justify-content: center;
   justify-items: center;
-  margin-top: 10px;
 `;
 
 export default StyledCardGrid;

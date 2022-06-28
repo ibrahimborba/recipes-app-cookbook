@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
 import CardRecipe from '../components/CardRecipe';
 import { fetchDrinkResults } from '../redux/actions';
+import StyledCardGrid from '../styled/StyledCardGrid';
 
 function Drinks() {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ function Drinks() {
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { drinkResults.length > 0
+      <StyledCardGrid>
+        { drinkResults.length > 0
        && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
          <CardRecipe
            key={ drink.idDrink }
@@ -32,6 +34,7 @@ function Drinks() {
            index={ index }
          />
        ))}
+      </StyledCardGrid>
       <Footer />
     </>
   );

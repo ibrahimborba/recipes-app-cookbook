@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getCategories } from '../services/api';
 import { fetchMealResults, fetchDrinkResults } from '../redux/actions';
+import StyledCategories from '../styled/StyledCategories';
 
 function CategoriesOptions() {
   const [categories, setCategories] = useState([]);
@@ -41,8 +42,9 @@ function CategoriesOptions() {
   };
 
   return (
-    <section>
+    <StyledCategories>
       <button
+        className={ checkedCategory === '' && 'selectedCategory' }
         data-testid="All-category-filter"
         type="button"
         onClick={ handleClickCategory }
@@ -52,6 +54,7 @@ function CategoriesOptions() {
       </button>
       { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
         <button
+          className={ checkedCategory === category.strCategory && 'selectedCategory' }
           key={ category.strCategory }
           data-testid={ `${category.strCategory}-category-filter` }
           type="button"
@@ -61,7 +64,7 @@ function CategoriesOptions() {
           {category.strCategory}
         </button>
       ))}
-    </section>
+    </StyledCategories>
   );
 }
 
