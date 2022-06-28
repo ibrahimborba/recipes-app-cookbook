@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { updateUser } from '../services/userLocalSt';
 import saveTokenMeals from '../services/mealsLocalSt';
+import { StyledLogin, StyledCard } from '../styled/StyledLogin';
 
 /* Pre merge branch */
 
@@ -35,40 +36,45 @@ function Login() {
   }, [user.email, user.password]);
 
   return (
-    <div>
-      Login
-      <form onSubmit={ handleSubmitBtn }>
-        <label htmlFor="email">
-          Email:
-          <input
-            name="email"
-            type="email"
-            data-testid="email-input"
-            value={ user.email }
-            onChange={ handleChange }
-          />
-        </label>
-        <label htmlFor="password">
-          Senha:
-          <input
-            autoComplete="current-password"
-            name="password"
-            type="password"
-            data-testid="password-input"
-            value={ user.password }
-            onChange={ handleChange }
-          />
-        </label>
-        <button
-          name="submit"
-          type="submit"
-          data-testid="login-submit-btn"
-          disabled={ isDisabled }
-        >
-          Enter
-        </button>
-      </form>
-    </div>
+    <StyledLogin>
+      <h1>Login</h1>
+      <StyledCard>
+        <form onSubmit={ handleSubmitBtn }>
+          <label htmlFor="email">
+            Email:
+            <input
+              name="email"
+              type="email"
+              data-testid="email-input"
+              value={ user.email }
+              onChange={ handleChange }
+              placeholder="Type your e-mail"
+            />
+          </label>
+          <label htmlFor="password">
+            Senha:
+            <input
+              autoComplete="current-password"
+              name="password"
+              type="password"
+              data-testid="password-input"
+              value={ user.password }
+              onChange={ handleChange }
+              placeholder="Type your password"
+            />
+          </label>
+          <button
+            name="submit"
+            type="submit"
+            data-testid="login-submit-btn"
+            disabled={ isDisabled }
+          >
+            Enter
+          </button>
+        </form>
+      </StyledCard>
+    </StyledLogin>
+
   );
 }
 
