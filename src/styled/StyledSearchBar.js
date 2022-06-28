@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-const StyledCategories = styled.section`
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, 100px);
-  justify-content: center;
-  justify-items: center;
-  padding: 20px;
+const StyledSearchBar = styled.form`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 14px;
 
   button {
     width: 100px;
@@ -23,11 +24,11 @@ const StyledCategories = styled.section`
     overflow: hidden;
     }
 
-  .selectedCategory {
+  button:hover {
     background-color: ${(props) => props.theme.dark};
     color: ${(props) => props.theme.mainColor};
+    cursor: pointer;
   }
-
 `;
 
-export default StyledCategories;
+export default StyledSearchBar;

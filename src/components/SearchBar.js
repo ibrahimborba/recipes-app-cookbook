@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input';
 import { fetchMealResults, fetchDrinkResults } from '../redux/actions';
+import StyledSearchBar from '../styled/StyledSearchBar';
 
 function SearchBar() {
   const [searchText, setSearchText] = useState('');
@@ -65,7 +66,7 @@ function SearchBar() {
   };
 
   return (
-    <form onSubmit={ handleSubmit }>
+    <StyledSearchBar onSubmit={ handleSubmit }>
       <Input
         id="text-search"
         dataTestId="search-input"
@@ -74,40 +75,43 @@ function SearchBar() {
         label="Search"
         onChange={ handleSearchText }
       />
-      <Input
-        label="Ingredient"
-        id="ingredient-search"
-        dataTestId="ingredient-search-radio"
-        type="radio"
-        value="ingredient"
-        onChange={ handleOptions }
-        checked={ checkedOption === 'ingredient' }
-      />
-      <Input
-        label="Name"
-        id="name-search"
-        dataTestId="name-search-radio"
-        type="radio"
-        value="name"
-        onChange={ handleOptions }
-        checked={ checkedOption === 'name' }
-      />
-      <Input
-        label="First Letter"
-        id="first-letter-search"
-        dataTestId="first-letter-search-radio"
-        type="radio"
-        value="first-letter"
-        onChange={ handleOptions }
-        checked={ checkedOption === 'first-letter' }
-      />
+      <section>
+        <Input
+          label="Ingredient"
+          id="ingredient-search"
+          dataTestId="ingredient-search-radio"
+          type="radio"
+          value="ingredient"
+          onChange={ handleOptions }
+          checked={ checkedOption === 'ingredient' }
+        />
+        <Input
+          label="Name"
+          id="name-search"
+          dataTestId="name-search-radio"
+          type="radio"
+          value="name"
+          onChange={ handleOptions }
+          checked={ checkedOption === 'name' }
+        />
+        <Input
+          label="First Letter"
+          id="first-letter-search"
+          dataTestId="first-letter-search-radio"
+          type="radio"
+          value="first-letter"
+          onChange={ handleOptions }
+          checked={ checkedOption === 'first-letter' }
+        />
+
+      </section>
       <button
         data-testid="exec-search-btn"
         type="submit"
       >
         Search
       </button>
-    </form>
+    </StyledSearchBar>
   );
 }
 
