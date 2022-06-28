@@ -4,22 +4,20 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import {
   MEAL_INGREDIENTS, INITIAL_STATE_FOOD, MEAL_INSTRUCTIONS,
-  DRINK_RECOMMENDATIONS, VIDEO_URL_EMBED,
 } from './mocks/foodReduxInitialState';
 import * as localStr from '../services/mealsLocalSt';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import FoodRecipe from '../pages/FoodRecipe';
+import FoodRecipeInProgress from '../pages/FoodRecipeInProgress';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({ id: '52768' }),
-  useRouteMatch: () => ({ path: '/foods/:id', params: { id: '52768' } }),
+  useRouteMatch: () => ({ path: '/foods/:id/in-progress', params: { id: '52768' } }),
 }));
 
-const initialEntries = ['/foods/52768'];
+const initialEntries = ['/foods/52768/in-progress'];
 const initialState = INITIAL_STATE_FOOD;
-const FOOD_NAME = 'Apple Frangipan Tart';
 
 const setAllLocalStorageKeys = () => {
   localStorage.setItem('doneRecipes', JSON.stringify([]));
@@ -30,7 +28,7 @@ const setAllLocalStorageKeys = () => {
   );
 };
 
-describe('Test food detail page renderization', () => {
+describe('Test food in progress page renderization', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
   afterEach(() => localStorage.clear());
@@ -39,13 +37,11 @@ describe('Test food detail page renderization', () => {
     const fetch = jest.spyOn(global, 'fetch');
 
     renderWithRouterRedux(
-      <FoodRecipe />,
+      <FoodRecipeInProgress />,
       { initialEntries },
     );
 
     expect(fetch).toBeCalled();
-    expect(fetch).toHaveBeenNthCalledWith(1, 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=52768');
-    expect(fetch).toHaveBeenNthCalledWith(2, 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
   });
 
   it('Test if it render all components on the screen ',
@@ -53,13 +49,13 @@ describe('Test food detail page renderization', () => {
       global.fetch = jest.fn();
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <FoodRecipeInProgress />,
         { initialState, initialEntries },
       );
 
       const coverImg = await screen.findByRole('img', { name: 'Recipe' });
       const recipeTitle = screen
-        .getByRole('heading', { level: 2, name: FOOD_NAME });
+        .getByRole('heading', { level: 2, name: 'Apple Frangipan Tart' });
       const shareBtn = screen.getByRole('img', { name: 'share icon' });
       const favoriteBtn = screen.getByRole('img', { name: 'favorite icon' });
       const ingredientsTitle = screen
@@ -67,8 +63,7 @@ describe('Test food detail page renderization', () => {
       const instructionsTitle = screen
         .getByRole('heading', { level: 3, name: 'Instructions' });
       const instructionsText = screen.getByText(MEAL_INSTRUCTIONS);
-      const video = screen.getByTitle('YouTube video player');
-      const startBtn = screen.getByRole('button', { name: /Start Recipe/i });
+      const finishBtn = screen.getByRole('button', { name: /Finish Recipe/i });
 
       expect(coverImg).toBeInTheDocument();
       expect(recipeTitle).toBeInTheDocument();
@@ -84,20 +79,13 @@ describe('Test food detail page renderization', () => {
       });
       expect(instructionsTitle).toBeInTheDocument();
       expect(instructionsText).toBeInTheDocument();
-      expect(video).toBeInTheDocument();
-      expect(video.src).toBe(VIDEO_URL_EMBED);
-      DRINK_RECOMMENDATIONS.forEach(({ image, title }) => {
-        expect(screen.getByRole('img', { name: title })).toBeInTheDocument();
-        expect(screen.getByRole('img', { name: title }).src).toBe(image);
-        expect(screen.getByRole('heading', { level: 4, name: title }))
-          .toBeInTheDocument();
-      });
-      expect(startBtn).toBeInTheDocument();
+      expect(finishBtn).toBeInTheDocument();
     });
 });
 
-describe('Check share button funcionality of food details page', () => {
+describe('Check if share button funcionality of food in progress page', () => {
   beforeEach(() => setAllLocalStorageKeys());
+
   afterEach(() => localStorage.clear());
 
   it('Test when click in share button the url is copied to clipboard',
@@ -111,7 +99,7 @@ describe('Check share button funcionality of food details page', () => {
       const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <FoodRecipeInProgress />,
         { initialState, initialEntries },
       );
 
@@ -126,16 +114,17 @@ describe('Check share button funcionality of food details page', () => {
     });
 });
 
-describe('Check favorite button funcionality of food details page', () => {
+describe('Check if favorite button funcionality of food in progress page', () => {
   beforeEach(() => setAllLocalStorageKeys());
+
   afterEach(() => localStorage.clear());
 
-  it('Test if click in favorite button the recipe is saved on local storage',
+  it('Test if click in favorite button the recipe is saved in local storage',
     async () => {
       const saveFavoriteRecipe = jest.spyOn(localStr, 'updateFavoriteRecipes');
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <FoodRecipeInProgress />,
         { initialState, initialEntries },
       );
 
@@ -156,94 +145,66 @@ describe('Check favorite button funcionality of food details page', () => {
         nationality: 'British',
         category: 'Dessert',
         alcoholicOrNot: '',
-        name: FOOD_NAME,
+        name: 'Apple Frangipan Tart',
         image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
       }]));
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <FoodRecipeInProgress />,
         { initialState, initialEntries },
       );
 
       const favoriteBtn = await screen.findByRole('img', { name: /favorite icon/i });
+
       expect(favoriteBtn.src).toBe(`http://localhost/${blackHeartIcon}`);
     });
 });
 
-describe('Test start button funcionality of drink details page',
+describe('Test finish button funcionality of food in progress page',
   () => {
     beforeEach(() => setAllLocalStorageKeys());
 
     afterEach(() => localStorage.clear());
 
-    it('Test if click in start button go to in progress page',
+    it('Test until all ingredients get marked the button stay disable',
+      async () => {
+        renderWithRouterRedux(
+          <FoodRecipeInProgress />,
+          { initialState, initialEntries },
+        );
+
+        const finishBtn = await screen.findByRole('button', { name: /Finish Recipe/i });
+
+        expect(finishBtn).toBeDisabled();
+      });
+
+    it('Test if all ingredients get marked enable button',
+      async () => {
+        renderWithRouterRedux(
+          <FoodRecipeInProgress />,
+          { initialState, initialEntries },
+        );
+
+        const listItems = await screen.findAllByRole('checkbox');
+        listItems.forEach((element) => userEvent.click(element));
+        listItems.forEach((element) => expect(element).toBeChecked());
+
+        const finishBtn = screen.getByRole('button', { name: /Finish Recipe/i });
+        expect(finishBtn).not.toBeDisabled();
+      });
+
+    it('Test when finish the recipe redirect to done recipe page',
       async () => {
         const { history } = renderWithRouterRedux(
-          <FoodRecipe />,
+          <FoodRecipeInProgress />,
           { initialState, initialEntries },
         );
 
-        userEvent.click(await screen.findByRole('button', { name: /Start Recipe/i }));
+        const listItems = await screen.findAllByRole('checkbox');
+        listItems.forEach((element) => userEvent.click(element));
 
-        expect(history.location.pathname).toBe('/foods/52768/in-progress');
-      });
+        userEvent.click(screen.getByRole('button', { name: /Finish Recipe/i }));
 
-    it('Test if the recipe is already in progress if the button text change',
-      async () => {
-        localStorage.setItem(
-          'inProgressRecipes',
-          JSON.stringify({ cocktails: {}, meals: { 52768: [] } }),
-        );
-
-        renderWithRouterRedux(
-          <FoodRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
-        expect(startBtn).toBeInTheDocument();
-      });
-
-    it('Test if the recipe is in progress the button redirect to in progress page',
-      async () => {
-        localStorage.setItem(
-          'inProgressRecipes',
-          JSON.stringify({ cocktails: {}, meals: { 52768: [] } }),
-        );
-
-        const { history } = renderWithRouterRedux(
-          <FoodRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
-
-        userEvent.click(startBtn);
-
-        expect(history.location.pathname).toBe('/foods/52768/in-progress');
-      });
-
-    it('Test if the recipe is already done button disapear',
-      async () => {
-        localStorage.setItem('doneRecipes', JSON.stringify([{
-          id: '52768',
-          type: 'food',
-          nationality: 'British',
-          category: 'Dessert',
-          alcoholicOrNot: '',
-          name: FOOD_NAME,
-          image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
-          doneDate: '1/5/2022',
-          tags: ['Tart', 'Baking', 'Fruity'],
-        }]));
-
-        renderWithRouterRedux(
-          <FoodRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const buttons = await screen.findAllByRole('button');
-        expect(buttons.some((element) => element.innerText === 'Start recipe'))
-          .not.toBeTruthy();
+        expect(history.location.pathname).toBe('/done-recipes');
       });
   });

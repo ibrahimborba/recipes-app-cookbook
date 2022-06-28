@@ -84,7 +84,6 @@ function StartButton() {
       dispatch(updateToInProgress(false));
       updateRecipeStatus(id, group, true);
     }
-    console.log(pathId);
 
     history.push(pathName);
   };

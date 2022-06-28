@@ -2,10 +2,9 @@ import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import DrinkRecipe from '../pages/DrinkRecipe';
-import {
-  DRINK_INGREDIENTS, INITIAL_STATE_DRINK,
-  DRINK_INSTRUCTIONS, FOOD_RECOMMENDATIONS,
+import DrinkRecipeInProgress from '../pages/DrinkRecipeInProgress';
+import { DRINK_INGREDIENTS, INITIAL_STATE_DRINK,
+  DRINK_INSTRUCTIONS,
 } from './mocks/drinkReduxInitialState';
 import * as localStr from '../services/mealsLocalSt';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -14,10 +13,10 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({ id: '15997' }),
-  useRouteMatch: () => ({ path: '/drinks/:id', params: { id: '15997' } }),
+  useRouteMatch: () => ({ path: '/drinks/:id/in-progress', params: { id: '15997' } }),
 }));
 
-const initialEntries = ['/drinks/15997'];
+const initialEntries = ['/drinks/15997/in-progress'];
 const initialState = INITIAL_STATE_DRINK;
 
 const setAllLocalStorageKeys = () => {
@@ -29,7 +28,7 @@ const setAllLocalStorageKeys = () => {
   );
 };
 
-describe('Test drink detail page renderization', () => {
+describe('Test drink in progress page renderization', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
   afterEach(() => localStorage.clear());
@@ -38,20 +37,18 @@ describe('Test drink detail page renderization', () => {
     const fetch = jest.spyOn(global, 'fetch');
 
     renderWithRouterRedux(
-      <DrinkRecipe />,
+      <DrinkRecipeInProgress />,
       { initialEntries },
     );
 
     expect(fetch).toBeCalled();
-    expect(fetch).toHaveBeenNthCalledWith(1, 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=15997');
-    expect(fetch).toHaveBeenNthCalledWith(2, 'https://www.themealdb.com/api/json/v1/1/search.php?s=');
   });
 
   it('Test if it render all components on the screen ', async () => {
     global.fetch = jest.fn();
 
     renderWithRouterRedux(
-      <DrinkRecipe />,
+      <DrinkRecipeInProgress />,
       { initialState, initialEntries },
     );
 
@@ -65,7 +62,7 @@ describe('Test drink detail page renderization', () => {
     const instructionsTitle = screen
       .getByRole('heading', { level: 3, name: 'Instructions' });
     const instructionsText = screen.getByText(DRINK_INSTRUCTIONS);
-    const startBtn = screen.getByRole('button', { name: /Start Recipe/i });
+    const finishBtn = screen.getByRole('button', { name: /Finish Recipe/i });
 
     expect(coverImg).toBeInTheDocument();
     expect(recipeTitle).toBeInTheDocument();
@@ -81,16 +78,11 @@ describe('Test drink detail page renderization', () => {
     });
     expect(instructionsTitle).toBeInTheDocument();
     expect(instructionsText).toBeInTheDocument();
-    FOOD_RECOMMENDATIONS.forEach(({ image, title }) => {
-      expect(screen.getByRole('img', { name: title }).src).toBe(image);
-      expect(screen.getByRole('img', { name: title })).toBeInTheDocument();
-      expect(screen.getByRole('heading', { level: 4, name: title })).toBeInTheDocument();
-    });
-    expect(startBtn).toBeInTheDocument();
+    expect(finishBtn).toBeInTheDocument();
   });
 });
 
-describe('Check share button funcionality of drink details page', () => {
+describe('Check if share button funcionality of drink in progress page', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
   afterEach(() => localStorage.clear());
@@ -106,7 +98,7 @@ describe('Check share button funcionality of drink details page', () => {
       const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
 
       renderWithRouterRedux(
-        <DrinkRecipe />,
+        <DrinkRecipeInProgress />,
         { initialState, initialEntries },
       );
 
@@ -121,7 +113,7 @@ describe('Check share button funcionality of drink details page', () => {
     });
 });
 
-describe('Check favorite button funcionality of drink details page', () => {
+describe('Check if favorite button funcionality of drink in progress page', () => {
   beforeEach(() => setAllLocalStorageKeys());
 
   afterEach(() => localStorage.clear());
@@ -131,7 +123,7 @@ describe('Check favorite button funcionality of drink details page', () => {
       const saveFavoriteRecipe = jest.spyOn(localStr, 'updateFavoriteRecipes');
 
       renderWithRouterRedux(
-        <DrinkRecipe />,
+        <DrinkRecipeInProgress />,
         { initialState, initialEntries },
       );
 
@@ -146,18 +138,20 @@ describe('Check favorite button funcionality of drink details page', () => {
 
   it('Test after click in favorite button and page loading the button remains checked',
     async () => {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([{
-        id: '15997',
-        type: 'drink',
-        nationality: '',
-        category: 'Ordinary Drink',
-        alcoholicOrNot: 'Optional alcohol',
-        name: 'GG',
-        image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
-      }]));
+      localStorage.setItem('favoriteRecipes', JSON.stringify([
+        {
+          id: '15997',
+          type: 'drink',
+          nationality: '',
+          category: 'Ordinary Drink',
+          alcoholicOrNot: 'Optional alcohol',
+          name: 'GG',
+          image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
+        },
+      ]));
 
       renderWithRouterRedux(
-        <DrinkRecipe />,
+        <DrinkRecipeInProgress />,
         { initialState, initialEntries },
       );
 
@@ -167,80 +161,51 @@ describe('Check favorite button funcionality of drink details page', () => {
     });
 });
 
-describe('Test start button funcionality of drink details page',
+describe('Test finish button funcionality of drink in progress page',
   () => {
     beforeEach(() => setAllLocalStorageKeys());
 
     afterEach(() => localStorage.clear());
 
-    it('Test if click in start button go to in progress page',
+    it('Test until all ingredients get marked the button stay disable',
+      async () => {
+        renderWithRouterRedux(
+          <DrinkRecipeInProgress />,
+          { initialState, initialEntries },
+        );
+
+        const finishBtn = await screen.findByRole('button', { name: /Finish Recipe/i });
+
+        expect(finishBtn).toBeDisabled();
+      });
+
+    it('Test if all ingredients get marked enable button',
+      async () => {
+        renderWithRouterRedux(
+          <DrinkRecipeInProgress />,
+          { initialState, initialEntries },
+        );
+
+        const listItems = await screen.findAllByRole('checkbox');
+        listItems.forEach((element) => userEvent.click(element));
+        listItems.forEach((element) => expect(element).toBeChecked());
+
+        const finishBtn = screen.getByRole('button', { name: /Finish Recipe/i });
+        expect(finishBtn).not.toBeDisabled();
+      });
+
+    it('Test when finish the recipe redirect to done recipe page',
       async () => {
         const { history } = renderWithRouterRedux(
-          <DrinkRecipe />,
+          <DrinkRecipeInProgress />,
           { initialState, initialEntries },
         );
 
-        userEvent.click(await screen.findByRole('button', { name: /Start Recipe/i }));
+        const listItems = await screen.findAllByRole('checkbox');
+        listItems.forEach((element) => userEvent.click(element));
 
-        expect(history.location.pathname).toBe('/drinks/15997/in-progress');
-      });
+        userEvent.click(screen.getByRole('button', { name: /Finish Recipe/i }));
 
-    it('Test if the recipe is already in progress if the button text change',
-      async () => {
-        localStorage.setItem(
-          'inProgressRecipes',
-          JSON.stringify({ cocktails: { 15997: [] }, meals: {} }),
-        );
-
-        renderWithRouterRedux(
-          <DrinkRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
-        expect(startBtn).toBeInTheDocument();
-      });
-
-    it('Test if the recipe is in progress the button redirect to in progress page',
-      async () => {
-        localStorage.setItem(
-          'inProgressRecipes',
-          JSON.stringify({ cocktails: { 15997: [] }, meals: {} }),
-        );
-
-        const { history } = renderWithRouterRedux(
-          <DrinkRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const startBtn = await screen.findByRole('button', { name: /Continue Recipe/i });
-
-        userEvent.click(startBtn);
-
-        expect(history.location.pathname).toBe('/drinks/15997/in-progress');
-      });
-
-    it('Test if the recipe is already done button disapear',
-      async () => {
-        localStorage.setItem('doneRecipes', JSON.stringify([{
-          id: '15997',
-          type: 'drink',
-          nationality: '',
-          category: 'Ordinary Drink',
-          alcoholicOrNot: 'Optional alcohol',
-          name: 'GG',
-          image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
-          doneDate: '1/5/2022',
-          tags: [],
-        }]));
-
-        renderWithRouterRedux(
-          <DrinkRecipe />,
-          { initialState, initialEntries },
-        );
-
-        const buttons = await screen.findAllByRole('button');
-        expect(buttons.some((element) => element.innerText === 'Start recipe'))
-          .not.toBeTruthy();
+        expect(history.location.pathname).toBe('/done-recipes');
       });
   });
