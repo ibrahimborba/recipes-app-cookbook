@@ -27,6 +27,10 @@ const pallete = {
   dark: '#050908',
   accent: '#ffc400',
   attention: '#c62828',
+  typography: {
+    main: '#050908',
+    secondary: '#A9A9A9',
+  },
 };
 
 function App() {
