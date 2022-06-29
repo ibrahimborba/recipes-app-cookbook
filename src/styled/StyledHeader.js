@@ -5,7 +5,6 @@ const StyledHeader = styled.header`
   color: ${(props) => props.theme.secondaryColor};
 
   section {
-    width: 100%;
     height: 60px;
     margin: 0 auto;
     display: flex;
@@ -27,11 +26,10 @@ const StyledHeader = styled.header`
   }
 
   button {
-    width: 100px;
-    padding: 10px;
+    margin: 10px;
     border: unset;
     background-color: transparent;
-    color: ${(props) => props.theme.secondaryColor};
+    color: ${(props) => props.theme.mainColor};
     text-align: center;
   }
 `;
