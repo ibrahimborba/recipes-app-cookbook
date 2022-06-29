@@ -44,7 +44,7 @@ function CategoriesOptions() {
   return (
     <StyledCategories>
       <button
-        className={ checkedCategory === '' && 'selectedCategory' }
+        className={ checkedCategory === '' ? 'selectedCategory' : '' }
         data-testid="All-category-filter"
         type="button"
         onClick={ handleClickCategory }
@@ -54,7 +54,7 @@ function CategoriesOptions() {
       </button>
       { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
         <button
-          className={ checkedCategory === category.strCategory && 'selectedCategory' }
+          className={ checkedCategory === category.strCategory ? 'selectedCategory' : '' }
           key={ category.strCategory }
           data-testid={ `${category.strCategory}-category-filter` }
           type="button"

@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { fetchMealResults } from '../redux/actions';
 import Nationalities from '../components/Nationalities';
+import CardRecipe from '../components/CardRecipe';
+import StyledCardGrid from '../styled/StyledCardGrid';
+import Loading from '../components/Loading';
 
 function FoodsNationalities() {
   const dispatch = useDispatch();
-  const mealResults = useSelector((state) => state.searchResults.meals);
+  const { isFetching, meals: mealResults } = useSelector((state) => state.searchResults);
   const searchOptions = useSelector((state) => state.searchOptions);
 
   const MAX_ITEMS_DISPLAY = 12;
@@ -22,25 +24,25 @@ function FoodsNationalities() {
     <>
       <Header enableSearch />
       <Nationalities />
-      { mealResults.length > 0
-       && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
-         <Link
-           key={ meal.idMeal }
-           to={ `/foods/${meal.idMeal}` }
-         >
-           <div
-             data-testid={ `${index}-recipe-card` }
-           >
-             <img
-               data-testid={ `${index}-card-img` }
-               src={ meal.strMealThumb }
-               alt={ meal.strMeal }
-               style={ { width: '200px' } }
-             />
-             <h3 data-testid={ `${index}-card-name` }>{ meal.strMeal }</h3>
-           </div>
-         </Link>
-       ))}
+      {
+        isFetching
+          ? <Loading />
+          : (
+            <StyledCardGrid>
+              { mealResults.length > 0
+                && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
+                  <CardRecipe
+                    key={ meal.idMeal }
+                    id={ meal.idMeal }
+                    image={ meal.strMealThumb }
+                    title={ meal.strMeal }
+                    index={ index }
+                    type="food"
+                  />
+                ))}
+            </StyledCardGrid>
+          )
+      }
       <Footer />
     </>
   );
