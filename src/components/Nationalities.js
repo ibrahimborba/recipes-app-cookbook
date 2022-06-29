@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getNationalities } from '../services/api';
 import { fetchMealResults } from '../redux/actions';
+import StyledNationalities from '../styled/StyledNationalities';
 
 function Nationalities() {
   const [nationalities, setNationalities] = useState([]);
@@ -19,7 +20,6 @@ function Nationalities() {
   }, [pathname]);
 
   const handleClickNationality = ({ target: { value } }) => {
-    console.log(value);
     switch (value) {
     case 'All':
       return dispatch(fetchMealResults('', ''));
@@ -29,28 +29,33 @@ function Nationalities() {
   };
 
   return (
-    <select
-      data-testid="explore-by-nationality-dropdown"
-      onClick={ handleClickNationality }
-    >
-      <option
-        data-testid="All-option"
-        type="button"
-        value="All"
+    <StyledNationalities>
+      <select
+        className="select-nationalities"
+        data-testid="explore-by-nationality-dropdown"
+        onChange={ handleClickNationality }
       >
-        All
-      </option>
-      { nationalities.map((nationality) => (
         <option
-          key={ nationality.strArea }
-          data-testid={ `${nationality.strArea}-option` }
+          className="select-nationalities-option"
+          data-testid="All-option"
           type="button"
-          value={ nationality.strArea }
+          value="All"
         >
-          {nationality.strArea}
+          All
         </option>
-      ))}
-    </select>
+        { nationalities.map((nationality) => (
+          <option
+            className="select-nationalities-option"
+            key={ nationality.strArea }
+            data-testid={ `${nationality.strArea}-option` }
+            type="button"
+            value={ nationality.strArea }
+          >
+            {nationality.strArea}
+          </option>
+        ))}
+      </select>
+    </StyledNationalities>
   );
 }
 
