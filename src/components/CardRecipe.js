@@ -28,7 +28,7 @@ function CardRecipe({ id, image, title, category, type, index }) {
       />
       <h3
         data-testid={ `${index}-card-name` }
-        className="card-title"
+        className={ category.length > 0 && 'card-title' }
       >
         { title }
       </h3>
