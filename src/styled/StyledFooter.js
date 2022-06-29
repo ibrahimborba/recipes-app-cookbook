@@ -1,40 +1,32 @@
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
-  background-color: ${(props) => props.theme.dark};
+  background-color: ${(props) => props.theme.mainColor};
   color: ${(props) => props.theme.mainColor};
   width: 100%;
   height: 60px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   bottom: 0;
   position: fixed;
 
   button {
-    height: 55px;
-    background-color: ${(props) => props.theme.mainColor};
-    color: ${(props) => props.theme.secondaryColor};
-    border: 2px solid ${(props) => props.theme.secondaryColor};
-    border-radius: 5px;
+    width: 54px;
     padding: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-
-    img {
-      background-color: ${(props) => props.theme.mainColor};
-      color: ${(props) => props.theme.accent};
-    }
+    border: unset;
+    background-color: transparent;
+    text-align: center;
   }
 
-  button:hover {
-    cursor: pointer;
-    background-color: ${(props) => props.theme.secondaryColor};
-    color: ${(props) => props.theme.mainColor};
+  .currentPath {
+    background-color: ${(props) => props.theme.dark};
+    border-radius: 10px;
+    img {
+      filter: invert(100%) sepia(44%) saturate(536%)
+      hue-rotate(180deg) brightness(110%) contrast(96%);
+    }
   }
 `;
 

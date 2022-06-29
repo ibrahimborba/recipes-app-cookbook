@@ -32,9 +32,8 @@ const StyledHeader = styled.header`
     border: unset;
     background-color: transparent;
     color: ${(props) => props.theme.secondaryColor};
-    transition: all 250ms;
     text-align: center;
-    }
+  }
 `;
 
 export default StyledHeader;
