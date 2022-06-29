@@ -106,6 +106,7 @@ function SearchBar() {
         />
       </section>
       <button
+        className="btn_search"
         data-testid="exec-search-btn"
         type="submit"
       >

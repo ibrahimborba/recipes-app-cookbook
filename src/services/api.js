@@ -23,13 +23,9 @@ export const getMeal = async (search, option) => {
     URL = MEALS_END_POINT_BY_NAME;
   }
 
-  try {
-    const apiResponse = await fetch(`${URL}${search}`);
-    const apiResult = await apiResponse.json();
-    return apiResult;
-  } catch (error) {
-    return error;
-  }
+  const apiResponse = await fetch(`${URL}${search}`);
+  const apiResult = await apiResponse.json();
+  return apiResult;
 };
 
 export const getDrink = async (search, option) => {
@@ -51,13 +47,9 @@ export const getDrink = async (search, option) => {
     URL = DRINKS_END_POINT_BY_NAME;
   }
 
-  try {
-    const apiResponse = await fetch(`${URL}${search}`);
-    const apiResult = await apiResponse.json();
-    return apiResult;
-  } catch (error) {
-    return error;
-  }
+  const apiResponse = await fetch(`${URL}${search}`);
+  const apiResult = await apiResponse.json();
+  return apiResult;
 };
 
 export const getRandom = async (pathname) => {

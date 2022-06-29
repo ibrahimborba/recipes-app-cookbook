@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledCardRecipe = styled.div`
   background: linear-gradient(to bottom, rgba(20,20,20,0) 50%,rgba(20,20,20,5) 100%);
   color: ${(props) => props.theme.mainColor};
-  height: auto;
+  height: 150px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -16,6 +16,7 @@ const StyledCardRecipe = styled.div`
   }
 
   h3 {
+    width: 90%;
     position: absolute;
     bottom: 5%;
     left: 5%;

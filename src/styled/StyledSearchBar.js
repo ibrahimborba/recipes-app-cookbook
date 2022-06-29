@@ -7,6 +7,14 @@ const StyledSearchBar = styled.form`
   align-items: center;
   flex-wrap: wrap;
 
+  section {
+    width: 85%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
   label {
     color: ${(props) => props.theme.secondaryColor};
     font-weight: 600;
@@ -29,32 +37,24 @@ const StyledSearchBar = styled.form`
     :focus {
       color: ${(props) => props.theme.secondaryColor};
     } 
-  }  
-
-  section {
-    width: 85%;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row row-reverse;
-    justify-content: space-around;
-    align-items: center;
   }
 
-  button {
+  input[type=radio] {
+    accent-color: ${(props) => props.theme.dark};
+  }
+
+  .btn_search {
     width: 70%;
     padding: 10px;
     border: unset;
     border-radius: 10px;
+    box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
     background-color: ${(props) => props.theme.dark};
-    color: ${(props) => props.theme.mainColor};
     font-weight: 700;
     font-size: 1rem;
-    box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
-    transition: all 250ms;
     text-align: center;
-    overflow: hidden;
     margin-bottom: 20px;
-    }
+  }
 `;
 
 export default StyledSearchBar;
