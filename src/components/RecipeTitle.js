@@ -4,6 +4,7 @@ import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLoca
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import StyledRecipeTitle from '../styled/StyledRecipeTitle';
 
 function RecipeTitle() {
   const {
@@ -52,10 +53,16 @@ function RecipeTitle() {
   };
 
   return (
-    <div>
+    <StyledRecipeTitle>
       <div>
         <h2 data-testid="recipe-title">{ title }</h2>
         <div>
+          {
+            showMessage
+              && (
+                <span>Link copied!</span>
+              )
+          }
           <button
             data-testid="share-btn"
             type="button"
@@ -63,12 +70,6 @@ function RecipeTitle() {
           >
             <img src={ shareIcon } alt="share icon" />
           </button>
-          {
-            showMessage
-              && (
-                <span>Link copied!</span>
-              )
-          }
           <button
             type="button"
             onClick={ favoriteRecipe }
@@ -82,7 +83,7 @@ function RecipeTitle() {
         </div>
       </div>
       <p data-testid="recipe-category">{ categoryRecom }</p>
-    </div>
+    </StyledRecipeTitle>
   );
 }
 
