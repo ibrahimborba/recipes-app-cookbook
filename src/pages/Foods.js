@@ -10,14 +10,16 @@ import StyledCardGrid from '../styled/StyledCardGrid';
 function Foods() {
   const dispatch = useDispatch();
   const mealResults = useSelector((state) => state.searchResults.meals);
-  const searchOptions = useSelector((state) => state.searchOptions);
+  const { search, option } = useSelector((state) => state.searchOptions);
 
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    const { search, option } = searchOptions;
-    dispatch(fetchMealResults(search, option));
-  }, [dispatch, searchOptions]);
+    const getResults = async () => {
+      await dispatch(fetchMealResults(search, option));
+    };
+    getResults();
+  }, [dispatch, search, option]);
 
   return (
     <>
@@ -25,15 +27,15 @@ function Foods() {
       <CategoriesOptions />
       <StyledCardGrid>
         { mealResults.length > 0
-       && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
-         <CardRecipe
-           key={ meal.idMeal }
-           recipeID={ meal.idMeal }
-           recipeImg={ meal.strMealThumb }
-           recipeTitle={ meal.strMeal }
-           index={ index }
-         />
-       ))}
+        && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
+          <CardRecipe
+            key={ meal.idMeal }
+            recipeID={ meal.idMeal }
+            recipeImg={ meal.strMealThumb }
+            recipeTitle={ meal.strMeal }
+            index={ index }
+          />
+        ))}
       </StyledCardGrid>
       <Footer />
     </>

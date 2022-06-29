@@ -8,7 +8,6 @@ const StyledCardRecipe = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
   border-radius: 10px;
 
   img {

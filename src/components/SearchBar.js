@@ -72,12 +72,13 @@ function SearchBar() {
         dataTestId="search-input"
         type="text"
         value={ searchText }
-        label="Search"
+        frontLabel="Search"
         onChange={ handleSearchText }
+        placeholder="Type your search..."
       />
       <section>
         <Input
-          label="Ingredient"
+          backLabel="Ingredient"
           id="ingredient-search"
           dataTestId="ingredient-search-radio"
           type="radio"
@@ -86,7 +87,7 @@ function SearchBar() {
           checked={ checkedOption === 'ingredient' }
         />
         <Input
-          label="Name"
+          backLabel="Name"
           id="name-search"
           dataTestId="name-search-radio"
           type="radio"
@@ -95,7 +96,7 @@ function SearchBar() {
           checked={ checkedOption === 'name' }
         />
         <Input
-          label="First Letter"
+          backLabel="First Letter"
           id="first-letter-search"
           dataTestId="first-letter-search-radio"
           type="radio"
@@ -103,7 +104,6 @@ function SearchBar() {
           onChange={ handleOptions }
           checked={ checkedOption === 'first-letter' }
         />
-
       </section>
       <button
         data-testid="exec-search-btn"
