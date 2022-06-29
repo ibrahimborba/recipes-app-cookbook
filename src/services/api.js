@@ -86,13 +86,10 @@ export const getIngredients = async (pathname) => {
   default:
     return false;
   }
-  try {
-    const apiResponse = await fetch(URL);
-    const apiResult = await apiResponse.json();
-    return apiResult;
-  } catch (error) {
-    return error;
-  }
+
+  const apiResponse = await fetch(URL);
+  const apiResult = await apiResponse.json();
+  return apiResult;
 };
 
 export const getCategories = async (pathname) => {

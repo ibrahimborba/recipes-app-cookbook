@@ -24,16 +24,12 @@ const isFetching = () => ({
 
 const requisitonSucceeded = (data, type) => ({
   type,
-  payload: {
-    data,
-  },
+  payload: { data },
 });
 
 const requisitionFailed = (error) => ({
   type: REQUISITION_FAILED,
-  payload: {
-    error,
-  },
+  payload: { error },
 });
 
 export const mealResults = (results) => ({
@@ -206,9 +202,13 @@ export const mealsIngredientsResults = (results) => ({
 });
 
 export const fetchMealsIngredientsResults = (pathname) => async (dispatch) => {
-  const { meals } = await getIngredients(pathname);
-
-  dispatch(mealsIngredientsResults(meals));
+  dispatch(isFetching());
+  try {
+    const { meals } = await getIngredients(pathname);
+    dispatch(mealsIngredientsResults(meals));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
+  }
 };
 
 export const drinksIngredientsResults = (results) => ({
@@ -217,9 +217,13 @@ export const drinksIngredientsResults = (results) => ({
 });
 
 export const fetchDrinksIngredientsResults = (pathname) => async (dispatch) => {
-  const { drinks } = await getIngredients(pathname);
-
-  dispatch(drinksIngredientsResults(drinks));
+  dispatch(isFetching());
+  try {
+    const { drinks } = await getIngredients(pathname);
+    dispatch(drinksIngredientsResults(drinks));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
+  }
 };
 
 export const searchOptions = (search = '', option = '') => ({

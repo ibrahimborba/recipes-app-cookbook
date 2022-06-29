@@ -7,7 +7,7 @@ const StyledIngredients = styled.div`
   justify-content: center;
   justify-items: center;
   color: ${(props) => props.theme.secondaryColor};
-  margin-bottom: 70px;
+  margin: 20px 0 70px 0;
 
   button {
     background-color: transparent;
