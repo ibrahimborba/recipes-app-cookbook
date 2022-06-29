@@ -28,6 +28,12 @@ const pallete = {
   dark: '#050908',
   accent: '#ffc400',
   attention: '#c62828',
+  typography: {
+    main: '#050908',
+    secondary: '#686B72',
+  },
+  recipeItems: '#ECECEC',
+  disabled: '#BFBABF',
 };
 
 function App() {
