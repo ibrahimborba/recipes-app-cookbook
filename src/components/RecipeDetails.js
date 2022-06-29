@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateFinishButtonStatus, updateToInProgress } from '../redux/actions';
 import { getInProgressRecipes, updateIngredients } from '../services/mealsLocalSt';
 import StyledRecipeDetails from '../styled/StyledRecipeDetails';
-import style from './RecipeDetails.module.css';
 
 function RecipeDetails() {
   const dispatch = useDispatch();
@@ -71,7 +70,7 @@ function RecipeDetails() {
                             onChange={ updateIngredientStatus }
                           />
                           <span
-                            className={ isChecked ? style.checked : '' }
+                            className={ isChecked ? 'checked' : '' }
                           >
                             { `- ${ingredientName}` }
                           </span>

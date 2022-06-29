@@ -40,6 +40,10 @@ const StyledRecipeDetails = styled.div`
       }
     }
   }
+
+  .checked {
+    text-decoration: line-through;
+  }
 `;
 
 export default StyledRecipeDetails;
