@@ -14,12 +14,12 @@ const StyledRecommendationCard = styled.div`
   margin: 0 5%;
   width: 40%;
 
-  img {
+  .card-background {
     border-radius: 10px;
     z-index: -1;
   }
 
-  h4 {
+  .card-title {
     position: absolute;
     bottom: 18%;
     left: 5%;
@@ -28,7 +28,7 @@ const StyledRecommendationCard = styled.div`
     text-shadow : 1px 1px 5px ${(props) => props.theme.secondaryColor};
   }
 
-  p {
+  .card-category {
     position: absolute;
     bottom: 5%;
     left: 5%;

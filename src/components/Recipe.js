@@ -33,11 +33,13 @@ function Recipe({ isFood }) {
             <>
               <img
                 data-testid="recipe-photo"
-                className="cover"
+                className="recice-img"
                 src={ image }
                 alt="Recipe"
               />
-              <section>
+              <section
+                className="recipe-container"
+              >
                 <RecipeTitle />
                 <RecipeDetails />
                 {
@@ -48,6 +50,7 @@ function Recipe({ isFood }) {
                         isFood
                           && (
                             <iframe
+                              className="recipe-video"
                               data-testid="video"
                               width="560"
                               height="315"

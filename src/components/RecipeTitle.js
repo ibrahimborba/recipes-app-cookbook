@@ -54,9 +54,9 @@ function RecipeTitle() {
 
   return (
     <StyledRecipeTitle>
-      <div>
-        <h2 data-testid="recipe-title">{ title }</h2>
-        <div>
+      <div className="recipe-bar">
+        <h2 data-testid="recipe-title" className="recipe-bar-title">{ title }</h2>
+        <div className="recipe-bar-buttons-container">
           {
             showMessage
               && (
@@ -64,17 +64,20 @@ function RecipeTitle() {
               )
           }
           <button
+            className="bar-button"
             data-testid="share-btn"
             type="button"
             onClick={ copyToClipBoard }
           >
-            <img src={ shareIcon } alt="share icon" />
+            <img className="icon" src={ shareIcon } alt="share icon" />
           </button>
           <button
+            className="bar-button"
             type="button"
             onClick={ favoriteRecipe }
           >
             <img
+              className="icon"
               data-testid="favorite-btn"
               src={ isFavorited ? blackHeartIcon : whiteHeartIcon }
               alt="favorite icon"
@@ -82,7 +85,7 @@ function RecipeTitle() {
           </button>
         </div>
       </div>
-      <p data-testid="recipe-category">{ categoryRecom }</p>
+      <p data-testid="recipe-category" className="recipe-category">{ categoryRecom }</p>
     </StyledRecipeTitle>
   );
 }

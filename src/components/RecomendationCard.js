@@ -15,11 +15,17 @@ function RecomendationCard({ id, image, category, index, title, type }) {
       onKeyDown={ () => history.push(`/${type}s/${id}`) }
     >
       <img
+        className="card-background"
         src={ image }
         alt={ title }
       />
-      <h4 data-testid={ `${index}-recomendation-title` }>{ title }</h4>
-      <p>{ category }</p>
+      <h4
+        data-testid={ `${index}-recomendation-title` }
+        className="card-title"
+      >
+        { title }
+      </h4>
+      <p className="card-category">{ category }</p>
     </StyledRecommendationCard>
   );
 }

@@ -16,7 +16,7 @@ const StyledStartButton = styled.div`
   width: 100%;
   z-index: 2;
 
-  button {
+  .button {
     background-color: ${({ theme }) => theme.dark};
     border: none;
     border-radius: 8px;
@@ -28,7 +28,7 @@ const StyledStartButton = styled.div`
     transition: 0.4s;
   }
 
-  button:disabled {
+  .button:disabled {
     background-color: ${({ theme }) => theme.disabled};
     bottom: 0;
     color: ${({ theme }) => theme.typography.secondary};
