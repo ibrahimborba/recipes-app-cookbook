@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { fetchRandomDrinkResults } from '../redux/actions';
+import StyledExploreDrinks from '../styled/StyledExploreDrinks';
 
 function ExploreDrinks() {
   const history = useHistory();
@@ -25,8 +26,9 @@ function ExploreDrinks() {
   return (
     <>
       <Header />
-      <form>
+      <StyledExploreDrinks>
         <button
+          className="ingredient-btn"
           type="button"
           data-testid="explore-by-ingredient"
           onClick={ () => history.push('/explore/drinks/ingredients') }
@@ -34,13 +36,14 @@ function ExploreDrinks() {
           By Ingredient
         </button>
         <button
+          className="surprise-btn"
           type="button"
           data-testid="explore-surprise"
           onClick={ handleRandomDrinks }
         >
           Surprise me!
         </button>
-      </form>
+      </StyledExploreDrinks>
       <Footer />
     </>
   );
