@@ -56,7 +56,7 @@ function RecipeTitle() {
     <StyledRecipeTitle>
       <div className="recipe-bar">
         <h2 data-testid="recipe-title" className="recipe-bar-title">{ title }</h2>
-        <div className="recipe-bar-buttons">
+        <div className="recipe-bar-buttons-container">
           {
             showMessage
               && (

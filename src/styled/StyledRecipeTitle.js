@@ -22,9 +22,12 @@ const StyledRecipeTitle = styled.div`
     height: 100%;
   }
 
-  .recipe-bar {
+  .recipe-bar, .recipe-bar-buttons-container {
     align-items: center;
     display: flex;
+  }
+
+  .recipe-bar {
     justify-content: space-between;
     margin-bottom: .3rem;
   }
