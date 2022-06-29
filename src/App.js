@@ -24,6 +24,7 @@ import GlobalStyle from './styled/GloblaStyle';
 const pallete = {
   mainColor: '#fafafa',
   secondaryColor: '#212121',
+  lightgray: '#eeeeee',
   dark: '#050908',
   accent: '#ffc400',
   attention: '#c62828',

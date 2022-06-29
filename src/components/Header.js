@@ -42,24 +42,27 @@ function Header({ enableSearch }) {
 
   return (
     <StyledHeader>
-      <button
-        type="button"
-        onClick={ () => history.push('/profile') }
-      >
-        <img data-testid="profile-top-btn" src={ profileIcon } alt="profile icon" />
-      </button>
-      <h1 data-testid="page-title">{ title }</h1>
-      {
-        enableSearch
-        && (
-          <button
-            type="button"
-            onClick={ () => setIsSearchBar(!isSearchBar) }
-          >
-            <img data-testid="search-top-btn" src={ searchIcon } alt="search icon" />
-          </button>
-        )
-      }
+      <section>
+        <button
+          className="profile_icon"
+          type="button"
+          onClick={ () => history.push('/profile') }
+        >
+          <img data-testid="profile-top-btn" src={ profileIcon } alt="profile icon" />
+        </button>
+        <h1 data-testid="page-title">{ title }</h1>
+        {
+          enableSearch
+          && (
+            <button
+              type="button"
+              onClick={ () => setIsSearchBar(!isSearchBar) }
+            >
+              <img data-testid="search-top-btn" src={ searchIcon } alt="search icon" />
+            </button>
+          )
+        }
+      </section>
       {
         isSearchBar && <SearchBar />
       }

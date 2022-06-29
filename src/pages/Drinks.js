@@ -5,24 +5,28 @@ import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
 import CardRecipe from '../components/CardRecipe';
 import { fetchDrinkResults } from '../redux/actions';
+import StyledCardGrid from '../styled/StyledCardGrid';
 
 function Drinks() {
   const dispatch = useDispatch();
   const drinkResults = useSelector((state) => state.searchResults.drinks);
-  const searchOptions = useSelector((state) => state.searchOptions);
+  const { search, option } = useSelector((state) => state.searchOptions);
 
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    const { search, option } = searchOptions;
-    dispatch(fetchDrinkResults(search, option));
-  }, [dispatch, searchOptions]);
+    const getResults = async () => {
+      await dispatch(fetchDrinkResults(search, option));
+    };
+    getResults();
+  }, [dispatch, search, option]);
 
   return (
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { drinkResults.length > 0
+      <StyledCardGrid>
+        { drinkResults.length > 0
        && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
          <CardRecipe
            key={ drink.idDrink }
@@ -32,6 +36,7 @@ function Drinks() {
            index={ index }
          />
        ))}
+      </StyledCardGrid>
       <Footer />
     </>
   );
