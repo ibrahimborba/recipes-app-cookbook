@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import StyledRecommended from '../styled/StyledRecommended';
-import RecomendationCard from './RecomendationCard';
+import CardRecipe from './CardRecipe';
 
 function Recommended() {
   const { isFetching, recommendations } = useSelector((state) => state.recipe);
@@ -12,7 +12,7 @@ function Recommended() {
         !isFetching
           && (
             recommendations.map(({ categoryRecom, title, image, id, type }, index) => (
-              <RecomendationCard
+              <CardRecipe
                 key={ id }
                 category={ categoryRecom }
                 id={ id }

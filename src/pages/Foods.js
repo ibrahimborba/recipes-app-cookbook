@@ -32,10 +32,11 @@ function Foods() {
                 && meals.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
                   <CardRecipe
                     key={ meal.idMeal }
-                    recipeID={ meal.idMeal }
-                    recipeImg={ meal.strMealThumb }
-                    recipeTitle={ meal.strMeal }
+                    id={ meal.idMeal }
+                    image={ meal.strMealThumb }
+                    title={ meal.strMeal }
                     index={ index }
+                    type="food"
                   />
                 ))}
           </StyledCardGrid>

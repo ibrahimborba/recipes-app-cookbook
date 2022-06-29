@@ -32,14 +32,20 @@ function CardDoneFav(props) {
     setTimeout(() => setClickedBtn(false), SECONDS);
   };
 
+  const handlePushPath = (type, id) => (event) => {
+    if (event.key === 'Enter' || event.type === 'click') {
+      history.push(`/${type}s/${id}`);
+    }
+  };
+
   return (
     <StyledCardDoneFav>
       <div
         className="container_recipe"
         tabIndex={ 0 }
         role="button"
-        onClick={ () => history.push(`/${recipeType}s/${recipeID}`) }
-        onKeyDown={ () => history.push(`/${recipeType}s/${recipeID}`) }
+        onClick={ handlePushPath(recipeType, recipeID) }
+        onKeyDown={ handlePushPath(recipeType, recipeID) }
       >
         <img
           className="recipe_img"
