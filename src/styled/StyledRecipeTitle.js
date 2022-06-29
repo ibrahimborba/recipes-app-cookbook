@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledRecipeTitle = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   width: 100%;
 
   .bar-button {
@@ -35,6 +35,7 @@ const StyledRecipeTitle = styled.div`
   .recipe-bar-title {
     font-size: 1.8rem;
     font-weight: 900;
+    max-width: 180px;
   }
 
   .recipe-category {
