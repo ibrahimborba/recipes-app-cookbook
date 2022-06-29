@@ -95,6 +95,7 @@ function StartButton() {
           ? isToShow
             && (
               <button
+                className="button"
                 data-testid="start-recipe-btn"
                 name="startBtn"
                 type="button"
@@ -105,6 +106,7 @@ function StartButton() {
             )
           : (
             <button
+              className="button"
               data-testid="finish-recipe-btn"
               name="finishBtn"
               type="button"

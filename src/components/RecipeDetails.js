@@ -42,8 +42,14 @@ function RecipeDetails() {
 
   return (
     <StyledRecipeDetails>
-      <div>
-        <h3>Ingredients</h3>
+      <div
+        className="recipe-details"
+      >
+        <h3
+          className="recipe-details-title"
+        >
+          Ingredients
+        </h3>
         <ul>
           {
             inProgress
@@ -56,6 +62,7 @@ function RecipeDetails() {
 
                     return (
                       <li
+                        className="recipe-details-ingredient"
                         data-testid={ `${index}-ingredient-step` }
                         key={ `ingredient${index}` }
                       >
@@ -63,6 +70,7 @@ function RecipeDetails() {
                           htmlFor={ `ingredient${index}` }
                         >
                           <input
+                            className="ingredient-checkbox"
                             id={ `ingredient${index}` }
                             name={ ingredientName }
                             type="checkbox"
@@ -88,6 +96,7 @@ function RecipeDetails() {
 
                     return (
                       <li
+                        className="recipe-details-ingredient"
                         data-testid={ `${index}-ingredient-name-and-measure` }
                         key={ `ingredient${index}` }
                       >
@@ -100,12 +109,12 @@ function RecipeDetails() {
           }
         </ul>
       </div>
-      <div>
-        <h3>Instructions</h3>
+      <div className="recipe-details">
+        <h3 className="recipe-details-title">Instructions</h3>
         <div data-testid="instructions">
           {
             instr?.map((paragraph, index) => (
-              <p key={ index }>{paragraph}</p>
+              <p key={ index } className="recipe-details-instructions">{paragraph}</p>
             ))
           }
         </div>
