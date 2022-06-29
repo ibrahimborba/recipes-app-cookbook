@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { fetchRandomMealResults } from '../redux/actions';
+import StyledExploreFoods from '../styled/StyledExploreFoods';
 
 function ExploreFoods() {
   const history = useHistory();
@@ -26,8 +27,9 @@ function ExploreFoods() {
   return (
     <>
       <Header />
-      <form>
+      <StyledExploreFoods>
         <button
+          className="food-ingredient-btn"
           type="button"
           data-testid="explore-by-ingredient"
           onClick={ () => history.push('/explore/foods/ingredients') }
@@ -35,6 +37,7 @@ function ExploreFoods() {
           By Ingredient
         </button>
         <button
+          className="nationality-btn"
           type="button"
           data-testid="explore-by-nationality"
           onClick={ () => history.push('/explore/foods/nationalities') }
@@ -42,13 +45,14 @@ function ExploreFoods() {
           By Nationality
         </button>
         <button
+          className="food-surprise-btn"
           type="button"
           data-testid="explore-surprise"
           onClick={ handleRandom }
         >
           Surprise me!
         </button>
-      </form>
+      </StyledExploreFoods>
       <Footer />
     </>
   );

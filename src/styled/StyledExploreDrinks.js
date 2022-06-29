@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledExplore = styled.div`
+const StyledExploreDrinks = styled.div`
   height: 100vh;
   background-color: ${(props) => props.theme.lightgray};
   background-size: cover;
@@ -20,17 +20,18 @@ const StyledExplore = styled.div`
     width: 80%;
   }
 
-  .foods-btn{
+  .ingredient-btn {
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./meal.jpg");
+    rgb(0, 0, 0, 0.45)), url("./drinks_ingredient.jpg");
     background-size: cover;
   }
 
-  .drinks-btn{
+  .surprise-btn {
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./drink.jpg");
+    rgb(0, 0, 0, 0.45)), url("./question_mark.jpg");
     background-size: cover;
   }
+
 `;
 
-export default StyledExplore;
+export default StyledExploreDrinks;

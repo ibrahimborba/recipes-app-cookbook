@@ -2,14 +2,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import StyledForm from '../styled/StyledExplore';
+import StyledExplore from '../styled/StyledExplore';
 
 function Explore() {
   const history = useHistory();
   return (
     <>
       <Header />
-      <StyledForm>
+      <StyledExplore>
         <button
           className="foods-btn"
           type="button"
@@ -26,7 +26,7 @@ function Explore() {
         >
           Explore Drinks
         </button>
-      </StyledForm>
+      </StyledExplore>
       <Footer />
     </>
   );
