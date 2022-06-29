@@ -41,6 +41,13 @@ function CategoriesOptions() {
     }
   };
 
+  const editString = (string) => {
+    if (string.includes('/')) {
+      return string.split('/')[0];
+    }
+    return string;
+  };
+
   return (
     <StyledCategories>
       <button
@@ -61,7 +68,7 @@ function CategoriesOptions() {
           value={ category.strCategory }
           onClick={ handleClickCategory }
         >
-          {category.strCategory}
+          { editString(category.strCategory)}
         </button>
       ))}
     </StyledCategories>
