@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import mealImg from '../images/meal.png';
+import drinkImg from '../images/drink.png';
 
 const StyledExplore = styled.div`
   height: 100vh;
@@ -22,13 +24,13 @@ const StyledExplore = styled.div`
 
   .foods-btn{
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./meal.jpg");
+    rgb(0, 0, 0, 0.45)), url(${mealImg});
     background-size: cover;
   }
 
   .drinks-btn{
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./drink.jpg");
+    rgb(0, 0, 0, 0.45)), url(${drinkImg});
     background-size: cover;
   }
 `;

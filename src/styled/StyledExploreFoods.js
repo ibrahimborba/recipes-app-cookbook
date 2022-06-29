@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import foodsImg from '../images/foods_ingredients.png';
+import flagsImg from '../images/flags.png';
+import questionImg from '../images/question_mark.png';
 
 const StyledExploreFoods = styled.div`
   height: 100vh;
@@ -22,19 +25,19 @@ const StyledExploreFoods = styled.div`
 
   .food-ingredient-btn {
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./foods_ingredients.jpg");
+    rgb(0, 0, 0, 0.45)), url(${foodsImg});
     background-size: cover;
   }
 
   .nationality-btn {
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./flags.jpg");
+    rgb(0, 0, 0, 0.45)), url(${flagsImg});
     background-size: cover;
   }
 
   .food-surprise-btn{
     background: linear-gradient(to right, rgb(0, 0, 0, 0.45),
-    rgb(0, 0, 0, 0.45)), url("./question_mark.jpg");
+    rgb(0, 0, 0, 0.45)), url(${questionImg});
     background-size: cover;
   }
 

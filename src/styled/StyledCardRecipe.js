@@ -12,6 +12,7 @@ const StyledCardRecipe = styled.div`
   flex: none;
   margin: 0 2%;
   max-width: 150px;
+  overflow: hidden;
 
   img {
     z-index: -1;
@@ -26,6 +27,8 @@ const StyledCardRecipe = styled.div`
     font-size: 1.25rem;
     font-weight: 700;
     text-shadow : 1px 1px 5px ${(props) => props.theme.secondaryColor};
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .card-background {

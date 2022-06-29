@@ -12,6 +12,14 @@ function CardRecipe({ id, image, title, category, type, index }) {
     }
   };
 
+  const editString = (string) => {
+    const MAX_LENGTH = 32;
+    if (string.length > MAX_LENGTH) {
+      return string.substring(0, MAX_LENGTH).concat('...');
+    }
+    return string;
+  };
+
   return (
     <StyledCardRecipe
       data-testid={ `${index}-recipe-card` }
@@ -30,7 +38,7 @@ function CardRecipe({ id, image, title, category, type, index }) {
         data-testid={ `${index}-card-name` }
         className={ category.length > 0 ? 'card-title' : '' }
       >
-        { title }
+        { editString(title) }
       </h3>
       <p className="card-category">{ category }</p>
     </StyledCardRecipe>
