@@ -9,6 +9,9 @@ const StyledCardRecipe = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  flex: none;
+  margin: 0 2%;
+  max-width: 150px;
 
   img {
     z-index: -1;
@@ -22,6 +25,28 @@ const StyledCardRecipe = styled.div`
     left: 5%;
     font-size: 1.25rem;
     font-weight: 700;
+    text-shadow : 1px 1px 5px ${(props) => props.theme.secondaryColor};
+  }
+
+  .card-background {
+    border-radius: 10px;
+    z-index: -1;
+  }
+
+  .card-title {
+    position: absolute;
+    bottom: 18%;
+    left: 5%;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-shadow : 1px 1px 5px ${(props) => props.theme.secondaryColor};
+  }
+
+  .card-category {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    font-size: 0.8rem;
     text-shadow : 1px 1px 5px ${(props) => props.theme.secondaryColor};
   }
 `;
