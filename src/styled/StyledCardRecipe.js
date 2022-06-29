@@ -16,6 +16,7 @@ const StyledCardRecipe = styled.div`
   }
 
   h3 {
+    width: 90%;
     position: absolute;
     bottom: 5%;
     left: 5%;

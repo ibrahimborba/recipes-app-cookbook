@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import CardDoneFav from '../components/CardDoneFav';
 import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
+import StyledCategories from '../styled/StyledCategories';
 
 function Favorites() {
   const [favRecipes, setFavRecipes] = useState([]);
@@ -16,7 +17,8 @@ function Favorites() {
     if (filter === 'all') {
       return setFavRecipes(getFavoriteRecipes());
     }
-    const filteredByType = favRecipes.filter((recipe) => recipe.type === filter);
+    const filteredByType = getFavoriteRecipes()
+      .filter((recipe) => recipe.type === filter);
     return setFavRecipes(filteredByType);
   }, [filter]);
 
@@ -32,30 +34,35 @@ function Favorites() {
   return (
     <div>
       <Header />
-      <button
-        type="button"
-        data-testid="filter-by-all-btn"
-        value="all"
-        onClick={ handleFilterBtn }
-      >
-        All
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-food-btn"
-        value="food"
-        onClick={ handleFilterBtn }
-      >
-        Food
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-drink-btn"
-        value="drink"
-        onClick={ handleFilterBtn }
-      >
-        Drinks
-      </button>
+      <StyledCategories>
+        <button
+          className={ filter === 'all' && 'selectedCategory' }
+          type="button"
+          data-testid="filter-by-all-btn"
+          value="all"
+          onClick={ handleFilterBtn }
+        >
+          All
+        </button>
+        <button
+          className={ filter === 'food' && 'selectedCategory' }
+          type="button"
+          data-testid="filter-by-food-btn"
+          value="food"
+          onClick={ handleFilterBtn }
+        >
+          Food
+        </button>
+        <button
+          className={ filter === 'drink' && 'selectedCategory' }
+          type="button"
+          data-testid="filter-by-drink-btn"
+          value="drink"
+          onClick={ handleFilterBtn }
+        >
+          Drinks
+        </button>
+      </StyledCategories>
       {favRecipes.map((fav, index) => (
         <CardDoneFav
           key={ fav.id }

@@ -13,7 +13,6 @@ function CardRecipe({ recipeID, recipeImg, recipeTitle, index }) {
           data-testid={ `${index}-card-img` }
           src={ recipeImg }
           alt={ recipeTitle }
-          style={ { width: '200px' } }
         />
         <h3 data-testid={ `${index}-card-name` }>{ recipeTitle }</h3>
       </StyledCardRecipe>

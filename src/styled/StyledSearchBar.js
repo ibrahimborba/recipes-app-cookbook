@@ -37,15 +37,19 @@ const StyledSearchBar = styled.form`
     :focus {
       color: ${(props) => props.theme.secondaryColor};
     } 
-  }  
+  }
 
-  button {
+  input[type=radio] {
+    accent-color: ${(props) => props.theme.dark};
+  }
+
+  .btn_search {
     width: 70%;
     padding: 10px;
     border: unset;
     border-radius: 10px;
     box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
-    background-color: ${(props) => props.theme.dark} !important;
+    background-color: ${(props) => props.theme.dark};
     font-weight: 700;
     font-size: 1rem;
     text-align: center;

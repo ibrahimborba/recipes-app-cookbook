@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
+  box-shadow: 2px 2px 10px 10px rgba(255,255,255,0.27);
   background-color: ${(props) => props.theme.mainColor};
   color: ${(props) => props.theme.mainColor};
   width: 100%;
