@@ -18,10 +18,12 @@ function RecipeDetails() {
     if (group) {
       const { [group]: { [id]: recipe } } = getInProgressRecipes();
 
-      if (recipe) setDone([...recipe]);
+      if (recipe) {
+        setDone([...recipe]);
 
-      const allIngredientsChecked = recipe.length === ingredients.length;
-      dispatch(updateFinishButtonStatus(!allIngredientsChecked));
+        const allIngredientsChecked = recipe.length === ingredients.length;
+        dispatch(updateFinishButtonStatus(!allIngredientsChecked));
+      }
     }
 
     setInstr([...instructions]);

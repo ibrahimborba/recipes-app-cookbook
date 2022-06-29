@@ -132,7 +132,7 @@ const formatData = (data, option) => {
       id: idDrink,
       image: strDrinkThumb,
       ingredients,
-      instructions: strInstructions,
+      instructions: strInstructions.split('\r\n'),
       nationality: '',
       tags: [],
       title: strDrink,

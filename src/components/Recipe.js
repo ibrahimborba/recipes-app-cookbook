@@ -33,6 +33,7 @@ function Recipe({ isFood }) {
             <>
               <img
                 data-testid="recipe-photo"
+                className="cover"
                 src={ image }
                 alt="Recipe"
               />

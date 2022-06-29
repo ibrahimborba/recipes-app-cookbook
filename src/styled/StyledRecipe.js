@@ -10,7 +10,7 @@ const StyledRecipe = styled.div`
     padding: 1rem;
   }
 
-  img {
+  .cover {
     width: 100%;
     height: 180px;
     object-fit: cover;
