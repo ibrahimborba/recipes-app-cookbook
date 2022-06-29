@@ -110,7 +110,7 @@ const formatData = (data, option) => {
       id: idMeal,
       image: strMealThumb,
       ingredients,
-      instructions: strInstructions,
+      instructions: strInstructions.split('\r\n'),
       nationality: strArea,
       tags: strTags ? strTags.split(',') : [],
       title: strMeal,

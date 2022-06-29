@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFinishButtonStatus } from '../redux/actions';
+import { updateFinishButtonStatus, updateToInProgress } from '../redux/actions';
 import { getInProgressRecipes, updateIngredients } from '../services/mealsLocalSt';
+import StyledRecipeDetails from '../styled/StyledRecipeDetails';
 import style from './RecipeDetails.module.css';
 
 function RecipeDetails() {
@@ -11,14 +12,22 @@ function RecipeDetails() {
   } = useSelector((state) => state.recipe);
 
   const [done, setDone] = useState([]);
+  const [instr, setInstr] = useState([]);
 
   useEffect(() => {
     if (group) {
       const { [group]: { [id]: recipe } } = getInProgressRecipes();
 
       if (recipe) setDone([...recipe]);
+
+      const allIngredientsChecked = recipe.length === ingredients.length;
+      dispatch(updateFinishButtonStatus(!allIngredientsChecked));
     }
-  }, [group, id]);
+
+    setInstr([...instructions]);
+  }, [group, id, instructions, dispatch, ingredients.length]);
+
+  useEffect(() => () => dispatch(updateToInProgress(false)), [dispatch]);
 
   const updateIngredientStatus = ({ target: { name } }) => {
     updateIngredients(id, name, group);
@@ -31,10 +40,10 @@ function RecipeDetails() {
   };
 
   return (
-    <>
+    <StyledRecipeDetails>
       <div>
         <h3>Ingredients</h3>
-        <ul style={ { backgroundColor: 'grey' } }>
+        <ul>
           {
             inProgress
               ? (
@@ -62,7 +71,7 @@ function RecipeDetails() {
                           <span
                             className={ isChecked ? style.checked : '' }
                           >
-                            { ingredientName }
+                            { `- ${ingredientName}` }
                           </span>
                         </label>
                       </li>
@@ -81,7 +90,7 @@ function RecipeDetails() {
                         data-testid={ `${index}-ingredient-name-and-measure` }
                         key={ `ingredient${index}` }
                       >
-                        { ingredientName }
+                        { `- ${ingredientName}` }
                       </li>
                     );
                   })}
@@ -93,10 +102,14 @@ function RecipeDetails() {
       <div>
         <h3>Instructions</h3>
         <div data-testid="instructions">
-          {instructions}
+          {
+            instr?.map((paragraph, index) => (
+              <p key={ index }>{paragraph}</p>
+            ))
+          }
         </div>
       </div>
-    </>
+    </StyledRecipeDetails>
   );
 }
 

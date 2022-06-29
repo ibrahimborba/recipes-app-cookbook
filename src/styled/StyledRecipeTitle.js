@@ -6,7 +6,7 @@ const StyledRecipeTitle = styled.div`
 
   h2 {
     font-size: 1.8rem;
-    font-weight: 400;
+    font-weight: 900;
   }
 
   div {
@@ -42,6 +42,7 @@ const StyledRecipeTitle = styled.div`
   p {
     color: ${(props) => props.theme.typography.secondary};
     font-size: 1.3rem;
+    font-weight: 600;
   }
 `;
 

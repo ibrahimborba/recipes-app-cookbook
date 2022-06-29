@@ -29,8 +29,10 @@ const pallete = {
   attention: '#c62828',
   typography: {
     main: '#050908',
-    secondary: '#A9A9A9',
+    secondary: '#686B72',
   },
+  recipeItems: '#ECECEC',
+  disabled: '#BFBABF',
 };
 
 function App() {
