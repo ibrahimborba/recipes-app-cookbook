@@ -49,15 +49,18 @@ function Recipe({ isFood }) {
                       {
                         isFood
                           && (
-                            <iframe
-                              className="recipe-video"
-                              data-testid="video"
-                              width="560"
-                              height="315"
-                              src={ url }
-                              title="YouTube video player"
-                              allowFullScreen
-                            />
+                            <div>
+                              <h3 className="recipe-video-title">Video</h3>
+                              <iframe
+                                className="recipe-video"
+                                data-testid="video"
+                                width="560"
+                                height="315"
+                                src={ url }
+                                title="YouTube video player"
+                                allowFullScreen
+                              />
+                            </div>
                           )
                       }
                       <Recommended />
