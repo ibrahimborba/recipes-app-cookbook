@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import wineImg from '../images/wine_background.png';
 
 export const StyledLogin = styled.div`
   height: 100vh;
   display: flex;
   align-items:center;
   flex-direction:column;
-  background-image: url("./wine_background.jpg");
+  background-image: url(${wineImg});
   background-size: cover;
   background-position: right;
 
@@ -15,7 +16,6 @@ export const StyledLogin = styled.div`
     font-size: 2.5rem;
     color: ${(props) => props.theme.mainColor};
     font-weight: 600;
-    
   }
 `;
 
