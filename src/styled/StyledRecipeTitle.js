@@ -9,7 +9,8 @@ const StyledRecipeTitle = styled.div`
     box-shadow: 5px 5px 7px #d9d9d9, -5px -5px 7px #ffffff;
     border: none;
     border-radius: 6px;
-    margin-left: .5rem;
+    margin-left: 10px;
+    width: 40px;
 
     &:active {
       background-color: whitesmoke;
@@ -36,6 +37,18 @@ const StyledRecipeTitle = styled.div`
     font-size: 1.8rem;
     font-weight: 900;
     max-width: 180px;
+  }
+
+  .recipe-bar-buttons-container {
+    position: relative;
+
+    span {
+      font-size: 0.8rem;
+      left: -7%;
+      top: 120%;
+      position: absolute;
+      z-index: 2;
+    }
   }
 
   .recipe-category {

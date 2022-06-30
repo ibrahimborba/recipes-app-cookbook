@@ -10,7 +10,7 @@ const StyledRecipeDetails = styled.div`
   }
 
   .recipe-details {
-    background: ${(props) => props.theme.recipeItems};
+    background: ${(props) => props.theme.lightgray};
     border-radius: 20px;
     box-shadow:  15px 15px 35px #b3b3b3, -15px -15px 35px #ffffff;
     margin-bottom: 2rem;
@@ -23,7 +23,7 @@ const StyledRecipeDetails = styled.div`
 
   .recipe-details-ingredient, .recipe-details-instructions {
     color: ${(props) => props.theme.typography.secondary};
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.5rem;
   }
 

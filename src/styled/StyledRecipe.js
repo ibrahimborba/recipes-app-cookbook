@@ -20,10 +20,17 @@ const StyledRecipe = styled.div`
   .recipe-video {
     border: none;
     border-radius: 20px;
-    box-shadow:  15px 15px 35px #b3b3b3, -15px -15px 35px #ffffff;
+    box-shadow:  15px 15px 35px #b3b3b3, -15px 0px 35px #ffffff;
     margin-bottom: 3rem;
     width: 100%;
     height: 200px;
+  }
+
+  .recipe-video-title {
+    padding-left: 3%;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: .5rem;
   }
 `;
 
