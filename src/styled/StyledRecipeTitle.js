@@ -36,7 +36,7 @@ const StyledRecipeTitle = styled.div`
   .recipe-bar-title {
     font-size: 1.8rem;
     font-weight: 900;
-    max-width: 200px;
+    max-width: 180px;
   }
 
   .recipe-bar-buttons-container {
