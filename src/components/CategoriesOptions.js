@@ -7,6 +7,7 @@ import StyledCategories from '../styled/StyledCategories';
 
 function CategoriesOptions() {
   const [categories, setCategories] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
   const [checkedCategory, setCheckedCategory] = useState('');
 
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ function CategoriesOptions() {
   useEffect(() => {
     const categoriesList = async () => {
       const categoriesResult = await getCategories(pathname);
+      setIsFetching(true);
       setCategories(categoriesResult);
     };
     categoriesList();
@@ -50,27 +52,36 @@ function CategoriesOptions() {
 
   return (
     <StyledCategories>
-      <button
-        className={ checkedCategory === '' ? 'selectedCategory' : '' }
-        data-testid="All-category-filter"
-        type="button"
-        onClick={ handleClickCategory }
-        name="All"
-      >
-        All
-      </button>
-      { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
-        <button
-          className={ checkedCategory === category.strCategory ? 'selectedCategory' : '' }
-          key={ category.strCategory }
-          data-testid={ `${category.strCategory}-category-filter` }
-          type="button"
-          value={ category.strCategory }
-          onClick={ handleClickCategory }
-        >
-          { editString(category.strCategory)}
-        </button>
-      ))}
+      {
+        isFetching
+        && (
+          <>
+            <button
+              className={ checkedCategory === '' && 'selectedCategory' }
+              data-testid="All-category-filter"
+              type="button"
+              onClick={ handleClickCategory }
+              name="All"
+            >
+              All
+            </button>
+            { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
+              <button
+                className={
+                  checkedCategory === category.strCategory && 'selectedCategory'
+                }
+                key={ category.strCategory }
+                data-testid={ `${category.strCategory}-category-filter` }
+                type="button"
+                value={ category.strCategory }
+                onClick={ handleClickCategory }
+              >
+                { editString(category.strCategory)}
+              </button>
+            ))}
+          </>
+        )
+      }
     </StyledCategories>
   );
 }
