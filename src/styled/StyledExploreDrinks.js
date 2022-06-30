@@ -3,8 +3,6 @@ import questionImg from '../images/question_mark.png';
 import drinksImg from '../images/drinks_ingredient.png';
 
 const StyledExploreDrinks = styled.div`
-  height: 100vh;
-  background-color: ${(props) => props.theme.lightgray};
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -13,12 +11,12 @@ const StyledExploreDrinks = styled.div`
 
   button {
     color: ${(props) => props.theme.mainColor};
-    height: 30%;
+    height: 200px;
     border-radius: 13px;
     border: none;
     font-weight: 600;
     font-size: 1.2rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     width: 80%;
   }
 

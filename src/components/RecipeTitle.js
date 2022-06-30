@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import clipboardCopy from 'clipboard-copy';
 import { useSelector } from 'react-redux';
 import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 import shareIcon from '../images/shareIcon.svg';
@@ -27,7 +28,7 @@ function RecipeTitle() {
 
   const copyToClipBoard = () => {
     const url = window.location.href.replace('/in-progress', '');
-    window.navigator.clipboard.writeText(url);
+    clipboardCopy(url);
 
     const SECONDS = 2000;
 

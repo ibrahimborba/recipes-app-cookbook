@@ -10,7 +10,7 @@ const StyledNationalities = styled.div`
     background-color: unset;
     border: none;
     border-bottom: 2px solid ${({ theme }) => theme.dark};
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     width: 310px;
   }
