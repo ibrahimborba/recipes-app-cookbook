@@ -25,6 +25,10 @@ const StyledRecipeTitle = styled.div`
   .recipe-bar, .recipe-bar-buttons-container {
     align-items: center;
     display: flex;
+
+    span {
+      font-size: 0.8rem;
+    }
   }
 
   .recipe-bar {
