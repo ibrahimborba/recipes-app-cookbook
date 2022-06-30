@@ -4,8 +4,6 @@ import flagsImg from '../images/flags.png';
 import questionImg from '../images/question_mark.png';
 
 const StyledExploreFoods = styled.div`
-  height: 100vh;
-  background-color: ${(props) => props.theme.lightgray};
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -14,12 +12,13 @@ const StyledExploreFoods = styled.div`
 
   button {
     color: ${(props) => props.theme.mainColor};
-    height: 20%;
+    height: 130px;
     border-radius: 13px;
     border: none;
     font-weight: 600;
     font-size: 1.2rem;
     margin-top: 2rem;
+    max-width: 500px;
     width: 80%;
   }
 
