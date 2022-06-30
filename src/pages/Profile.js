@@ -24,6 +24,7 @@ function Profile() {
       <Header />
       <StyledProfile>
         <div className="profile-user">
+          <img className="profile-user-icon" src={ userIcon } alt="user" />
           <h2
             data-testid="profile-email"
             className="profile-user-email"
@@ -33,7 +34,7 @@ function Profile() {
         </div>
         <div className="profile-links">
           <button
-            className="profile-links-button done"
+            className="profile-links-button"
             type="button"
             data-testid="profile-done-btn"
             onClick={ () => history.push('/done-recipes') }
@@ -41,7 +42,7 @@ function Profile() {
             Done Recipes
           </button>
           <button
-            className="profile-links-button favorites"
+            className="profile-links-button"
             type="button"
             data-testid="profile-favorite-btn"
             onClick={ () => history.push('/favorite-recipes') }
@@ -49,7 +50,7 @@ function Profile() {
             Favorite Recipes
           </button>
           <button
-            className="profile-links-button logout"
+            className="profile-links-button"
             type="button"
             data-testid="profile-logout-btn"
             onClick={ handleLogout }
