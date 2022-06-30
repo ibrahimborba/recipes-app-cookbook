@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
 const StyledLoading = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(255, 255, 255, 0.7);
   position: absolute;
-  top: 50%;
-  left: 36%;
-  
+  top: 0;
+  left: 0;
+  padding-top: 80%;
+  padding-left: 36%;
+  z-index: 10;
+
   /* From uiverse.io by @G4b413l */
   .dot-wave {
     --uib-size: 60px;
@@ -56,6 +62,7 @@ const StyledLoading = styled.div`
     50% {
       transform: translateY(-200%);
     }
+
   }
 `;
 
