@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getUser, logout } from '../services/userLocalSt';
 import StyledProfile from '../styled/StyledProfile';
+import userIcon from '../images/user.png';
 
 function Profile() {
   const [userEmail, setUserEmail] = useState({});
@@ -22,12 +23,14 @@ function Profile() {
     <>
       <Header />
       <StyledProfile>
-        <h2
-          data-testid="profile-email"
-          className="profile-email"
-        >
-          { userEmail.email }
-        </h2>
+        <div className="profile-user">
+          <h2
+            data-testid="profile-email"
+            className="profile-user-email"
+          >
+            { userEmail.email }
+          </h2>
+        </div>
         <div className="profile-links">
           <button
             className="profile-links-button done"
@@ -46,7 +49,7 @@ function Profile() {
             Favorite Recipes
           </button>
           <button
-            className="profile-links-button"
+            className="profile-links-button logout"
             type="button"
             data-testid="profile-logout-btn"
             onClick={ handleLogout }
