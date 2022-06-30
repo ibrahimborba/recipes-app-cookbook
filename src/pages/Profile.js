@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getUser, logout } from '../services/userLocalSt';
+import StyledProfile from '../styled/StyledProfile';
 
 function Profile() {
   const [userEmail, setUserEmail] = useState({});
@@ -20,28 +21,40 @@ function Profile() {
   return (
     <>
       <Header />
-      <h2 data-testid="profile-email">{ userEmail.email }</h2>
-      <button
-        type="button"
-        data-testid="profile-done-btn"
-        onClick={ () => history.push('/done-recipes') }
-      >
-        Done Recipes
-      </button>
-      <button
-        type="button"
-        data-testid="profile-favorite-btn"
-        onClick={ () => history.push('/favorite-recipes') }
-      >
-        Favorite Recipes
-      </button>
-      <button
-        type="button"
-        data-testid="profile-logout-btn"
-        onClick={ handleLogout }
-      >
-        Logout
-      </button>
+      <StyledProfile>
+        <h2
+          data-testid="profile-email"
+          className="profile-email"
+        >
+          { userEmail.email }
+        </h2>
+        <div className="profile-links">
+          <button
+            className="profile-links-button done"
+            type="button"
+            data-testid="profile-done-btn"
+            onClick={ () => history.push('/done-recipes') }
+          >
+            Done Recipes
+          </button>
+          <button
+            className="profile-links-button favorites"
+            type="button"
+            data-testid="profile-favorite-btn"
+            onClick={ () => history.push('/favorite-recipes') }
+          >
+            Favorite Recipes
+          </button>
+          <button
+            className="profile-links-button"
+            type="button"
+            data-testid="profile-logout-btn"
+            onClick={ handleLogout }
+          >
+            Logout
+          </button>
+        </div>
+      </StyledProfile>
       <Footer />
     </>
   );
