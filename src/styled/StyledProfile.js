@@ -38,7 +38,7 @@ const StyledProfile = styled.div`
 
   .profile-user-icon {
     margin-bottom: 1rem;
-    width: 20%;
+    max-width: 80px;
   }
 `;
 
