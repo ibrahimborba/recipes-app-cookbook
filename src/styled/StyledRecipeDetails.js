@@ -23,7 +23,7 @@ const StyledRecipeDetails = styled.div`
 
   .recipe-details-ingredient, .recipe-details-instructions {
     color: ${(props) => props.theme.typography.secondary};
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.5rem;
   }
 
