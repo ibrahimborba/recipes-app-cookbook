@@ -5,6 +5,9 @@ import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 
 const PATH = '/done-recipes';
+const copy = require('clipboard-copy');
+
+jest.mock('clipboard-copy');
 
 const setDoneLocalStorageKey = () => {
   localStorage.setItem(
@@ -96,14 +99,6 @@ describe('2 - Done page foods and drinks card renderization', () => {
   });
 
   it('checks if clipboard works as expected', async () => {
-    global.navigator = Object.assign(navigator, {
-      clipboard: {
-        writeText: (text) => text,
-      },
-    });
-
-    const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
-
     renderWithRouterRedux(
       <App />,
       {
