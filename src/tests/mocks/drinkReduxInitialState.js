@@ -1,10 +1,10 @@
 export const DRINK_INGREDIENTS = [
   ['Galliano', '2 1/2 shots'],
-  ['Ginger ale', null],
-  ['Ice', null],
 ];
 
-export const DRINK_INSTRUCTIONS = 'nibh praesent tristique magna sit amet purus gravida';
+export const DRINK_INSTRUCTIONS = [
+  'nibh praesent tristique magna sit amet purus gravida',
+];
 
 export const FOOD_RECOMMENDATIONS = [
   {
