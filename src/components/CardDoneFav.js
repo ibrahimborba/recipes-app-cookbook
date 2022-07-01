@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import clipboardCopy from 'clipboard-copy';
 import { useHistory, useLocation } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -24,7 +25,8 @@ function CardDoneFav(props) {
     favoriteRecipe } = props;
 
   const copyToClipBoard = (id, type) => () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
+    const url = window.location.href.replace('/done-recipes', '');
+    clipboardCopy(`${url}/${type}s/${id}`);
 
     const SECONDS = 1500;
 
@@ -63,15 +65,17 @@ function CardDoneFav(props) {
           <h3 data-testid={ `${index}-horizontal-name` }>
             { recipeTitle }
           </h3>
-          { recipeTags.map((tag, tagIndex) => (
-            <p
-              className="recipe_tag"
-              key={ tagIndex }
-              data-testid={ `0-${tag}-horizontal-tag` }
-            >
-              { tag }
-            </p>
-          )) }
+          <div className="recipe_tags">
+            { recipeTags.map((tag, tagIndex) => (
+              <p
+                className="recipe_tag"
+                key={ tagIndex }
+                data-testid={ `0-${tag}-horizontal-tag` }
+              >
+                { tag }
+              </p>
+            )) }
+          </div>
           <p data-testid={ `${index}-horizontal-done-date` }>
             { recipeDate }
           </p>
@@ -131,7 +135,7 @@ CardDoneFav.defaultProps = {
   recipeAlcohol: '',
   recipeDate: '',
   recipeTags: [],
-  favoriteRecipe: '',
+  favoriteRecipe: () => {},
 };
 
 export default CardDoneFav;

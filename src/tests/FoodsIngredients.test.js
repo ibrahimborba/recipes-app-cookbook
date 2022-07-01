@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
@@ -31,11 +31,13 @@ describe('1 - FoodsIngredients page, testing components render', () => {
     });
 
   it('checks if Ingredients buttons are rendered',
-    () => {
+    async () => {
       const INGREDIENTS_BUTTONS = 12;
       renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
+
+      await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
       const images = screen.getAllByRole('img');
       const ingredientsBtns = images.filter((img) => !img.alt.includes('icon'));

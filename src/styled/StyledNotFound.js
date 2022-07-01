@@ -35,13 +35,14 @@ const StyledNotFound = styled.div`
       font-size: 1rem;
     }
   
-    a {
-      width: 100%;
-      padding-bottom: 2px;
+    div {
       border-bottom: 3px solid ${(props) => props.theme.secondaryColor};
       color: ${(props) => props.theme.secondaryColor};
+      display: inline;
       font-weight: 700;
+      padding-bottom: 2px;
       text-decoration: none;
+      width: 100%;
     }
   }
 `;

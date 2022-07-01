@@ -1,4 +1,5 @@
-import { MEAL_RESULTS, DRINK_RESULTS, IS_FETCHING, REQUISITION_FAILED } from '../actions';
+import { MEAL_RESULTS, DRINK_RESULTS,
+  IS_FETCHING, REQUISITION_FAILED, TURN_OFF_FETCHING } from '../actions';
 
 const INITIAL_STATE = {
   meals: [],
@@ -21,6 +22,9 @@ const searchResults = (state = INITIAL_STATE, action) => {
   case REQUISITION_FAILED:
     return {
       ...state, error: action.payload.error.message, isFetching: false };
+
+  case TURN_OFF_FETCHING:
+    return { ...state, isFetching: false };
 
   default:
     return state;

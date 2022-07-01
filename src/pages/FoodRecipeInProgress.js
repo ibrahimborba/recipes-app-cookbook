@@ -21,6 +21,8 @@ function FoodRecipeInProgress() {
     if (group) {
       dispatch(updateToInProgress(true));
       updateRecipeStatus(id, group);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [dispatch, id, currentRecipe, group]);
 

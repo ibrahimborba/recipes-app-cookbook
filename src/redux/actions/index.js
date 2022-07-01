@@ -17,9 +17,14 @@ export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 export const SEARCH_OPTION = 'SEARCH_OPTION';
 export const IS_IN_PROGRESS = 'IS_IN_PROGRESS';
 export const FINISH_BUTTON_STATUS = 'FINISH_BUTTON_STATUS';
+export const TURN_OFF_FETCHING = 'TURN_OFF_FETCHING';
 
 const isFetching = () => ({
   type: IS_FETCHING,
+});
+
+const endFetching = () => ({
+  type: TURN_OFF_FETCHING,
 });
 
 const requisitonSucceeded = (data, type) => ({
@@ -42,6 +47,7 @@ export const fetchMealResults = (search, option) => async (dispatch) => {
   try {
     const { meals } = await getMeal(search, option);
     if (!meals) {
+      dispatch(endFetching());
       return global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
     dispatch(mealResults(meals));
@@ -60,6 +66,7 @@ export const fetchDrinkResults = (search, option) => async (dispatch) => {
   try {
     const { drinks } = await getDrink(search, option);
     if (!drinks) {
+      dispatch(endFetching());
       return global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
     dispatch(drinkResults(drinks));
@@ -181,7 +188,6 @@ export const randomMealResults = (results) => ({
 
 export const fetchRandomMealResults = (pathname) => async (dispatch) => {
   const { meals } = await getRandom(pathname);
-
   dispatch(randomMealResults(meals));
 };
 
@@ -192,7 +198,6 @@ export const randomDrinkResults = (results) => ({
 
 export const fetchRandomDrinkResults = (pathname) => async (dispatch) => {
   const { drinks } = await getRandom(pathname);
-
   dispatch(randomDrinkResults(drinks));
 };
 
@@ -236,14 +241,10 @@ export const searchOptions = (search = '', option = '') => ({
 
 export const updateToInProgress = (status) => ({
   type: IS_IN_PROGRESS,
-  payload: {
-    status,
-  },
+  payload: { status },
 });
 
 export const updateFinishButtonStatus = (status) => ({
   type: FINISH_BUTTON_STATUS,
-  payload: {
-    status,
-  },
+  payload: { status },
 });

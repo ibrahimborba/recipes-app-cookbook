@@ -1,7 +1,16 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import StyledNotFound from '../styled/StyledNotFound';
 
 function NotFound() {
+  const history = useHistory();
+
+  const goForward = (event) => {
+    if (event.key === 'Enter' || event.type === 'click') {
+      history.push('/foods');
+    }
+  };
+
   return (
     <StyledNotFound>
       <section>
@@ -10,7 +19,14 @@ function NotFound() {
         <h3>
           But you can have a donut or
           {' '}
-          <a href="/foods">go back to Recipes.</a>
+          <div
+            role="link"
+            tabIndex={ 0 }
+            onClick={ goForward }
+            onKeyDown={ goForward }
+          >
+            go back to Recipes.
+          </div>
           {' '}
         </h3>
       </section>
