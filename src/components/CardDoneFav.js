@@ -63,15 +63,17 @@ function CardDoneFav(props) {
           <h3 data-testid={ `${index}-horizontal-name` }>
             { recipeTitle }
           </h3>
-          { recipeTags.map((tag, tagIndex) => (
-            <p
-              className="recipe_tag"
-              key={ tagIndex }
-              data-testid={ `0-${tag}-horizontal-tag` }
-            >
-              { tag }
-            </p>
-          )) }
+          <div className="recipe_tags">
+            { recipeTags.map((tag, tagIndex) => (
+              <p
+                className="recipe_tag"
+                key={ tagIndex }
+                data-testid={ `0-${tag}-horizontal-tag` }
+              >
+                { tag }
+              </p>
+            )) }
+          </div>
           <p data-testid={ `${index}-horizontal-done-date` }>
             { recipeDate }
           </p>
