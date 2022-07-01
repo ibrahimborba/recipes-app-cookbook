@@ -40,10 +40,15 @@ const StyledCardDoneFav = styled.div`
     
       p {
         font-size: 0.8rem;
-        line-height: 1.6rem;
+        line-height: 1.3rem;
         overflow: hidden;
         white-space:nowrap;
         text-overflow: ellipsis;
+      }
+
+      .recipe_tags {
+        display: flex;
+        flex-flow: row wrap;
       }
 
       .recipe_tag {
