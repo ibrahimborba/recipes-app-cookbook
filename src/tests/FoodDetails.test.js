@@ -9,8 +9,11 @@ import {
 import * as localStr from '../services/mealsLocalSt';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import FoodRecipe from '../pages/FoodRecipe';
+import App from '../App';
 
+const copy = require('clipboard-copy');
+
+jest.mock('clipboard-copy');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({ id: '52768' }),
@@ -39,7 +42,7 @@ describe('Test food detail page renderization', () => {
     const fetch = jest.spyOn(global, 'fetch');
 
     renderWithRouterRedux(
-      <FoodRecipe />,
+      <App />,
       { initialEntries },
     );
 
@@ -53,9 +56,12 @@ describe('Test food detail page renderization', () => {
       global.fetch = jest.fn();
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <App />,
         { initialState, initialEntries },
       );
+
+      const [recipeIngredient] = MEAL_INGREDIENTS;
+      const [ingredient, measure] = recipeIngredient;
 
       const coverImg = await screen.findByRole('img', { name: 'Recipe' });
       const recipeTitle = screen
@@ -66,7 +72,8 @@ describe('Test food detail page renderization', () => {
         .getByRole('heading', { level: 3, name: 'Ingredients' });
       const instructionsTitle = screen
         .getByRole('heading', { level: 3, name: 'Instructions' });
-      const instructionsText = screen.getByText(MEAL_INSTRUCTIONS);
+      const ingredientsText = screen.getByText(`- ${ingredient} - ${measure}`);
+      const instructionsText = screen.getByText(MEAL_INSTRUCTIONS[0]);
       const video = screen.getByTitle('YouTube video player');
       const startBtn = screen.getByRole('button', { name: /Start Recipe/i });
 
@@ -75,13 +82,7 @@ describe('Test food detail page renderization', () => {
       expect(shareBtn).toBeInTheDocument();
       expect(favoriteBtn).toBeInTheDocument();
       expect(ingredientsTitle).toBeInTheDocument();
-      MEAL_INGREDIENTS.forEach(([ingredient, measure]) => {
-        if (measure) {
-          expect(screen.getByText(`${ingredient} - ${measure}`)).toBeInTheDocument();
-        } else {
-          expect(screen.getByText(`${ingredient}`)).toBeInTheDocument();
-        }
-      });
+      expect(ingredientsText).toBeInTheDocument();
       expect(instructionsTitle).toBeInTheDocument();
       expect(instructionsText).toBeInTheDocument();
       expect(video).toBeInTheDocument();
@@ -102,16 +103,8 @@ describe('Check share button funcionality of food details page', () => {
 
   it('Test when click in share button the url is copied to clipboard',
     async () => {
-      global.navigator = Object.assign(navigator, {
-        clipboard: {
-          writeText: (text) => text,
-        },
-      });
-
-      const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
-
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -135,7 +128,7 @@ describe('Check favorite button funcionality of food details page', () => {
       const saveFavoriteRecipe = jest.spyOn(localStr, 'updateFavoriteRecipes');
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -161,7 +154,7 @@ describe('Check favorite button funcionality of food details page', () => {
       }]));
 
       renderWithRouterRedux(
-        <FoodRecipe />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -179,7 +172,7 @@ describe('Test start button funcionality of drink details page',
     it('Test if click in start button go to in progress page',
       async () => {
         const { history } = renderWithRouterRedux(
-          <FoodRecipe />,
+          <App />,
           { initialState, initialEntries },
         );
 
@@ -196,7 +189,7 @@ describe('Test start button funcionality of drink details page',
         );
 
         renderWithRouterRedux(
-          <FoodRecipe />,
+          <App />,
           { initialState, initialEntries },
         );
 
@@ -212,7 +205,7 @@ describe('Test start button funcionality of drink details page',
         );
 
         const { history } = renderWithRouterRedux(
-          <FoodRecipe />,
+          <App />,
           { initialState, initialEntries },
         );
 
@@ -238,7 +231,7 @@ describe('Test start button funcionality of drink details page',
         }]));
 
         renderWithRouterRedux(
-          <FoodRecipe />,
+          <App />,
           { initialState, initialEntries },
         );
 
