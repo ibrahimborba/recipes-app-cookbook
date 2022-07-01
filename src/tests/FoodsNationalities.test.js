@@ -1,14 +1,24 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import nationalities from './mocks/nationalitiesMeal';
 import initialState from './mocks/foodsInitialState';
+import apiResults from './mocks/meals';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/explore/foods/nationalities';
 const { searchResults: { meals } } = initialState;
+const setMock = () => beforeEach(() => {
+  jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      json: () => Promise.resolve(nationalities),
+    }))
+    .mockImplementation(() => Promise.resolve({
+      json: () => Promise.resolve(apiResults),
+    }));
+});
 
 describe('1 - FoodsNationalities page, Header component tests', () => {
   it('checks if Header is rendered and shows SearchBar when search icon is clicked',
@@ -33,22 +43,39 @@ describe('1 - FoodsNationalities page, Header component tests', () => {
     });
 });
 
-describe('2 - FoodsNationalities page, Nationalities component tests', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(nationalities),
-      }));
-  });
+describe.only('1 - FoodsNationalities page, testing components render', () => {
+  setMock();
+  afterEach(() => jest.restoreAllMocks());
 
+  it('checks if Ingredients buttons are rendered',
+    async () => {
+      const NATIONALITIES_OPTIONS = 28;
+      renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
+
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+
+      await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+
+      const options = screen.getAllByRole('option');
+      expect(options).toHaveLength(NATIONALITIES_OPTIONS);
+      // ingredientsBtns.forEach((ingredient, index) => {
+      //   expect(ingredient.alt).toBe(meals[index].strIngredient);
+      // });
+    });
+});
+
+describe('2 - FoodsNationalities page, Nationalities component tests', () => {
+  setMock();
   afterEach(() => jest.restoreAllMocks());
 
   it('checks if Nationalities options are rendered as expected',
     async () => {
       const NATIONALITIES_OPTIONS = 28;
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
 
       expect(global.fetch).toHaveBeenCalledTimes(2);
+
+      await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
       const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
       const categoriesBtns = screen.getAllByRole('option');

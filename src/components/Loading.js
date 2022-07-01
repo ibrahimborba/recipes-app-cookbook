@@ -4,7 +4,7 @@ import StyledLoading from '../styled/StyledLoading';
 function Loading() {
   return (
     <StyledLoading>
-      <div className="dot-wave">
+      <div data-testid="loading" className="dot-wave">
         <div className="dot-wave__dot">
           <span className="slider round material-icons">lunch_dining</span>
         </div>

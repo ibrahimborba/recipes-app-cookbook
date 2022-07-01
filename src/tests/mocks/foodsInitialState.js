@@ -184,6 +184,13 @@ const foodsInitialState = {
         dateModified: null,
       },
     ],
+    isFetching: false,
+    error: null,
+  },
+
+  searchOptions: {
+    search: '',
+    option: '',
   },
 };
 

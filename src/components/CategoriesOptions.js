@@ -50,6 +50,8 @@ function CategoriesOptions() {
     return string;
   };
 
+  console.log(categories);
+
   return (
     <StyledCategories>
       {

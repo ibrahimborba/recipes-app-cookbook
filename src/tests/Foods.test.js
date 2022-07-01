@@ -1,10 +1,11 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import categories from './mocks/categoriesMeal';
 import initialState from './mocks/foodsInitialState';
+import apiResult from './mocks/meals';
 
 const SEARCH_ICON = 'search icon';
 const PATH = '/foods';
@@ -13,6 +14,9 @@ const setMock = () => beforeEach(() => {
   jest.spyOn(global, 'fetch')
     .mockImplementation(() => Promise.resolve({
       json: () => Promise.resolve(categories),
+    }))
+    .mockImplementation(() => Promise.resolve({
+      json: () => Promise.resolve(apiResult),
     }));
 });
 
@@ -43,7 +47,7 @@ describe('2 - Foods page, SearchBar component tests', () => {
 
   afterEach(() => jest.restoreAllMocks());
   it('checks if SearchBar is rendered as expected', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
 
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     expect(searchBtnHeader).toBeInTheDocument();
@@ -64,7 +68,7 @@ describe('2 - Foods page, SearchBar component tests', () => {
 
   it('checks if SearchBar Ingredient button fetch by ingredient searched',
     async () => {
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+      renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
       const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
       userEvent.click(searchBtnHeader);
 
@@ -80,7 +84,7 @@ describe('2 - Foods page, SearchBar component tests', () => {
     });
 
   it('checks if SearchBar Name button fetch by name searched', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
 
@@ -99,7 +103,7 @@ describe('2 - Foods page, SearchBar component tests', () => {
   and throws alert if there is more than one letter being searched`,
   async () => {
     jest.spyOn(window, 'alert').mockImplementation(() => {});
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
     const searchBtnHeader = screen.getByRole('img', { name: SEARCH_ICON });
     userEvent.click(searchBtnHeader);
 
@@ -118,25 +122,34 @@ describe('2 - Foods page, SearchBar component tests', () => {
   });
 });
 
-describe('3 - Foods page, CategoriesOptions component tests', () => {
+describe.only('3 - Foods page, CategoriesOptions component tests', () => {
   setMock();
-
   afterEach(() => jest.restoreAllMocks());
+
   it('checks if CategoriesOptions is rendered as expected', async () => {
-    const CATEGORIES_BUTTONS = 6;
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    // const CATEGORIES_BUTTONS = 6;
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
 
-    const categoriesBtns = screen.getAllByRole('button');
-    expect(categoriesBtns).toHaveLength(CATEGORIES_BUTTONS);
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+
+    const allCategoryBtn = await screen.findByText('All');
+    const corbaCard = await screen.findByText('Corba');
+    expect(allCategoryBtn).toBeInTheDocument();
+    expect(corbaCard).toBeInTheDocument();
+
+    // const categoriesBtns = screen.getAllByRole('button');
+    // expect(categoriesBtns).toHaveLength(CATEGORIES_BUTTONS);
   });
 
   it(`checks if Category fetch by category name filter on click,
   if clicked twice it fetch by generic search
   and Categories filters overlap each other fetch when clicked`,
   async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
+
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
     const beefCategoryBtn = await screen.findByRole('button', { name: 'Beef' });
     const breakfastCategoryBtn = screen.getByRole('button', { name: 'Breakfast' });
@@ -152,7 +165,7 @@ describe('3 - Foods page, CategoriesOptions component tests', () => {
   });
 
   it('checks if All Categories filter fetch by generic search', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
 
     const allCategoryBtn = await screen.findByRole('button', { name: 'All' });
     expect(allCategoryBtn).toBeInTheDocument();

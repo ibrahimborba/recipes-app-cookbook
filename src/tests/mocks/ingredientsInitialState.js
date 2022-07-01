@@ -121,6 +121,8 @@ const ingredientsInitialState = {
         strIngredient1: 'Lemon vodka',
       },
     ],
+    isFetching: false,
+    error: null,
   },
 };
 
