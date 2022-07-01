@@ -2,13 +2,13 @@ import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import DrinkRecipeInProgress from '../pages/DrinkRecipeInProgress';
 import { DRINK_INGREDIENTS, INITIAL_STATE_DRINK,
   DRINK_INSTRUCTIONS,
 } from './mocks/drinkReduxInitialState';
 import * as localStr from '../services/mealsLocalSt';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import App from '../App';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -18,6 +18,9 @@ jest.mock('react-router-dom', () => ({
 
 const initialEntries = ['/drinks/15997/in-progress'];
 const initialState = INITIAL_STATE_DRINK;
+const copy = require('clipboard-copy');
+
+jest.mock('clipboard-copy');
 
 const setAllLocalStorageKeys = () => {
   localStorage.setItem('doneRecipes', JSON.stringify([]));
@@ -37,7 +40,7 @@ describe('Test drink in progress page renderization', () => {
     const fetch = jest.spyOn(global, 'fetch');
 
     renderWithRouterRedux(
-      <DrinkRecipeInProgress />,
+      <App />,
       { initialEntries },
     );
 
@@ -48,9 +51,12 @@ describe('Test drink in progress page renderization', () => {
     global.fetch = jest.fn();
 
     renderWithRouterRedux(
-      <DrinkRecipeInProgress />,
+      <App />,
       { initialState, initialEntries },
     );
+
+    const [recipeIngredient] = DRINK_INGREDIENTS;
+    const [ingredient, measure] = recipeIngredient;
 
     const coverImg = await screen.findByRole('img', { name: 'Recipe' });
     const recipeTitle = screen
@@ -61,7 +67,8 @@ describe('Test drink in progress page renderization', () => {
       .getByRole('heading', { level: 3, name: 'Ingredients' });
     const instructionsTitle = screen
       .getByRole('heading', { level: 3, name: 'Instructions' });
-    const instructionsText = screen.getByText(DRINK_INSTRUCTIONS);
+    const ingredientsText = screen.getByText(`- ${ingredient} - ${measure}`);
+    const instructionsText = screen.getByText(DRINK_INSTRUCTIONS[0]);
     const finishBtn = screen.getByRole('button', { name: /Finish Recipe/i });
 
     expect(coverImg).toBeInTheDocument();
@@ -69,13 +76,7 @@ describe('Test drink in progress page renderization', () => {
     expect(shareBtn).toBeInTheDocument();
     expect(favoriteBtn).toBeInTheDocument();
     expect(ingredientsTitle).toBeInTheDocument();
-    DRINK_INGREDIENTS.forEach(([ingredient, measure]) => {
-      if (measure !== null) {
-        expect(screen.getByText(`${ingredient} - ${measure}`)).toBeInTheDocument();
-      } else {
-        expect(screen.getByText(`${ingredient}`)).toBeInTheDocument();
-      }
-    });
+    expect(ingredientsText).toBeInTheDocument();
     expect(instructionsTitle).toBeInTheDocument();
     expect(instructionsText).toBeInTheDocument();
     expect(finishBtn).toBeInTheDocument();
@@ -89,16 +90,8 @@ describe('Check if share button funcionality of drink in progress page', () => {
 
   it('Test when click in share button the url is copied to clipboard',
     async () => {
-      global.navigator = Object.assign(navigator, {
-        clipboard: {
-          writeText: (text) => text,
-        },
-      });
-
-      const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
-
       renderWithRouterRedux(
-        <DrinkRecipeInProgress />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -123,7 +116,7 @@ describe('Check if favorite button funcionality of drink in progress page', () =
       const saveFavoriteRecipe = jest.spyOn(localStr, 'updateFavoriteRecipes');
 
       renderWithRouterRedux(
-        <DrinkRecipeInProgress />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -151,7 +144,7 @@ describe('Check if favorite button funcionality of drink in progress page', () =
       ]));
 
       renderWithRouterRedux(
-        <DrinkRecipeInProgress />,
+        <App />,
         { initialState, initialEntries },
       );
 
@@ -170,7 +163,7 @@ describe('Test finish button funcionality of drink in progress page',
     it('Test until all ingredients get marked the button stay disable',
       async () => {
         renderWithRouterRedux(
-          <DrinkRecipeInProgress />,
+          <App />,
           { initialState, initialEntries },
         );
 
@@ -182,7 +175,7 @@ describe('Test finish button funcionality of drink in progress page',
     it('Test if all ingredients get marked enable button',
       async () => {
         renderWithRouterRedux(
-          <DrinkRecipeInProgress />,
+          <App />,
           { initialState, initialEntries },
         );
 
@@ -197,7 +190,7 @@ describe('Test finish button funcionality of drink in progress page',
     it('Test when finish the recipe redirect to done recipe page',
       async () => {
         const { history } = renderWithRouterRedux(
-          <DrinkRecipeInProgress />,
+          <App />,
           { initialState, initialEntries },
         );
 
