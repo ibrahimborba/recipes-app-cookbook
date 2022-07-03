@@ -67,15 +67,18 @@ function SearchBar() {
 
   return (
     <StyledSearchBar onSubmit={ handleSubmit }>
-      <Input
-        id="text-search"
-        dataTestId="search-input"
-        type="text"
-        value={ searchText }
-        frontLabel="Search"
-        onChange={ handleSearchText }
-        placeholder="Type your search..."
-      />
+      <div className="search-input">
+        <Input
+          className="search-input"
+          id="text-search"
+          dataTestId="search-input"
+          type="text"
+          value={ searchText }
+          frontLabel="Search"
+          onChange={ handleSearchText }
+          placeholder="Type your search..."
+        />
+      </div>
       <section>
         <Input
           backLabel="Ingredient"

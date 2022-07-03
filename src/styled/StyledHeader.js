@@ -31,6 +31,10 @@ const StyledHeader = styled.header`
     background-color: transparent;
     color: ${(props) => props.theme.mainColor};
     text-align: center;
+    
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 

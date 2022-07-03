@@ -16,6 +16,10 @@ const StyledRecipeTitle = styled.div`
       background-color: whitesmoke;
       -webkit-tap-highlight-color: transparent;
     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .icon {

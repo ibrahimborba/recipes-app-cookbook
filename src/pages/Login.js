@@ -43,6 +43,7 @@ function Login() {
           <label htmlFor="email">
             Email:
             <input
+              autoComplete="username"
               name="email"
               type="email"
               data-testid="email-input"

@@ -20,6 +20,10 @@ const StyledExploreFoods = styled.div`
     margin-top: 2rem;
     max-width: 500px;
     width: 80%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .food-ingredient-btn {
