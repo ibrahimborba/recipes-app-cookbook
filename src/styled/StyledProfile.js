@@ -23,6 +23,10 @@ const StyledProfile = styled.div`
     font-weight: 700;
     padding: 1rem;
     width: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .profile-user {

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getFavoriteRecipes, updateFavoriteRecipes } from '../services/mealsLocalSt';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import homeIcon from '../images/homeIcon.svg';
 import StyledRecipeTitle from '../styled/StyledRecipeTitle';
 
 function RecipeTitle() {
+  const history = useHistory();
   const {
     currentRecipe,
-    currentRecipe: { categoryRecom, category, id, title },
+    currentRecipe: { categoryRecom, category, id, title, type },
   } = useSelector((state) => state.recipe);
 
   const [showMessage, setShowMessage] = useState(false);
@@ -37,7 +40,7 @@ function RecipeTitle() {
   };
 
   const favoriteRecipe = () => {
-    const { image, type, nationality, alcoholic } = currentRecipe;
+    const { image, nationality, alcoholic } = currentRecipe;
 
     const recipeFavorited = {
       id,
@@ -64,6 +67,17 @@ function RecipeTitle() {
                 <span>Link copied!</span>
               )
           }
+          <button
+            className="bar-button"
+            type="button"
+            onClick={ () => history.push(`/${type}s`) }
+          >
+            <img
+              className="icon"
+              src={ homeIcon }
+              alt="home icon"
+            />
+          </button>
           <button
             className="bar-button"
             data-testid="share-btn"
