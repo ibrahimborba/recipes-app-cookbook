@@ -164,12 +164,7 @@ export const getRecommendations = async (option) => {
 
 export const getNationalities = async () => {
   const URL = 'https://www.themealdb.com/api/json/v1/1/list.php?a=list';
-
-  try {
-    const apiResponse = await fetch(URL);
-    const apiResult = await apiResponse.json();
-    return apiResult;
-  } catch (error) {
-    return error;
-  }
+  const apiResponse = await fetch(URL);
+  const apiResult = await apiResponse.json();
+  return apiResult.meals;
 };

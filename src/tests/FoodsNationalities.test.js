@@ -1,93 +1,77 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
-import nationalities from './mocks/nationalitiesMeal';
 import initialState from './mocks/foodsInitialState';
 
+const END_POINT_ALL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 const SEARCH_ICON = 'search icon';
-const PATH = '/explore/foods/nationalities';
+const initialEntries = ['/explore/foods/nationalities'];
 const { searchResults: { meals } } = initialState;
 
-describe('1 - FoodsNationalities page, Header component tests', () => {
-  it('checks if Header is rendered and shows SearchBar when search icon is clicked',
-    async () => {
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+// Most of the buttons behaviors have already being test on Foods page, so here the tests will focus on Nationalities options and Recipe cards
 
+describe('1 - Explore Nationalities page, testing components render', () => {
+  afterEach(() => jest.restoreAllMocks());
+  it('checks if Header is rendered with Profile image and page Title',
+    () => {
+      renderWithRouterRedux(<App />, { initialEntries });
       const pageTitle = screen.getByRole('heading',
         { name: 'Explore Nationalities', level: 1 });
       const profileImg = screen.getByRole('img', { name: 'profile icon' });
       const searchBtn = screen.getByRole('img', { name: SEARCH_ICON });
-      const searchInputDisabled = screen.queryByLabelText('Search');
-
       expect(pageTitle).toBeInTheDocument();
       expect(profileImg).toBeInTheDocument();
       expect(searchBtn).toBeInTheDocument();
+    });
+
+  it('checks if SearchBar options are shown on Search Icon click',
+    () => {
+      renderWithRouterRedux(<App />, { initialEntries });
+      const searchIconBtn = screen.getByRole('img', { name: SEARCH_ICON });
+      const searchInputDisabled = screen.queryByLabelText('Search');
+      expect(searchIconBtn).toBeInTheDocument();
       expect(searchInputDisabled).not.toBeInTheDocument();
 
-      userEvent.click(searchBtn);
+      userEvent.click(searchIconBtn);
 
-      const searchInputEnabled = await screen.findByLabelText('Search');
-      expect(searchInputEnabled).toBeInTheDocument();
-    });
-});
+      const searchInput = screen.getByLabelText('Search');
+      const searchOptionIngredient = screen.getByLabelText('Ingredient');
+      const searchOptionName = screen.getByLabelText('Name');
+      const searchOptionFirst = screen.getByLabelText('First Letter');
+      const searchBtn = screen.getByRole('button', { name: 'Search' });
 
-describe('2 - FoodsNationalities page, Nationalities component tests', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch')
-      .mockImplementation(() => Promise.resolve({
-        json: () => Promise.resolve(nationalities),
-      }));
-  });
-
-  afterEach(() => jest.restoreAllMocks());
-
-  it('checks if Nationalities options are rendered as expected',
-    async () => {
-      const NATIONALITIES_OPTIONS = 28;
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
-      expect(global.fetch).toHaveBeenCalledTimes(2);
-
-      const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
-      const categoriesBtns = screen.getAllByRole('option');
-      expect(americanOptionBtn).toBeInTheDocument();
-      expect(categoriesBtns).toHaveLength(NATIONALITIES_OPTIONS);
+      expect(searchInput).toBeInTheDocument();
+      expect(searchOptionIngredient).toBeInTheDocument();
+      expect(searchOptionName).toBeInTheDocument();
+      expect(searchOptionFirst).toBeInTheDocument();
+      expect(searchBtn).toBeInTheDocument();
     });
 
-  it(`checks if Nationalities fetch by nationality filter on click
-  and Nationalities options overlap each other fetch when clicked`,
-  async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+  it('checks if Nationalities options are rendered as expected', async () => {
+    const NATIONALITIES_OPTIONS = 28;
+    const fetch = jest.spyOn(global, 'fetch');
+    renderWithRouterRedux(<App />, { initialEntries, initialState });
 
-    const americanOptionBtn = await screen.findByRole('option', { name: 'American' });
-    const britishOptionBtn = screen.getByRole('option', { name: 'British' });
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenNthCalledWith(1, 'https://www.themealdb.com/api/json/v1/1/list.php?a=list');
+    expect(fetch).toHaveBeenNthCalledWith(2, END_POINT_ALL);
 
-    userEvent.click(americanOptionBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
-    userEvent.click(britishOptionBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=British');
+    const nationalitiesOptions = screen.getAllByRole('option');
+    expect(nationalitiesOptions).toHaveLength(NATIONALITIES_OPTIONS);
   });
 
-  it('checks if All Nationalities filter fetch by generic search', async () => {
-    renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
-    const allCategoryBtn = await screen.findByRole('option', { name: 'All' });
-    expect(allCategoryBtn).toBeInTheDocument();
-
-    userEvent.click(allCategoryBtn);
-    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-  });
-});
-
-describe('3 - FoodsNationalities page, RecipeCard component test', () => {
   it('checks if RecipeCards are rendered as expected', async () => {
     const CARDS_LENGTH = 12;
-    renderWithRouterRedux(<App />, { initialEntries: [PATH], initialState });
+    jest.spyOn(global, 'fetch');
+    renderWithRouterRedux(<App />, { initialEntries, initialState });
 
-    const images = await screen.findAllByRole('img');
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+
+    const images = screen.getAllByRole('img');
     const recipesCardsImg = images.filter((img) => !img.alt.includes('icon'));
     expect(recipesCardsImg).toHaveLength(CARDS_LENGTH);
     recipesCardsImg.forEach((cardImg, index) => {
@@ -97,18 +81,14 @@ describe('3 - FoodsNationalities page, RecipeCard component test', () => {
 
     const cardTitles = screen.getAllByRole('heading');
     cardTitles.shift();
-    expect(cardTitles).toHaveLength(CARDS_LENGTH);
     cardTitles.forEach((cardTitle, index) => {
       expect(cardTitle).toHaveTextContent(meals[index].strMeal);
     });
   });
-});
 
-describe('4 - FoodsNationalities page, Footer component tests', () => {
-  it('checks if Footer is rendered with drink, explore and meal icons',
-    async () => {
-      renderWithRouterRedux(<App />, { initialEntries: [PATH] });
-
+  it('checks if Footer is rendered with Drink, Explore and Meal icons',
+    () => {
+      renderWithRouterRedux(<App />, { initialEntries });
       const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
       const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
       const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
@@ -116,21 +96,47 @@ describe('4 - FoodsNationalities page, Footer component tests', () => {
       expect(exploreBtnFooter).toBeInTheDocument();
       expect(mealBtnFooter).toBeInTheDocument();
     });
+});
 
-  it('checks if when Drink, Explore and Food icons are clicked, the path changes',
-    async () => {
-      const { history } = renderWithRouterRedux(<App />, { initialEntries: [PATH] });
+describe('2 - Explore Nationalities page, Nationalities options behavior', () => {
+  afterEach(() => jest.restoreAllMocks());
+  it('checks if Nationality option fetch by nationality name on click', async () => {
+    const fetch = jest.spyOn(global, 'fetch');
+    renderWithRouterRedux(<App />, { initialEntries, initialState });
 
-      const drinksBtnFooter = screen.getByRole('button', { name: 'drink-icon' });
-      userEvent.click(drinksBtnFooter);
-      expect(history.location.pathname).toBe('/drinks');
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
-      const exploreBtnFooter = screen.getByRole('button', { name: 'explore-icon' });
-      userEvent.click(exploreBtnFooter);
-      expect(history.location.pathname).toBe('/explore');
+    const americanOption = await screen.findByRole('option', { name: 'American' });
+    const britishOption = screen.getByRole('option', { name: 'British' });
 
-      const mealBtnFooter = screen.getByRole('button', { name: 'meal-icon' });
-      userEvent.click(mealBtnFooter);
-      expect(history.location.pathname).toBe('/foods');
-    });
+    userEvent.click(americanOption);
+    expect(fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=American');
+
+    userEvent.click(britishOption);
+    expect(fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?a=British');
+  });
+
+  it('checks if All option fetch by all on click', async () => {
+    const fetch = jest.spyOn(global, 'fetch');
+    renderWithRouterRedux(<App />, { initialEntries, initialState });
+
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+
+    const allOption = await screen.findByRole('option', { name: 'All' });
+    userEvent.click(allOption);
+    expect(fetch).toBeCalledWith(END_POINT_ALL);
+  });
+});
+
+describe('3 - Explore Nationalities page, CardRecipes behavior', () => {
+  it('checks if Recipe card redirect to recipe details page on click', async () => {
+    jest.spyOn(global, 'fetch');
+    const { history } = renderWithRouterRedux(<App />, { initialEntries, initialState });
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+
+    const corbaCard = screen.getByRole('img', { name: 'Corba' });
+    expect(corbaCard).toBeInTheDocument();
+    userEvent.click(corbaCard);
+    expect(history.location.pathname).toBe('/foods/52977');
+  });
 });
