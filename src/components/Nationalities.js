@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { getNationalities } from '../services/api';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchMealResults } from '../redux/actions';
+import { fetchNationalityResults } from '../redux/actions/optionsAction';
+import StyledNationalities from '../styled/StyledNationalities';
 
 function Nationalities() {
-  const [nationalities, setNationalities] = useState([]);
-
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { nationalities, isFetching } = useSelector((state) => state.nationalities);
 
   useEffect(() => {
-    const categoriesList = async () => {
-      const { meals } = await getNationalities(pathname);
-      setNationalities(meals);
-    };
-    categoriesList();
-  }, [pathname]);
+    dispatch(fetchNationalityResults());
+  }, [dispatch]);
 
   const handleClickNationality = ({ target: { value } }) => {
-    console.log(value);
     switch (value) {
     case 'All':
       return dispatch(fetchMealResults('', ''));
@@ -29,28 +22,38 @@ function Nationalities() {
   };
 
   return (
-    <select
-      data-testid="explore-by-nationality-dropdown"
-      onClick={ handleClickNationality }
-    >
-      <option
-        data-testid="All-option"
-        type="button"
-        value="All"
-      >
-        All
-      </option>
-      { nationalities.map((nationality) => (
-        <option
-          key={ nationality.strArea }
-          data-testid={ `${nationality.strArea}-option` }
-          type="button"
-          value={ nationality.strArea }
-        >
-          {nationality.strArea}
-        </option>
-      ))}
-    </select>
+    <StyledNationalities>
+      {
+        !isFetching
+        && (
+          <select
+            className="select-nationalities"
+            data-testid="explore-by-nationality-dropdown"
+            onClick={ handleClickNationality }
+          >
+            <option
+              className="select-nationalities-option"
+              data-testid="All-option"
+              type="button"
+              value="All"
+            >
+              All
+            </option>
+            { nationalities.map((nationality) => (
+              <option
+                className="select-nationalities-option"
+                key={ nationality.strArea }
+                data-testid={ `${nationality.strArea}-option` }
+                type="button"
+                value={ nationality.strArea }
+              >
+                {nationality.strArea}
+              </option>
+            ))}
+          </select>
+        )
+      }
+    </StyledNationalities>
   );
 }
 

@@ -1,15 +1,18 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import exploreIcon from '../images/exploreIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
-import '../Footer.css';
+import StyledFooter from '../styled/StyledFooter';
 
 function Footer() {
   const history = useHistory();
+  const { pathname } = useLocation();
+
   return (
-    <footer data-testid="footer" className="footer-class">
+    <StyledFooter data-testid="footer">
       <button
+        className={ pathname === '/drinks' ? 'currentPath' : '' }
         type="button"
         name="drink-icon"
         onClick={ () => history.push('/drinks') }
@@ -21,6 +24,7 @@ function Footer() {
         />
       </button>
       <button
+        className={ pathname === '/explore' ? 'currentPath' : '' }
         type="button"
         name="explore-icon"
         onClick={ () => history.push('/explore') }
@@ -32,6 +36,7 @@ function Footer() {
         />
       </button>
       <button
+        className={ pathname === '/foods' ? 'currentPath' : '' }
         type="button"
         name="meal-icon"
         onClick={ () => history.push('/foods') }
@@ -42,7 +47,7 @@ function Footer() {
           alt="meal-icon"
         />
       </button>
-    </footer>
+    </StyledFooter>
   );
 }
 

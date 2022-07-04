@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import CardDoneFav from '../components/CardDoneFav';
 import { getRecipesDone } from '../services/mealsLocalSt';
+import StyledCategories from '../styled/StyledCategories';
 
 function Done() {
   const [doneRecipes, setDoneRecipes] = useState([]);
@@ -15,7 +16,7 @@ function Done() {
     if (filter === 'all') {
       return setDoneRecipes(getRecipesDone());
     }
-    const filteredByType = doneRecipes.filter((recipe) => recipe.type === filter);
+    const filteredByType = getRecipesDone().filter((recipe) => recipe.type === filter);
     return setDoneRecipes(filteredByType);
   }, [filter]);
 
@@ -26,31 +27,36 @@ function Done() {
   return (
     <div>
       <Header />
-      <button
-        name="allBtn"
-        type="button"
-        data-testid="filter-by-all-btn"
-        value="all"
-        onClick={ handleFilterBtn }
-      >
-        All
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-food-btn"
-        value="food"
-        onClick={ handleFilterBtn }
-      >
-        Food
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-drink-btn"
-        value="drink"
-        onClick={ handleFilterBtn }
-      >
-        Drinks
-      </button>
+      <StyledCategories>
+        <button
+          className={ filter === 'all' && 'selectedCategory' }
+          name="allBtn"
+          type="button"
+          data-testid="filter-by-all-btn"
+          value="all"
+          onClick={ handleFilterBtn }
+        >
+          All
+        </button>
+        <button
+          className={ filter === 'food' && 'selectedCategory' }
+          type="button"
+          data-testid="filter-by-food-btn"
+          value="food"
+          onClick={ handleFilterBtn }
+        >
+          Food
+        </button>
+        <button
+          className={ filter === 'drink' && 'selectedCategory' }
+          type="button"
+          data-testid="filter-by-drink-btn"
+          value="drink"
+          onClick={ handleFilterBtn }
+        >
+          Drinks
+        </button>
+      </StyledCategories>
       {doneRecipes.map((done, index) => (
         <CardDoneFav
           key={ done.id }

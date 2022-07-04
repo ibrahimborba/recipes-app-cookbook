@@ -5,33 +5,45 @@ import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
 import CardRecipe from '../components/CardRecipe';
 import { fetchDrinkResults } from '../redux/actions';
+import StyledCardGrid from '../styled/StyledCardGrid';
+import Loading from '../components/Loading';
 
 function Drinks() {
   const dispatch = useDispatch();
-  const drinkResults = useSelector((state) => state.searchResults.drinks);
-  const searchOptions = useSelector((state) => state.searchOptions);
+  const { drinks } = useSelector((state) => state.searchResults);
+  const { search, option } = useSelector((state) => state.searchOptions);
+  const { isFetching } = useSelector((state) => state.searchResults);
 
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    const { search, option } = searchOptions;
-    dispatch(fetchDrinkResults(search, option));
-  }, [dispatch, searchOptions]);
+    const getResults = async () => {
+      await dispatch(fetchDrinkResults(search, option));
+    };
+    getResults();
+  }, [dispatch, search, option]);
 
   return (
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { drinkResults.length > 0
-       && drinkResults.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
-         <CardRecipe
-           key={ drink.idDrink }
-           recipeID={ drink.idDrink }
-           recipeImg={ drink.strDrinkThumb }
-           recipeTitle={ drink.strDrink }
-           index={ index }
-         />
-       ))}
+      { isFetching
+        ? <Loading />
+        : (
+          <StyledCardGrid>
+            { drinks.length > 0
+              && drinks.slice(0, MAX_ITEMS_DISPLAY).map((drink, index) => (
+                <CardRecipe
+                  key={ drink.idDrink }
+                  id={ drink.idDrink }
+                  image={ drink.strDrinkThumb }
+                  title={ drink.strDrink }
+                  index={ index }
+                  type="drink"
+                />
+              ))}
+          </StyledCardGrid>
+        )}
       <Footer />
     </>
   );

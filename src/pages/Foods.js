@@ -5,33 +5,42 @@ import Footer from '../components/Footer';
 import CategoriesOptions from '../components/CategoriesOptions';
 import CardRecipe from '../components/CardRecipe';
 import { fetchMealResults } from '../redux/actions';
+import StyledCardGrid from '../styled/StyledCardGrid';
+import Loading from '../components/Loading';
 
 function Foods() {
   const dispatch = useDispatch();
-  const mealResults = useSelector((state) => state.searchResults.meals);
-  const searchOptions = useSelector((state) => state.searchOptions);
+  const { meals } = useSelector((state) => state.searchResults);
+  const { search, option } = useSelector((state) => state.searchOptions);
+  const { isFetching } = useSelector((state) => state.searchResults);
 
   const MAX_ITEMS_DISPLAY = 12;
 
   useEffect(() => {
-    const { search, option } = searchOptions;
     dispatch(fetchMealResults(search, option));
-  }, [dispatch, searchOptions]);
+  }, [dispatch, search, option]);
 
   return (
     <>
       <Header enableSearch />
       <CategoriesOptions />
-      { mealResults.length > 0
-       && mealResults.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
-         <CardRecipe
-           key={ meal.idMeal }
-           recipeID={ meal.idMeal }
-           recipeImg={ meal.strMealThumb }
-           recipeTitle={ meal.strMeal }
-           index={ index }
-         />
-       ))}
+      { isFetching
+        ? <Loading />
+        : (
+          <StyledCardGrid>
+            { meals.length > 0
+                && meals.slice(0, MAX_ITEMS_DISPLAY).map((meal, index) => (
+                  <CardRecipe
+                    key={ meal.idMeal }
+                    id={ meal.idMeal }
+                    image={ meal.strMealThumb }
+                    title={ meal.strMeal }
+                    index={ index }
+                    type="food"
+                  />
+                ))}
+          </StyledCardGrid>
+        ) }
       <Footer />
     </>
   );

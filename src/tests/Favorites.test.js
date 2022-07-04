@@ -7,6 +7,9 @@ import Favorites from '../pages/Favorites';
 
 const PATH = '/favorite-recipes';
 const horizontalTestId = '0-horizontal-top-text';
+const copy = require('clipboard-copy');
+
+jest.mock('clipboard-copy');
 
 const setFavLocalStorageKey = () => {
   localStorage.setItem(
@@ -98,14 +101,6 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
   });
 
   it('checks if clipboard works as expected', async () => {
-    global.navigator = Object.assign(navigator, {
-      clipboard: {
-        writeText: (text) => text,
-      },
-    });
-
-    const copy = jest.spyOn(global.navigator.clipboard, 'writeText');
-
     renderWithRouterRedux(
       <App />,
       {
@@ -140,7 +135,7 @@ describe('2 - Favorites page foods and drinks card renderization', () => {
     expect(drinkInfos).toHaveTextContent(/Alcoholic/i);
 
     const removefavoriteBtn = screen.getAllByRole('img', { name: 'favorite icon' });
-    console.log(removefavoriteBtn);
+
     userEvent.click(removefavoriteBtn[1]);
 
     await waitForElementToBeRemoved(

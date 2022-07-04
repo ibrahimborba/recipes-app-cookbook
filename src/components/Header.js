@@ -4,6 +4,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import StyledHeader from '../styled/StyledHeader';
 
 function Header({ enableSearch }) {
   const history = useHistory();
@@ -40,29 +41,32 @@ function Header({ enableSearch }) {
   }, [formatTitle]);
 
   return (
-    <header>
-      <button
-        type="button"
-        onClick={ () => history.push('/profile') }
-      >
-        <img data-testid="profile-top-btn" src={ profileIcon } alt="profile icon" />
-      </button>
-      <h1 data-testid="page-title">{ title }</h1>
-      {
-        enableSearch
-        && (
-          <button
-            type="button"
-            onClick={ () => setIsSearchBar(!isSearchBar) }
-          >
-            <img data-testid="search-top-btn" src={ searchIcon } alt="search icon" />
-          </button>
-        )
-      }
+    <StyledHeader>
+      <section>
+        <button
+          className="profile_icon"
+          type="button"
+          onClick={ () => history.push('/profile') }
+        >
+          <img data-testid="profile-top-btn" src={ profileIcon } alt="profile icon" />
+        </button>
+        <h1 data-testid="page-title">{ title }</h1>
+        {
+          enableSearch
+          && (
+            <button
+              type="button"
+              onClick={ () => setIsSearchBar(!isSearchBar) }
+            >
+              <img data-testid="search-top-btn" src={ searchIcon } alt="search icon" />
+            </button>
+          )
+        }
+      </section>
       {
         isSearchBar && <SearchBar />
       }
-    </header>
+    </StyledHeader>
   );
 }
 

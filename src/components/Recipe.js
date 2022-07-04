@@ -4,9 +4,13 @@ import { useSelector } from 'react-redux';
 import RecipeDetails from './RecipeDetails';
 import RecipeTitle from './RecipeTitle';
 import Recommended from './Recommended';
+import Loading from './Loading';
+import StyledRecipe from '../styled/StyledRecipe';
 
 function Recipe({ isFood }) {
-  const { currentRecipe: { video }, inProgress } = useSelector((state) => state.recipe);
+  const {
+    currentRecipe: { video, image }, inProgress, isFetching,
+  } = useSelector((state) => state.recipe);
 
   const [url, setUrl] = useState();
 
@@ -21,31 +25,53 @@ function Recipe({ isFood }) {
   }, [formatUrl]);
 
   return (
-    <section>
-      <RecipeTitle />
-      <RecipeDetails />
+    <StyledRecipe>
       {
-        !inProgress
-        && (
-          <>
-            {
-              isFood
-                && (
-                  <iframe
-                    data-testid="video"
-                    width="560"
-                    height="315"
-                    src={ url }
-                    title="YouTube video player"
-                    allowFullScreen
-                  />
-                )
-            }
-            <Recommended />
-          </>
-        )
+        isFetching
+          ? <Loading />
+          : (
+            <>
+              <img
+                data-testid="recipe-photo"
+                className="recice-img"
+                src={ image }
+                alt="Recipe"
+              />
+              <section
+                className="recipe-container"
+              >
+                <RecipeTitle />
+                <RecipeDetails />
+                {
+                  !inProgress
+                  && (
+                    <>
+                      {
+                        isFood
+                          && (
+                            <div>
+                              <h3 className="recipe-video-title">Video</h3>
+                              <iframe
+                                className="recipe-video"
+                                data-testid="video"
+                                width="560"
+                                height="315"
+                                src={ url }
+                                title="YouTube video player"
+                                allowFullScreen
+                              />
+                            </div>
+                          )
+                      }
+                      <Recommended />
+                    </>
+                  )
+                }
+              </section>
+            </>
+          )
       }
-    </section>
+    </StyledRecipe>
   );
 }
 

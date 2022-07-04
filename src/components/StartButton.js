@@ -5,7 +5,7 @@ import { updateToInProgress } from '../redux/actions';
 import {
   getInProgressRecipes, getRecipesDone, updateRecipesDone, updateRecipeStatus,
 } from '../services/mealsLocalSt';
-import style from './StartButton.module.css';
+import StyledStartButton from '../styled/StyledStartButton';
 
 function StartButton() {
   const dispatch = useDispatch();
@@ -89,30 +89,24 @@ function StartButton() {
   };
 
   return (
-    <div>
+    <StyledStartButton>
       {
         !inProgress
-          ? (
-            <div>
-              {
-                isToShow
-                  && (
-                    <button
-                      className={ style.button }
-                      data-testid="start-recipe-btn"
-                      name="startBtn"
-                      type="button"
-                      onClick={ goTo }
-                    >
-                      { buttonText }
-                    </button>
-                  )
-              }
-            </div>
-          )
+          ? isToShow
+            && (
+              <button
+                className="button"
+                data-testid="start-recipe-btn"
+                name="startBtn"
+                type="button"
+                onClick={ goTo }
+              >
+                { buttonText }
+              </button>
+            )
           : (
             <button
-              className={ style.button }
+              className="button"
               data-testid="finish-recipe-btn"
               name="finishBtn"
               type="button"
@@ -123,7 +117,7 @@ function StartButton() {
             </button>
           )
       }
-    </div>
+    </StyledStartButton>
   );
 }
 

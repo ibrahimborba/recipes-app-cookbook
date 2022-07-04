@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import CoverImage from '../components/CoverImage';
 import Recipe from '../components/Recipe';
 import StartButton from '../components/StartButton';
 import { fetchRecipeThunk, updateToInProgress } from '../redux/actions';
@@ -22,15 +21,16 @@ function FoodRecipeInProgress() {
     if (group) {
       dispatch(updateToInProgress(true));
       updateRecipeStatus(id, group);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [dispatch, id, currentRecipe, group]);
 
   return (
-    <section>
-      <CoverImage />
+    <>
       <Recipe />
       <StartButton />
-    </section>
+    </>
   );
 }
 

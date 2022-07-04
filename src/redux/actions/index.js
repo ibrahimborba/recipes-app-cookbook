@@ -3,7 +3,6 @@ import {
   getIngredients, getRecipe, getRecommendations,
 } from '../../services/api';
 
-export const SET_USER = 'SET_USER';
 export const MEAL_RESULTS = 'MEAL_RESULTS';
 export const DRINK_RESULTS = 'DRINK_RESULTS';
 export const GET_INGREDIENTS = 'GET_INGREDIENTS';
@@ -18,10 +17,24 @@ export const DRINKS_INGREDIENTS_RESULTS = 'DRINKS_INGREDIENTS_RESULTS';
 export const SEARCH_OPTION = 'SEARCH_OPTION';
 export const IS_IN_PROGRESS = 'IS_IN_PROGRESS';
 export const FINISH_BUTTON_STATUS = 'FINISH_BUTTON_STATUS';
+export const TURN_OFF_FETCHING = 'TURN_OFF_FETCHING';
 
-export const saveUser = (email) => ({
-  type: SET_USER,
-  payload: email,
+const isFetching = () => ({
+  type: IS_FETCHING,
+});
+
+const endFetching = () => ({
+  type: TURN_OFF_FETCHING,
+});
+
+const requisitonSucceeded = (data, type) => ({
+  type,
+  payload: { data },
+});
+
+const requisitionFailed = (error) => ({
+  type: REQUISITION_FAILED,
+  payload: { error },
 });
 
 export const mealResults = (results) => ({
@@ -30,12 +43,17 @@ export const mealResults = (results) => ({
 });
 
 export const fetchMealResults = (search, option) => async (dispatch) => {
-  const { meals } = await getMeal(search, option);
-
-  if (!meals) {
-    return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  dispatch(isFetching());
+  try {
+    const { meals } = await getMeal(search, option);
+    if (!meals) {
+      dispatch(endFetching());
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+    dispatch(mealResults(meals));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
   }
-  dispatch(mealResults(meals));
 };
 
 export const drinkResults = (results) => ({
@@ -44,30 +62,18 @@ export const drinkResults = (results) => ({
 });
 
 export const fetchDrinkResults = (search, option) => async (dispatch) => {
-  const { drinks } = await getDrink(search, option);
-  if (!drinks) {
-    return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  dispatch(isFetching());
+  try {
+    const { drinks } = await getDrink(search, option);
+    if (!drinks) {
+      dispatch(endFetching());
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+    dispatch(drinkResults(drinks));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
   }
-  dispatch(drinkResults(drinks));
 };
-
-const isFetching = () => ({
-  type: IS_FETCHING,
-});
-
-const requisitonSucceeded = (data, type) => ({
-  type,
-  payload: {
-    data,
-  },
-});
-
-const requisitionFailed = (error) => ({
-  type: REQUISITION_FAILED,
-  payload: {
-    error,
-  },
-});
 
 const formatIngredients = (recipe) => {
   const NUMBER_OF_INGREDIENTS = 15;
@@ -110,7 +116,7 @@ const formatData = (data, option) => {
       id: idMeal,
       image: strMealThumb,
       ingredients,
-      instructions: strInstructions,
+      instructions: strInstructions.split('\r\n'),
       nationality: strArea,
       tags: strTags ? strTags.split(',') : [],
       title: strMeal,
@@ -132,7 +138,7 @@ const formatData = (data, option) => {
       id: idDrink,
       image: strDrinkThumb,
       ingredients,
-      instructions: strInstructions,
+      instructions: strInstructions.split('\r\n'),
       nationality: '',
       tags: [],
       title: strDrink,
@@ -182,7 +188,6 @@ export const randomMealResults = (results) => ({
 
 export const fetchRandomMealResults = (pathname) => async (dispatch) => {
   const { meals } = await getRandom(pathname);
-
   dispatch(randomMealResults(meals));
 };
 
@@ -193,7 +198,6 @@ export const randomDrinkResults = (results) => ({
 
 export const fetchRandomDrinkResults = (pathname) => async (dispatch) => {
   const { drinks } = await getRandom(pathname);
-
   dispatch(randomDrinkResults(drinks));
 };
 
@@ -203,9 +207,13 @@ export const mealsIngredientsResults = (results) => ({
 });
 
 export const fetchMealsIngredientsResults = (pathname) => async (dispatch) => {
-  const { meals } = await getIngredients(pathname);
-
-  dispatch(mealsIngredientsResults(meals));
+  dispatch(isFetching());
+  try {
+    const { meals } = await getIngredients(pathname);
+    dispatch(mealsIngredientsResults(meals));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
+  }
 };
 
 export const drinksIngredientsResults = (results) => ({
@@ -214,9 +222,13 @@ export const drinksIngredientsResults = (results) => ({
 });
 
 export const fetchDrinksIngredientsResults = (pathname) => async (dispatch) => {
-  const { drinks } = await getIngredients(pathname);
-
-  dispatch(drinksIngredientsResults(drinks));
+  dispatch(isFetching());
+  try {
+    const { drinks } = await getIngredients(pathname);
+    dispatch(drinksIngredientsResults(drinks));
+  } catch (error) {
+    dispatch(requisitionFailed(error));
+  }
 };
 
 export const searchOptions = (search = '', option = '') => ({
@@ -229,14 +241,10 @@ export const searchOptions = (search = '', option = '') => ({
 
 export const updateToInProgress = (status) => ({
   type: IS_IN_PROGRESS,
-  payload: {
-    status,
-  },
+  payload: { status },
 });
 
 export const updateFinishButtonStatus = (status) => ({
   type: FINISH_BUTTON_STATUS,
-  payload: {
-    status,
-  },
+  payload: { status },
 });

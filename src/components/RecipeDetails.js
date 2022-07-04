@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFinishButtonStatus } from '../redux/actions';
+import { updateFinishButtonStatus, updateToInProgress } from '../redux/actions';
 import { getInProgressRecipes, updateIngredients } from '../services/mealsLocalSt';
-import style from './RecipeDetails.module.css';
+import StyledRecipeDetails from '../styled/StyledRecipeDetails';
 
 function RecipeDetails() {
   const dispatch = useDispatch();
@@ -11,14 +11,24 @@ function RecipeDetails() {
   } = useSelector((state) => state.recipe);
 
   const [done, setDone] = useState([]);
+  const [instr, setInstr] = useState([]);
 
   useEffect(() => {
     if (group) {
       const { [group]: { [id]: recipe } } = getInProgressRecipes();
 
-      if (recipe) setDone([...recipe]);
+      if (recipe) {
+        setDone([...recipe]);
+
+        const allIngredientsChecked = recipe.length === ingredients.length;
+        dispatch(updateFinishButtonStatus(!allIngredientsChecked));
+      }
     }
-  }, [group, id]);
+
+    setInstr([...instructions]);
+  }, [group, id, instructions, dispatch, ingredients.length]);
+
+  useEffect(() => () => dispatch(updateToInProgress(false)), [dispatch]);
 
   const updateIngredientStatus = ({ target: { name } }) => {
     updateIngredients(id, name, group);
@@ -31,10 +41,16 @@ function RecipeDetails() {
   };
 
   return (
-    <>
-      <div>
-        <h3>Ingredients</h3>
-        <ul style={ { backgroundColor: 'grey' } }>
+    <StyledRecipeDetails>
+      <div
+        className="recipe-details"
+      >
+        <h3
+          className="recipe-details-title"
+        >
+          Ingredients
+        </h3>
+        <ul>
           {
             inProgress
               ? (
@@ -46,6 +62,7 @@ function RecipeDetails() {
 
                     return (
                       <li
+                        className="recipe-details-ingredient"
                         data-testid={ `${index}-ingredient-step` }
                         key={ `ingredient${index}` }
                       >
@@ -53,6 +70,7 @@ function RecipeDetails() {
                           htmlFor={ `ingredient${index}` }
                         >
                           <input
+                            className="ingredient-checkbox"
                             id={ `ingredient${index}` }
                             name={ ingredientName }
                             type="checkbox"
@@ -60,9 +78,9 @@ function RecipeDetails() {
                             onChange={ updateIngredientStatus }
                           />
                           <span
-                            className={ isChecked ? style.checked : '' }
+                            className={ isChecked ? 'checked' : '' }
                           >
-                            { ingredientName }
+                            { `- ${ingredientName}` }
                           </span>
                         </label>
                       </li>
@@ -78,10 +96,11 @@ function RecipeDetails() {
 
                     return (
                       <li
+                        className="recipe-details-ingredient"
                         data-testid={ `${index}-ingredient-name-and-measure` }
                         key={ `ingredient${index}` }
                       >
-                        { ingredientName }
+                        { `- ${ingredientName}` }
                       </li>
                     );
                   })}
@@ -90,13 +109,17 @@ function RecipeDetails() {
           }
         </ul>
       </div>
-      <div>
-        <h3>Instructions</h3>
+      <div className="recipe-details">
+        <h3 className="recipe-details-title">Instructions</h3>
         <div data-testid="instructions">
-          {instructions}
+          {
+            instr?.map((paragraph, index) => (
+              <p key={ index } className="recipe-details-instructions">{paragraph}</p>
+            ))
+          }
         </div>
       </div>
-    </>
+    </StyledRecipeDetails>
   );
 }
 

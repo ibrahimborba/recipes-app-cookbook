@@ -1,3 +1,5 @@
+const ORDINARY_DRINK = 'Ordinary Drink';
+
 const drinksInitialState = {
   searchResults: {
     drinks: [
@@ -115,7 +117,7 @@ const drinksInitialState = {
         strDrinkAlternate: null,
         strTags: 'Alcoholic,Holiday',
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ORDINARY_DRINK,
         strIBA: null,
         strAlcoholic: 'Alcoholic',
         strGlass: 'Cocktail glass',
@@ -145,7 +147,7 @@ const drinksInitialState = {
         strDrinkAlternate: null,
         strTags: null,
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ORDINARY_DRINK,
         strIBA: null,
         strAlcoholic: 'Alcoholic',
         strGlass: 'Highball Glass',
@@ -204,6 +206,30 @@ const drinksInitialState = {
         dateModified: '2016-08-31 19:26:18',
       },
     ],
+    isFetching: false,
+    error: null,
+  },
+
+  searchOptions: {
+    search: '',
+    option: '',
+  },
+
+  categories: {
+    categories: [
+      { strCategory: 'Ordinary Drink' },
+      { strCategory: 'Cocktail' },
+      { strCategory: 'Shake' },
+      { strCategory: 'Other/Unknown' },
+      { strCategory: 'Cocoa' },
+      { strCategory: 'Shot' },
+      { strCategory: 'Coffee / Tea' },
+      { strCategory: 'Homemade Liqueur' },
+      { strCategory: 'Punch / Party Drink' },
+      { strCategory: 'Beer' },
+      { strCategory: 'Soft Drink' },
+    ],
+    isFetching: false,
   },
 };
 

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import clipboardCopy from 'clipboard-copy';
+import { useHistory, useLocation } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import StyledCardDoneFav from '../styled/StyledCardDoneFav';
 
 function CardDoneFav(props) {
   const [clickedBtn, setClickedBtn] = useState(false);
   const { pathname } = useLocation();
+  const history = useHistory();
 
   const {
     recipeID,
@@ -22,7 +25,8 @@ function CardDoneFav(props) {
     favoriteRecipe } = props;
 
   const copyToClipBoard = (id, type) => () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${type}s/${id}`);
+    const url = window.location.href.replace('/done-recipes', '');
+    clipboardCopy(`${url}/${type}s/${id}`);
 
     const SECONDS = 1500;
 
@@ -30,65 +34,84 @@ function CardDoneFav(props) {
     setTimeout(() => setClickedBtn(false), SECONDS);
   };
 
+  const handlePushPath = (type, id) => (event) => {
+    if (event.key === 'Enter' || event.type === 'click') {
+      history.push(`/${type}s/${id}`);
+    }
+  };
+
   return (
-    <div>
-      <Link to={ `/${recipeType}s/${recipeID}` }>
+    <StyledCardDoneFav>
+      <div
+        className="container_recipe"
+        tabIndex={ 0 }
+        role="button"
+        onClick={ handlePushPath(recipeType, recipeID) }
+        onKeyDown={ handlePushPath(recipeType, recipeID) }
+      >
         <img
+          className="recipe_img"
           src={ recipeImg }
           alt={ recipeID }
           data-testid={ `${index}-horizontal-image` }
-          style={ { width: '200px' } }
         />
-        <p data-testid={ `${index}-horizontal-top-text` }>
-          {
-            recipeType === 'food'
-              ? (`${recipeNationality} - ${recipeCategory}`) : (`${recipeAlcohol}`)
-          }
-        </p>
-        <p data-testid={ `${index}-horizontal-name` }>
-          { recipeTitle }
-        </p>
-        <p data-testid={ `${index}-horizontal-done-date` }>
-          { recipeDate }
-        </p>
+        <section>
+          <p data-testid={ `${index}-horizontal-top-text` }>
+            {
+              recipeType === 'food'
+                ? (`${recipeNationality} - ${recipeCategory}`) : (`${recipeAlcohol}`)
+            }
+          </p>
+          <h3 data-testid={ `${index}-horizontal-name` }>
+            { recipeTitle }
+          </h3>
+          <div className="recipe_tags">
+            { recipeTags.map((tag, tagIndex) => (
+              <p
+                className="recipe_tag"
+                key={ tagIndex }
+                data-testid={ `0-${tag}-horizontal-tag` }
+              >
+                { tag }
+              </p>
+            )) }
+          </div>
+          <p data-testid={ `${index}-horizontal-done-date` }>
+            { recipeDate }
+          </p>
+        </section>
+      </div>
+      <section className="container_copyFav">
         {
           clickedBtn && <span>Link copied!</span>
         }
-        { recipeTags.map((tag, tagIndex) => (
-          <p
-            key={ tagIndex }
-            data-testid={ `0-${tag}-horizontal-tag` }
-          >
-            { tag }
-          </p>
-        )) }
-      </Link>
-      <button
-        type="button"
-        onClick={ copyToClipBoard(recipeID, recipeType) }
-      >
-        <img
-          src={ shareIcon }
-          alt={ recipeTitle }
-          data-testid={ `${index}-horizontal-share-btn` }
-        />
-      </button>
-      {
-        pathname === '/favorite-recipes'
-        && (
-          <button
-            type="button"
-            onClick={ favoriteRecipe(recipeID) }
-          >
-            <img
-              data-testid={ `${index}-horizontal-favorite-btn` }
-              src={ blackHeartIcon }
-              alt="favorite icon"
-            />
-          </button>
-        )
-      }
-    </div>
+        <button
+          type="button"
+          onClick={ copyToClipBoard(recipeID, recipeType) }
+        >
+          <img
+            src={ shareIcon }
+            alt={ recipeTitle }
+            data-testid={ `${index}-horizontal-share-btn` }
+          />
+        </button>
+        {
+          pathname === '/favorite-recipes'
+          && (
+            <button
+              type="button"
+              onClick={ favoriteRecipe(recipeID) }
+            >
+              <img
+                data-testid={ `${index}-horizontal-favorite-btn` }
+                src={ blackHeartIcon }
+                alt="favorite icon"
+              />
+            </button>
+          )
+        }
+      </section>
+    </StyledCardDoneFav>
   );
 }
 
@@ -112,7 +135,7 @@ CardDoneFav.defaultProps = {
   recipeAlcohol: '',
   recipeDate: '',
   recipeTags: [],
-  favoriteRecipe: '',
+  favoriteRecipe: () => {},
 };
 
 export default CardDoneFav;
