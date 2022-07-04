@@ -5,7 +5,7 @@ import App from '../App';
 import renderWithRouterRedux from './helpers/renderWithRouterRedux';
 import initialState from './mocks/foodsInitialState';
 
-const MEALS_END_POINT_ALL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+const END_POINT_ALL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 const SEARCH_ICON = 'search icon';
 const initialEntries = ['/foods'];
 const { searchResults: { meals } } = initialState;
@@ -53,7 +53,7 @@ describe('1 - Foods page, testing components render', () => {
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenNthCalledWith(1, 'https://www.themealdb.com/api/json/v1/1/list.php?c=list');
-    expect(fetch).toHaveBeenNthCalledWith(2, MEALS_END_POINT_ALL);
+    expect(fetch).toHaveBeenNthCalledWith(2, END_POINT_ALL);
 
     await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
@@ -154,7 +154,7 @@ describe('3 - Foods page, CategoriesOptions buttons behavior', () => {
     expect(fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
 
     userEvent.click(beefCategoryBtn);
-    expect(fetch).toBeCalledWith(MEALS_END_POINT_ALL);
+    expect(fetch).toBeCalledWith(END_POINT_ALL);
   });
 
   it('checks if All Button fetch by all on click', async () => {
@@ -163,9 +163,9 @@ describe('3 - Foods page, CategoriesOptions buttons behavior', () => {
 
     await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
 
-    const allCategoryBtn = screen.getByRole('button', { name: 'All' });
+    const allCategoryBtn = await screen.findByRole('button', { name: 'All' });
     userEvent.click(allCategoryBtn);
-    expect(fetch).toBeCalledWith(MEALS_END_POINT_ALL);
+    expect(fetch).toBeCalledWith(END_POINT_ALL);
   });
 });
 
