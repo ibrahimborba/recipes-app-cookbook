@@ -1,5 +1,5 @@
 import { MEAL_RESULTS, DRINK_RESULTS,
-  IS_FETCHING, REQUISITION_FAILED, TURN_OFF_FETCHING } from '../actions';
+  IS_FETCHING, REQUISITION_FAILED, TURN_OFF_FETCHING } from '../actions/index';
 
 const INITIAL_STATE = {
   meals: [],
