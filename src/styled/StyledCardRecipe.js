@@ -14,6 +14,10 @@ const StyledCardRecipe = styled.div`
   max-width: 150px;
   overflow: hidden;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   img {
     z-index: -1;
     border-radius: 10px;

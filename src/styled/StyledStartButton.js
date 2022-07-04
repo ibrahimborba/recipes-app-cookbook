@@ -26,6 +26,10 @@ const StyledStartButton = styled.div`
     font-weight: 600;
     padding: 1rem;
     transition: 0.4s;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .button:disabled {

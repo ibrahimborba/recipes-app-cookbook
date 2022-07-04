@@ -44,6 +44,12 @@ function CategoriesOptions() {
     return string;
   };
 
+  const checkOptionSelected = (option = '') => {
+    const isChecked = checkedCategory === option;
+
+    return isChecked ? 'selectedCategory' : '';
+  };
+
   return (
     <StyledCategories>
       {
@@ -51,7 +57,7 @@ function CategoriesOptions() {
         && (
           <>
             <button
-              className={ checkedCategory === '' && 'selectedCategory' }
+              className={ checkOptionSelected() }
               data-testid="All-category-filter"
               type="button"
               onClick={ handleClickCategory }
@@ -62,9 +68,7 @@ function CategoriesOptions() {
             </button>
             { categories.slice(0, MAX_ITEMS_DISPLAY).map((category) => (
               <button
-                className={
-                  checkedCategory === category.strCategory && 'selectedCategory'
-                }
+                className={ checkOptionSelected(category.strCategory) }
                 key={ category.strCategory }
                 data-testid={ `${category.strCategory}-category-filter` }
                 type="button"

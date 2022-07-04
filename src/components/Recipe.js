@@ -31,12 +31,14 @@ function Recipe({ isFood }) {
           ? <Loading />
           : (
             <>
-              <img
-                data-testid="recipe-photo"
-                className="recice-img"
-                src={ image }
-                alt="Recipe"
-              />
+              <div className="recipe-img-container">
+                <img
+                  data-testid="recipe-photo"
+                  className="recice-img"
+                  src={ image }
+                  alt="Recipe"
+                />
+              </div>
               <section
                 className="recipe-container"
               >

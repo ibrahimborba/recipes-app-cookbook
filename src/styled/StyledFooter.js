@@ -14,11 +14,15 @@ const StyledFooter = styled.footer`
   position: fixed;
 
   button {
-    width: 54px;
-    padding: 10px;
-    border: unset;
     background-color: transparent;
+    border: unset;
+    padding: 10px;
     text-align: center;
+    width: 54px;
+    
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .currentPath {

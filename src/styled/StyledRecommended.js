@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledRecommended = styled.div`
   .recommendations-title {
-    padding-left: 3%;
+    padding-left: 10px;
     font-size: 1.6rem;
     font-weight: 800;
     margin-bottom: .5rem;

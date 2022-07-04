@@ -19,6 +19,10 @@ const StyledExplore = styled.div`
     margin-top: 2rem;
     max-width: 500px;
     width: 80%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .foods-btn{

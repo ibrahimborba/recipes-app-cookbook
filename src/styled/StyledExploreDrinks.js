@@ -18,6 +18,10 @@ const StyledExploreDrinks = styled.div`
     font-size: 1.2rem;
     margin-top: 2rem;
     width: 80%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .ingredient-btn {

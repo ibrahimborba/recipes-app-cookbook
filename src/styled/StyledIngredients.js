@@ -13,6 +13,10 @@ const StyledIngredients = styled.div`
     background-color: transparent;
     border: none;
     margin-bottom: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   p {
