@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMealResults, fetchDrinkResults } from '../redux/actions/index';
+import { fetchCategoryResults } from '../redux/actions/optionsAction';
 import StyledCategories from '../styled/StyledCategories';
-import { fetchCategoryResults } from '../redux/actions/categoryAction';
 
 function CategoriesOptions() {
   const [checkedCategory, setCheckedCategory] = useState('');

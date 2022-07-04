@@ -1,4 +1,4 @@
-import { CATEGORY_RESULTS, IS_FETCHING_CAT } from '../actions/categoryAction';
+import { CATEGORY_RESULTS, IS_FETCHING_OPTIONS } from '../actions/optionsAction';
 
 const INITIAL_STATE = {
   categories: [],
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 
 const categories = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case IS_FETCHING_CAT:
+  case IS_FETCHING_OPTIONS:
     return { ...state, isFetching: true };
 
   case CATEGORY_RESULTS:
