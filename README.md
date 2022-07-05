@@ -65,4 +65,6 @@ npm run lint
 
 
 # Preview
-Video preview
+
+https://user-images.githubusercontent.com/52305519/177251680-695965c0-bd07-440a-af18-8558a1e72fd8.mp4
+
