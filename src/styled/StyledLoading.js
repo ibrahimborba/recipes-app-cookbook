@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 const StyledLoading = styled.div`
-  height: 100vh;
-  width: 100vw;
+  align-items: center;
   background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-  padding-top: 80%;
-  padding-left: 36%;
+  width: 100vw;
   z-index: 10;
 
   /* From uiverse.io by @G4b413l */
@@ -20,7 +21,7 @@ const StyledLoading = styled.div`
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    width: var(--uib-size);
+    width: var(--uib-size * 2);
     height: calc(var(--uib-size) * 0.17);
     padding-top: calc(var(--uib-size) * 0.34);
   }

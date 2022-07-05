@@ -9,19 +9,23 @@ const StyledCategories = styled.section`
   padding: 20px;
 
   button {
-    width: 100px;
-    padding: 10px;
+    background-color: ${(props) => props.theme.lightgray};
     border: unset;
     border-radius: 10px;
-    background-color: ${(props) => props.theme.lightgray};
-    color: ${(props) => props.theme.secondaryColor};
-    font-weight: 700;
-    font-size: 1rem;
     box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
-    transition: all 250ms;
-    text-align: center;
+    color: ${(props) => props.theme.secondaryColor};
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 10px;
     overflow: hidden;
+    text-align: center;
+    transition: all 250ms;
+    width: 100px;
+    
+    &:hover {
+      cursor: pointer;
     }
+  }
 
   .selectedCategory {
     background-color: ${(props) => props.theme.dark};

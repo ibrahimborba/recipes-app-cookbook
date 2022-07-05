@@ -1,21 +1,26 @@
 import styled from 'styled-components';
 
 const StyledCardDoneFav = styled.div`
-  color: ${(props) => props.theme.secondaryColor};
-  box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
-  height: 150px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  width: 90%;
+  box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
+  color: ${(props) => props.theme.secondaryColor};
+  display: flex;
+  height: 150px;
+  justify-content: space-between;
   margin: 20px auto;
+  max-width: 800px;
+  width: 90%;
 
   .container_recipe {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     overflow: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     .recipe_img {
       z-index: -1;
@@ -77,6 +82,10 @@ const StyledCardDoneFav = styled.div`
       border: none;
       border-radius: 6px;
       margin: 10px 10px 10px 0;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     span {

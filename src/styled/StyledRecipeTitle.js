@@ -9,12 +9,15 @@ const StyledRecipeTitle = styled.div`
     box-shadow: 5px 5px 7px #d9d9d9, -5px -5px 7px #ffffff;
     border: none;
     border-radius: 6px;
-    margin-left: 10px;
     width: 40px;
 
     &:active {
       background-color: whitesmoke;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    &:hover {
+      cursor: pointer;
     }
   }
 
@@ -41,10 +44,14 @@ const StyledRecipeTitle = styled.div`
 
   .recipe-bar-buttons-container {
     position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 
     span {
       font-size: 0.8rem;
-      left: -7%;
+      left: 25%;
       top: 120%;
       position: absolute;
       z-index: 2;
@@ -55,6 +62,12 @@ const StyledRecipeTitle = styled.div`
     color: ${(props) => props.theme.typography.secondary};
     font-size: 1.3rem;
     font-weight: 600;
+  }
+
+  @media (min-width: 540px) {
+    .recipe-bar-title {
+      max-width: none;
+    }
   }
 `;
 

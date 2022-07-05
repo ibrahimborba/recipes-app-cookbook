@@ -1,42 +1,60 @@
 import styled from 'styled-components';
 
 const StyledSearchBar = styled.form`
-  width: 100%;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
 
-  section {
+  .search-input {
     width: 85%;
-    margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    input[type=text] {
+      height: 24px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      border: none;
+      border-bottom: 2px solid ${(props) => props.theme.secondaryColor};
+      background: transparent;
+      ::placeholder {
+        color: ${(props) => props.theme.secondaryColor};
+        font-style: italic;
+        font-size: .8rem;
+      }
+      :focus {
+        color: ${(props) => props.theme.secondaryColor};
+      } 
+    }
+
+    label {
+      width: 100%;
+      max-width: 350px;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  section {
+    width: 85%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 500px;
   }
 
   label {
     color: ${(props) => props.theme.secondaryColor};
-    font-weight: 600;
+    cursor: pointer;
     font-size: 1rem;
-  }  
-
-  input[type=text] {
-    height: 24px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    border: none;
-    border-bottom: 2px solid ${(props) => props.theme.secondaryColor};
-    background: transparent;
-    ::placeholder {
-      color: ${(props) => props.theme.secondaryColor};
-      font-style: italic;
-      font-size: .8rem;
-    }
-    :focus {
-      color: ${(props) => props.theme.secondaryColor};
-    } 
+    font-weight: 600;
   }
 
   input[type=radio] {
@@ -44,16 +62,34 @@ const StyledSearchBar = styled.form`
   }
 
   .btn_search {
-    width: 70%;
-    padding: 10px;
+    background-color: ${(props) => props.theme.dark};
     border: unset;
     border-radius: 10px;
     box-shadow: 2px 2px 10px -2px rgba(0,0,0,0.27);
-    background-color: ${(props) => props.theme.dark};
     font-weight: 700;
     font-size: 1rem;
-    text-align: center;
     margin-bottom: 20px;
+    max-width: 300px;
+    padding: 10px;
+    text-align: center;
+    width: 70%;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .search-input {
+      label {
+        width: 50%;
+        max-width: 425px;
+  
+        input {
+          width: 100%;
+        }
+      }
+    }
   }
 `;
 
