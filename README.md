@@ -27,12 +27,13 @@ This project is a __Recipes App__ that allows the user to find and save new reci
  * __Viewing__ done and favorite recipes
 
 
-# Technologies Used
-This project used the following technologies and features:
-  * __React__ | [React Router](https://blog.pshrmn.com/simple-react-router-v4-tutorial/), [React Hooks](https://reactjs.org/docs/hooks-intro.html)
-  * __Redux__ | [State Management in Redux](https://blog.logrocket.com/why-use-redux-reasons-with-clear-examples-d21bffd5835/)
-  * __Testing Library__ | [React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
-  * __CSS__ | [Styled Components](https://styled-components.com/) 
+# Technologies and Tools Used
+This project used the following technologies and tools:
+  * __Scrum and Kanban__ | [Agreements, Task division and Communication](https://coachtakeshi.medium.com/a-pretty-good-summary-of-lean-agile-scrum-168cf123748)
+  * __React__ | [Componetization](https://reactjs.org/docs/thinking-in-react.html), [Router](https://blog.pshrmn.com/simple-react-router-v4-tutorial/), [Hooks](https://reactjs.org/docs/hooks-intro.html)
+  * __Redux__ | [State Management](https://blog.logrocket.com/why-use-redux-reasons-with-clear-examples-d21bffd5835/)
+  * __React Testing Library__ | [Testing Interactions and Accessibility](https://testing-library.com/docs/queries/about/)
+  * __Styled Components__ | [Component Level Styles](https://styled-components.com/) 
 
 
 # Installing, running and testing the app
@@ -58,10 +59,10 @@ npm run lint
 # Notes
 ## Git, GitHub and Commit History
 - This project used the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) with some types from [Angular convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
-
+- We used a Pre-Merge branch to: merge each person branch before merging into the Main branch, resolve conflicts and let the tests run without blocking the development of other features.
 ## Lint
 - The project was developed following the Clean Code standards specified by [Trybe's Lint](https://github.com/betrybe/eslint-config-trybe).
 
 
 # Preview
-![video preview]()
+Video preview
